@@ -32,19 +32,8 @@ class BusinessController extends Controller
      $businesses->email = $request->input('email');
      $businesses->categories = $request->input('categories');
 
+      $businesses->save();
 
-    // Business::create([
-    //     'province' => $request->province,
-    //     'business_name' => $request->business_name,
-    //     'address1' => $request->address1,
-    //     'address2' => $request->address2,
-    //     'city' => $request->city,
-    //     'postal_code' => $request->postal_code,
-    //     'phone' => $request->phone,
-    //     'web_address' => $request->web_address,
-    //     'email' => $request->email,
-    //     'categories' => $request->categories,
-    // ]);
 
     return redirect()->back()->with('success', 'Business added successfully!');
 }

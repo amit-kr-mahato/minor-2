@@ -59,6 +59,4 @@ Route::middleware(['auth', 'verified'])->get('dashboard', function () {
 
 
 //businesss
-
-
 Route::post('/business', [BusinessController::class, 'business_store'])->name('business.business_store');
