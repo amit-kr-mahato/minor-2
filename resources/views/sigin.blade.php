@@ -33,38 +33,21 @@
                                         <p>We are happy to have you back.</p>
                                     </div>
                                     {{-- @if ($errors->any())
-                                        @foreach ($errors->all() as $error)
-                                            <div class="text-light p-2 mb-3 bg-danger">{{ $error }}</div>
-                                        @endforeach
+                                    @foreach ($errors->all() as $error)
+                                    <div class="text-light p-2 mb-3 bg-danger">{{ $error }}</div>
+                                    @endforeach
                                     @endif --}}
                                     <div class="input-group mb-3">
-                                        <input type="text" name="email"
-                                            class="form-control form-control-lg bg-light fs-6" placeholder="Email address"
-                                            value="{{ old('email') }}">
+                                        <input type="text" name="email" class="form-control form-control-lg bg-light fs-6"
+                                            placeholder="Email address" value="{{ old('email') }}">
                                     </div>
-                                    @error('email')
-                                        <div class="alert alert-danger py-1 mb-3 d-flex align-items-center"
-                                            role="alert">
-                                            <i class="bi bi-exclamation-circle-fill"></i>
-                                            <small>{{ $message }}</small>
-                                        </div>
-                                    @enderror
+
 
                                     <div class="input-group mb-1">
                                         <input type="password" name="password"
                                             class="form-control form-control-lg bg-light fs-6" placeholder="Password"
                                             id="myInput2">
                                     </div>
-
-                                    @error('password')
-                                        <div class="alert alert-danger py-1  mb-3 d-flex align-items-center "
-                                            role="alert">
-                                            <i class="bi bi-exclamation-circle-fill"></i>
-                                            <small>{{ $message }}</small>
-                                        </div>
-                                    @enderror
-
-
 
 
 
@@ -75,16 +58,25 @@
                                             <small><a href="#">Forgot
                                                     Password?</a></small>
                                         </div>
+                                        <div class="forgot">
+                                            <small><a href="{{route('reglogin')}}" target="_blank">business-Owner Login
+                                                    </a></small>
+                                        </div>
+                                        <div class="forgot">
+                                            <small><a href="#" target="_blank">admin Login
+                                                    </a></small>
+                                        </div>
 
                                     </div>
+
                                     <div class="input-group mb-3">
                                         <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
                                     </div>
                                     <div class="input-group mb-3">
                                         <a href="{{ route('google.login') }}"
                                             class="btn btn-lg btn-light w-100 fs-6 d-flex align-items-center justify-content-center text-dark text-decoration-none">
-                                            <img src="{{ asset('frontend/images/google.png') }}"
-                                                alt="Google" style="width:20px;" class="me-2">
+                                            <img src="{{ asset('frontend/images/google.png') }}" alt="Google"
+                                                style="width:20px;" class="me-2">
                                             <small>Sign In with Google</small>
                                         </a>
                                     </div>

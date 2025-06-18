@@ -60,3 +60,12 @@ Route::middleware(['auth', 'verified'])->get('dashboard', function () {
 
 //businesss
 Route::post('/business', [BusinessController::class, 'business_store'])->name('business.business_store');
+
+// project quotes
+Route::get('/repair', [BusinessController::class, 'Repairs'])->name('repair');
+
+// project quotes
+Route::get('/businessdetail', [BusinessController::class, 'Businessdetail'])->name('businessdetail');
+Route::get('/businessdetailseemore', [BusinessController::class, 'Seemorephoto'])->name('seemorebusinessdetail');
+
+Route::get('business/reg-login', [BusinessController::class, 'Blogin'])->name('reglogin');

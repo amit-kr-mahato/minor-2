@@ -22,7 +22,7 @@
                         <div class="modal-body">
                             <p>Choose a category to start creating your project</p>
                             <div class="modal-category">
-                                <a href="" class="text-decoration-none text-dark">
+                                <a href="{{route('repair')}}" class="text-decoration-none text-dark">
                                     <div class="category-card_1">🔧<br>Auto Repair</div>
                                 </a>
                                 <a href="" class="text-decoration-none text-dark">

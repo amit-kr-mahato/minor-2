@@ -6,18 +6,7 @@
 <title>Modern Auth Forms</title>
 
 <style>
-  /* Basic Reset */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f2f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+
 
   .container {
     width: 380px;
