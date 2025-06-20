@@ -90,23 +90,18 @@ class FrontendController extends Controller
     {
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|min:6',
         ]);
-        // return $request->all();
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            // Role-based redirect fallback
-            return match (Auth::user()->role) {
-                'admin' => redirect()->route('admin.dashboard'),
-                'businessowner' => redirect()->route('businessdashboard.dashboard'),
-                'user' => redirect()->route('index'),
-            };
-        }
+       if (Auth::attempt($request->only('email', 'password'))) {
+        $request->session()->regenerate();
+    }
+
 
         return back()->withErrors([
             'email' => 'The Email field is must be valid.',
+            'password' => 'The password field is must be valid.',
            
-        ])->onlyInput('email');
+        ])->withInput();
     }
 }

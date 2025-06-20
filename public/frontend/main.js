@@ -42,6 +42,19 @@ function addCategory(event) {
 
 
 
+  function checkStrength(value) {
+    const text = document.getElementById('text');
+    if (value.length > 6) {
+      text.innerText = 'Strong';
+      text.style.backgroundColor = 'green';
+    } else {
+      text.innerText = 'Weak';
+      text.style.backgroundColor = 'red';
+    }
+  }
+
+
+
 // --------------------------show more content---------------------------------
 document.addEventListener("DOMContentLoaded", function (event) {
     event.preventDefault();

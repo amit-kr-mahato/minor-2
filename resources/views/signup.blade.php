@@ -55,20 +55,19 @@
 
                                     </div>
                                     <div class="input-group mb-3">
-                                        <input type="text" name="name"
-                                            class="form-control form-control-lg bg-light fs-6" placeholder="User Name">
+                                        <input type="text" name="name" class="form-control form-control-lg bg-light fs-6"
+                                            placeholder="User Name">
                                     </div>
                                     <div class="input-group mb-3">
-                                        <input type="text" name="email"
-                                            class="form-control form-control-lg bg-light fs-6" placeholder="Email address">
+                                        <input type="text" name="email" class="form-control form-control-lg bg-light fs-6"
+                                            placeholder="Email address">
                                     </div>
                                     <div class="input-group mb-3">
                                         <input type="password" name="password"
                                             class="form-control form-control-lg bg-light fs-6" placeholder="Password"
-                                            id="myInput">
-
+                                            oninput="checkStrength(this.value)" id="myInput">
                                     </div>
-
+                                    <p id="text" style="padding:3px; color: rgb(7, 6, 6);text-align: center;"></p>
 
                                     <div class="input-group mb-3">
                                         <button class="btn btn-lg btn-primary w-100 fs-6">Sign

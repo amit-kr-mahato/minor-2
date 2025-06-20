@@ -54,4 +54,9 @@ class BusinessController extends Controller {
         return view( 'businesform.Businesform' );
 
     }
+
+       public function Alogin() {
+        return view( 'admin' );
+
+    }
 }

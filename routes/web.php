@@ -53,9 +53,7 @@ Route::post('sigincheck', [FrontendController::class, 'SigninCheck'])->name('sig
 // Route::get('dashboard', [FrontendController::class, 'dashboard'])->name('dashboard');
 
 Auth::routes(['verify' => true]);
-Route::middleware(['auth', 'verified'])->get('dashboard', function () {
-    return view('businessdashboard.dashboard');
-})->name('dashboard');
+
 
 
 //businesss
@@ -69,3 +67,5 @@ Route::get('/businessdetail', [BusinessController::class, 'Businessdetail'])->na
 Route::get('/businessdetailseemore', [BusinessController::class, 'Seemorephoto'])->name('seemorebusinessdetail');
 
 Route::get('business/reg-login', [BusinessController::class, 'Blogin'])->name('reglogin');
+
+Route::get('business/Aeg-login', [BusinessController::class, 'Alogin'])->name('Aeglogin');

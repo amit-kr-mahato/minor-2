@@ -38,15 +38,26 @@
                                     @endforeach
                                     @endif --}}
                                     <div class="input-group mb-3">
-                                        <input type="text" name="email" class="form-control form-control-lg bg-light fs-6"
-                                            placeholder="Email address" value="{{ old('email') }}">
+                                        <input type="text" name="email" value="{{ old('email') }}"
+                                            class="form-control form-control-lg bg-light fs-6 @error('email') is-invalid @enderror"
+                                            placeholder="Email address">
+                                        @error('email')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
 
 
                                     <div class="input-group mb-1">
                                         <input type="password" name="password"
-                                            class="form-control form-control-lg bg-light fs-6" placeholder="Password"
-                                            id="myInput2">
+                                            class="form-control form-control-lg bg-light fs-6 @error('password') is-invalid @enderror"
+                                            placeholder="Password" id="myInput2">
+                                        @error('password')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
 
 
@@ -60,11 +71,11 @@
                                         </div>
                                         <div class="forgot">
                                             <small><a href="{{route('reglogin')}}" target="_blank">business-Owner Login
-                                                    </a></small>
+                                                </a></small>
                                         </div>
                                         <div class="forgot">
-                                            <small><a href="#" target="_blank">admin Login
-                                                    </a></small>
+                                            <small><a href="{{route('Aeglogin')}}" target="_blank">admin Login
+                                                </a></small>
                                         </div>
 
                                     </div>
