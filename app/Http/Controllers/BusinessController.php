@@ -50,10 +50,15 @@ class BusinessController extends Controller {
 
     }
 
+    public function businesssphoto() {
+        return view( 'addphoto' );
+
+    }
      public function Blogin() {
         return view( 'businesform.Businesform' );
 
     }
+   
 
       public function dashboard()
     {

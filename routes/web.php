@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ReportController;
@@ -89,9 +90,19 @@ Route::get('/unauthorized', function () {
 //businesss
 Route::post('/business', [BusinessController::class, 'business_store'])->name('business.business_store');
 
+
 // project quotes
 Route::get('/repair', [BusinessController::class, 'Repairs'])->name('repair');
 
 // project quotes
 Route::get('/businessdetail', [BusinessController::class, 'Businessdetail'])->name('businessdetail');
 Route::get('/businessdetailseemore', [BusinessController::class, 'Seemorephoto'])->name('seemorebusinessdetail');
+Route::get('/business/addphoto', [BusinessController::class, 'businesssphoto'])->name('addphoto');
+Route::get('/business/review', [BusinessController::class, 'review'])->name('writereview');
+
+//rewivew
+Route::get('/business/review', [ReviewController::class, 'review'])->name('writereview');
+
+Route::post('/business/review', [ReviewController::class, 'submitReview'])->name('review');
+
+

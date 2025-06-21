@@ -81,7 +81,7 @@
 
  <div class="header">
     <h2>Photos and videos for Mountain Mike's Pizza</h2>
-    <a href="#" class="add-photo-btn ">Add photos</a>
+    <a href="{{route('addphoto')}}" target="_blank" class="add-photo-btn ">Add photos</a>
 
   </div>
 
