@@ -41,6 +41,15 @@ function addCategory(event) {
 }
 
 
+ // Only one checkbox can be checked
+    document.querySelectorAll('input[name="role"]').forEach((checkbox) => {
+        checkbox.addEventListener('change', function () {
+            document.querySelectorAll('input[name="role"]').forEach(cb => cb.checked = false);
+            this.checked = true;
+        });
+    });
+
+
 
   function checkStrength(value) {
     const text = document.getElementById('text');

@@ -69,6 +69,12 @@
                                     </div>
                                     <p id="text" style="padding:3px; color: rgb(7, 6, 6);text-align: center;"></p>
 
+                                    <select name="role" style="margin-bottom: 30px;" required>
+                                        <option value="">--Select Role--</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="businessowner">businessowner</option>
+                                        <option value="user">User</option>
+                                    </select>
                                     <div class="input-group mb-3">
                                         <button class="btn btn-lg btn-primary w-100 fs-6">Sign
                                             up</button>

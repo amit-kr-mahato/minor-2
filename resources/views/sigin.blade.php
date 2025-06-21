@@ -51,13 +51,12 @@
 
                                     <div class="input-group mb-1">
                                         <input type="password" name="password"
-                                            class="form-control form-control-lg bg-light fs-6 @error('password') is-invalid @enderror"
-                                            placeholder="Password" id="myInput2">
+                                            class="form-control form-control-lg bg-light fs-6 " placeholder="Password"
+                                            id="myInput2" required minlength="6">
                                         @error('password')
-                                            <div class="invalid-feedback d-block">
-                                                {{ $message }}
-                                            </div>
+                                            <small class="text-danger">{{ $message }}</small>
                                         @enderror
+
                                     </div>
 
 
@@ -69,14 +68,6 @@
                                             <small><a href="#">Forgot
                                                     Password?</a></small>
                                         </div>
-                                        <div class="forgot">
-                                            <small><a href="{{route('reglogin')}}" target="_blank">business-Owner Login
-                                                </a></small>
-                                        </div>
-                                        <div class="forgot">
-                                            <small><a href="{{route('Aeglogin')}}" target="_blank">admin Login
-                                                </a></small>
-                                        </div>
 
                                     </div>
 
@@ -84,7 +75,7 @@
                                         <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
                                     </div>
                                     <div class="input-group mb-3">
-                                        <a href="{{ route('google.login') }}"
+                                        <a href="{{ route('google.redirect') }}"
                                             class="btn btn-lg btn-light w-100 fs-6 d-flex align-items-center justify-content-center text-dark text-decoration-none">
                                             <img src="{{ asset('frontend/images/google.png') }}" alt="Google"
                                                 style="width:20px;" class="me-2">

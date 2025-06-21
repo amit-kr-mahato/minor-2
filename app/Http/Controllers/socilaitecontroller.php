@@ -8,16 +8,17 @@ use App\Models\User;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+
 use Illuminate\Http\Request;
 
 class socilaitecontroller extends Controller
 {
-    public function Googlelogin()
+    public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
     }
 
-    public function Googleauthentication()
+    public function handleGoogleCallback()
     {
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();

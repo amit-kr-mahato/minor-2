@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\socilaitecontroller;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -41,9 +44,11 @@ Route::post('signup/insert', [FrontendController::class, 'insert'])->name('inser
 
 
 // signin in google
-Route::get('index', [socilaitecontroller::class, 'Googlelogin'])->name('google.login');
-Route::get('index/google-callback', [socilaitecontroller::class, 'Googleauthentication'])->name('index.google-callback');
+// Redirect to Google
+Route::get('/auth/google/redirect', [SocilaiteController::class, 'redirectToGoogle'])->name('google.redirect');
 
+// Handle callback
+Route::get('/auth/google/callback', [SocilaiteController::class, 'handleGoogleCallback'])->name('google.callback');
 
 // signin
 Route::get('sigin', [FrontendController::class, 'Sigin'])->name('sigin');
@@ -53,6 +58,31 @@ Route::post('sigincheck', [FrontendController::class, 'SigninCheck'])->name('sig
 // Route::get('dashboard', [FrontendController::class, 'dashboard'])->name('dashboard');
 
 Auth::routes(['verify' => true]);
+
+
+// Admin-only routes
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
+
+// Business owner routes
+Route::middleware(['auth', 'role:businessowner'])->prefix('business')->group(function () {
+    Route::get('/dashboard', [BusinessController::class, 'dashboard'])->name('businessdashboard.dashboard');
+});
+
+// User routes
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::get('/index', [UserController::class, 'dashboard'])->name('index');
+});
+
+// Shared route (e.g., admin + businessowner)
+Route::middleware(['auth', 'role:admin,businessowner'])->get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+
+Route::get('/unauthorized', function () {
+    return view('unauthorized');
+})->name('unauthorized');
+
 
 
 
@@ -65,7 +95,3 @@ Route::get('/repair', [BusinessController::class, 'Repairs'])->name('repair');
 // project quotes
 Route::get('/businessdetail', [BusinessController::class, 'Businessdetail'])->name('businessdetail');
 Route::get('/businessdetailseemore', [BusinessController::class, 'Seemorephoto'])->name('seemorebusinessdetail');
-
-Route::get('business/reg-login', [BusinessController::class, 'Blogin'])->name('reglogin');
-
-Route::get('business/Aeg-login', [BusinessController::class, 'Alogin'])->name('Aeglogin');

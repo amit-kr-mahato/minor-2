@@ -55,8 +55,8 @@ class BusinessController extends Controller {
 
     }
 
-       public function Alogin() {
-        return view( 'admin' );
-
+      public function dashboard()
+    {
+        return view('Businessdashboard.dashboard');
     }
 }

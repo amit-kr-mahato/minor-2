@@ -4,6 +4,18 @@ body {
     overflow-y: scroll;
 }
 
+.checkboX{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+   
+}
+
+.admin{
+    padding: 2px;
+
+}
+
 body::-webkit-scrollbar {
     display: none;
 }
