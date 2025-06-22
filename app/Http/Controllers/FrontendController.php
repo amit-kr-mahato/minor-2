@@ -69,33 +69,34 @@ class FrontendController extends Controller {
          $user->password = Hash::make($request->password); 
         $user->role = $request->role;
         $user->save();
+
         return redirect( 'sigin' )->with( 'success', 'Registration successful.' );
     }
-
+  //dropdown for admin panel and user
     public function SigninCheck( Request $request ) {
         $credentials = $request->validate( [
             'email' => 'required|email',
             'password' => 'required|min:6',
-            'role' => 'required|in:admin,businessowner,user',
+            // 'role' => 'required|in:admin,businessowner,user',
         ] );
 
         if ( Auth::attempt( ['email' => $credentials[ 'email' ],'password' => $credentials[ 'password' ]] ) ) {
             $request->session()->regenerate();
             $user = Auth::user();
 
-            if ( $user->role !== $credentials[ 'role' ] ) {
-                Auth::logout();
-                return back()->withErrors( [
-                    'role' => 'Selected role does not match your account role.',
-                ] )->withInput();
-            }
+            // if ( $user->role !== $credentials[ 'role' ] ) {
+            //     Auth::logout();
+            //     return back()->withErrors( [
+            //         'role' => 'Selected role does not match your account role.',
+            //     ] )->withInput();
+            // }
 
             // Role-based redirection
             return match ( $user->role ) {
-                'admin' => redirect( 'admin.dashboard' ),
-                'businessowner' => redirect( 'businessdashboard.dashboard' ),
-                'user' => redirect( 'index' ),
-                default => redirect( 'index' ), // fallback
+                'admin' => redirect()->route( 'admin.dashboard' ),
+                'businessowner' => redirect()->route( 'businessdashboard.dashboard' ),
+                'user' => redirect()->route( 'index' ),
+                default => redirect()->route( 'index' ), // fallback
             }
             ;
         }
