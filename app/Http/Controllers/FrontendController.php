@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Notifications\VerificationEmail;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Notification;
 
 class FrontendController extends Controller {
     public function home() {
@@ -55,6 +57,7 @@ class FrontendController extends Controller {
 
     public function insert( Request $request ) {
         // Validate the inputs
+
         $request->validate( [
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
@@ -62,17 +65,45 @@ class FrontendController extends Controller {
             'role' => 'required|in:admin,businessowner,user',
         ] );
 
-        // Step 2: Create and save the user
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-         $user->password = Hash::make($request->password); 
-        $user->role = $request->role;
-        $user->save();
+        try {
+            DB::beginTransaction();
 
-        return redirect( 'sigin' )->with( 'success', 'Registration successful.' );
+            // Step 2: Create and save the user
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make( $request->password );
+
+            $user->role = $request->role;
+            $user->save();
+
+            $userData = [
+                'name'=> $user->name
+            ];
+
+            Notification::route( 'mail', $request->email )->notify( new VerificationEmail( $userData ) );
+            // auth()->login( $user );
+            // Log them in
+
+            // $user->sendEmailVerificationNotification();
+            // // Send verification link
+
+            // return redirect( '/email/verify' );
+            // // Built-in page saying “Please verify your email”
+
+            DB::commit();
+            // Commit the transaction
+
+            return redirect( 'sigin' )->with( 'success', 'Registration successful.' );
+        } catch ( \Exception $e ) {
+            DB::rollBack();
+            // Rollback on error
+
+            return back()->withErrors( [ 'error' => 'Registration failed. Please try again.' ] );
+        }
     }
-  //dropdown for admin panel and user
+    //dropdown for admin panel and user
+
     public function SigninCheck( Request $request ) {
         $credentials = $request->validate( [
             'email' => 'required|email',
@@ -80,16 +111,9 @@ class FrontendController extends Controller {
             // 'role' => 'required|in:admin,businessowner,user',
         ] );
 
-        if ( Auth::attempt( ['email' => $credentials[ 'email' ],'password' => $credentials[ 'password' ]] ) ) {
+        if ( Auth::attempt( [ 'email' => $credentials[ 'email' ], 'password' => $credentials[ 'password' ] ] ) ) {
             $request->session()->regenerate();
             $user = Auth::user();
-
-            // if ( $user->role !== $credentials[ 'role' ] ) {
-            //     Auth::logout();
-            //     return back()->withErrors( [
-            //         'role' => 'Selected role does not match your account role.',
-            //     ] )->withInput();
-            // }
 
             // Role-based redirection
             return match ( $user->role ) {

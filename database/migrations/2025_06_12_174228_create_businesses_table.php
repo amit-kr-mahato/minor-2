@@ -21,6 +21,8 @@ return new class extends Migration
         $table->string('address2')->nullable();
         $table->string('city');
         $table->string('postal_code');
+        $table->decimal('longitude', 10, 8)->nullable(); // Longitude column
+        $table->decimal('latitude', 10, 8)->nullable(); 
         $table->string('phone');
         $table->string('web_address')->nullable();
         $table->string('email');

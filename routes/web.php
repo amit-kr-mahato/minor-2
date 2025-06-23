@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\PhotoController;
+use Illuminate\Http\Request;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\AdminController;
@@ -44,12 +46,12 @@ Route::get('signup', [FrontendController::class, 'Signup'])->name('signup');
 Route::post('signup/insert', [FrontendController::class, 'insert'])->name('insert');
 
 
-// signin in google
-// Redirect to Google
-Route::get('/auth/google/redirect', [SocilaiteController::class, 'redirectToGoogle'])->name('google.redirect');
+// // signin in google
+// // Redirect to Google
+// Route::get('/auth/google/redirect', [SocilaiteController::class, 'redirectToGoogle'])->name('google.redirect');
 
-// Handle callback
-Route::get('/auth/google/callback', [SocilaiteController::class, 'handleGoogleCallback'])->name('google.callback');
+// // Handle callback
+// Route::get('/auth/google/callback', [SocilaiteController::class, 'handleGoogleCallback'])->name('google.callback');
 
 // signin
 Route::get('sigin', [FrontendController::class, 'Sigin'])->name('sigin');
@@ -105,4 +107,25 @@ Route::get('/business/review', [ReviewController::class, 'review'])->name('write
 
 Route::post('/business/review', [ReviewController::class, 'submitReview'])->name('review');
 
+
+//upload photo
+
+
+
+// Override default verification route to customize redirection
+// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//     $request->fulfill(); // Marks email as verified
+
+//     $user = $request->user();
+
+//     // Redirect based on role
+//     if ($user->role === 'businessowner') {
+//         return redirect('businessdashboard.dashboard');
+//     } else {
+//         return redirect('/index');
+//     }
+// })->middleware(['auth', 'sigin'])->name('verification.verify');
+
+
+// Route::post('/photos', [PhotoController::class, 'store'])->name('photos.store');
 

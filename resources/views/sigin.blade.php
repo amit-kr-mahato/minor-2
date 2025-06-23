@@ -74,14 +74,14 @@
                                     <div class="input-group mb-3">
                                         <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
                                     </div>
-                                    <div class="input-group mb-3">
+                                    {{-- <div class="input-group mb-3">
                                         <a href="{{ route('google.redirect') }}"
                                             class="btn btn-lg btn-light w-100 fs-6 d-flex align-items-center justify-content-center text-dark text-decoration-none">
                                             <img src="{{ asset('frontend/images/google.png') }}" alt="Google"
                                                 style="width:20px;" class="me-2">
                                             <small>Sign In with Google</small>
                                         </a>
-                                    </div>
+                                    </div> --}}
                                     <div class="row">
                                         <small>Don't have account? <a href="{{ route('signup') }}" class="fs-5">Sign
                                                 Up</a></small>

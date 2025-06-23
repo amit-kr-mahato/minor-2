@@ -72,6 +72,8 @@
                                     <select name="role" style="margin-bottom: 30px;" required>
                                         <option value="">--Select Role--</option>
                                         <option value="businessowner">businessowner</option>
+                                         
+                                         
                                         <option value="user">User</option>
                                     </select>
                                     <div class="input-group mb-3">
