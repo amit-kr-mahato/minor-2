@@ -2,39 +2,47 @@
 
 @section('content')
 
-  <!-- Main Content -->
- 
-    <div class="top" style="background-color: red;width:100%;height:10%;">
-    <div class="top-bar" >
+  <!-- Main content -->
+  <main class="ml-64 w-full p-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Dashboard Overview</h1>
+
+    <!-- Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow p-6 flex justify-between items-center">
       <div>
-        <select><option>Product</option></select>
-        <input type="text" placeholder="Search">
+      <p class="text-sm text-gray-500">Total Users</p>
+      <p class="text-2xl font-bold text-blue-600">12,480</p>
       </div>
-      <div><i class="bi bi-bell"></i> 0</div>
-    </div></div>
- <div class="main-content" id="main-content">
-    <div class="dashboard-header">
-      <h1>Welcome  admin Dashboard</h1>
+      <i class="fas fa-users text-2xl text-blue-500"></i>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6 flex justify-between items-center">
+      <div>
+      <p class="text-sm text-gray-500">Businesses</p>
+      <p class="text-2xl font-bold text-green-600">2,367</p>
+      </div>
+      <i class="fas fa-store text-2xl text-green-500"></i>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6 flex justify-between items-center">
+      <div>
+      <p class="text-sm text-gray-500">Reviews</p>
+      <p class="text-2xl font-bold text-yellow-600">58,204</p>
+      </div>
+      <i class="fas fa-star text-2xl text-yellow-500"></i>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6 flex justify-between items-center">
+      <div>
+      <p class="text-sm text-gray-500">photo</p>
+      <p class="text-2xl font-bold text-red-600">121</p>
+      </div>
+      <i class="fas fa-flag text-2xl text-red-500"></i>
+    </div>
     </div>
 
-    <div class="cards">
-      <div class="card">
-        <h3>Total Products</h3>
-        <p>0</p>
-      </div>
-      <div class="card">
-        <h3>Best Selling Products</h3>
-        <p>0</p>
-      </div>
-      <div class="card">
-        <h3>Customers</h3>
-        <p>0</p>
-      </div>
-      <div class="card">
-        <h3>Order Placed</h3>
-        <p>0</p>
-      </div>
+    <!-- Chart -->
+    <div class="bg-white rounded-xl shadow p-6 mb-8">
+    <h2 class="text-lg font-semibold mb-4">Site Activity</h2>
+    <canvas id="activityChart" height="100"></canvas>
     </div>
-  </div>
+  </main>
 
- @endsection
+@endsection

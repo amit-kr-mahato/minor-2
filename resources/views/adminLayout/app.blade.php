@@ -3,13 +3,15 @@
 
 @include('adminLayout.heads')
 
-<body>
+<body class="bg-gray-100 font-sans">
 
-     @include('adminLayout.sidebar')
+  <div id="main">
+    <div class="flex">
 
-     <div id="main">
-        @yield('content')
-        </div>
+    @include('adminLayout.sidebar')
+    @yield('content')
+  </div>
+  </div>
 
   @include('adminLayout.footer')
 </body>

@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\socilaitecontroller;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ProfileController;
 
 
 /*
@@ -109,6 +110,9 @@ Route::post('/business/review', [ReviewController::class, 'submitReview'])->name
 
 
 //upload photo
+
+Route::get('/admin/editprofile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/admin/updateprofile', [ProfileController::class, 'update'])->name('profile.update');
 
 
 
