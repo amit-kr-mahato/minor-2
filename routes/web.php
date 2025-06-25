@@ -1,17 +1,15 @@
 <?php
 
 use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\PhotoController;
-use Illuminate\Http\Request;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\socilaitecontroller;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminUserController;
 
 
 /*
@@ -115,21 +113,9 @@ Route::get('/admin/editprofile', [ProfileController::class, 'edit'])->name('prof
 Route::put('/admin/updateprofile', [ProfileController::class, 'update'])->name('profile.update');
 
 
-
-// Override default verification route to customize redirection
-// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-//     $request->fulfill(); // Marks email as verified
-
-//     $user = $request->user();
-
-//     // Redirect based on role
-//     if ($user->role === 'businessowner') {
-//         return redirect('businessdashboard.dashboard');
-//     } else {
-//         return redirect('/index');
-//     }
-// })->middleware(['auth', 'sigin'])->name('verification.verify');
-
-
-// Route::post('/photos', [PhotoController::class, 'store'])->name('photos.store');
-
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
+});

@@ -1,0 +1,35 @@
+@extends('adminLayout.app')
+
+@section('content')
+  <h1 class="text-2xl font-bold mb-4">Users</h1>
+
+  <table class="ml-64 w-full p-8 bg-white shadow rounded pt-4">
+    <thead>
+    <tr class="text-left border-b">
+      <th class="p-3">Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach ($users as $user)
+    <tr class="border-b">
+      <td class="p-3">{{ $user->name }}</td>
+      <td>{{ $user->email }}</td>
+      <td>{{ ucfirst($user->role) }}</td>
+      <td>{{ $user->is_active ? 'Active' : 'Suspended' }}</td>
+      <td class="space-x-2">
+      <a href="{{ route('admin.users.edit', $user) }}" class="text-blue-500">Edit</a>
+      <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="inline">
+      @csrf @method('DELETE')
+      <button class="text-red-500">Delete</button>
+      </form>
+      </td>
+    </tr>
+    @endforeach
+    </tbody>
+  </table>
+  {{ $users->links() }}
+@endsection

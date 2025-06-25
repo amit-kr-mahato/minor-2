@@ -1,26 +1,34 @@
 
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const ctx = document.getElementById('activityChart');
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      datasets: [{
-        label: 'Visits',
-        data: [120, 190, 170, 220, 160, 210, 250],
-        borderColor: 'rgb(59, 130, 246)',
-        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-        tension: 0.4
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true } }
-    }
-  });
+    const ctx = document.getElementById('activityChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @json($labels),
+            datasets: [{
+                label: 'User Signups',
+                data: @json($data),
+                fill: false,
+                borderColor: 'rgb(220 38 38)', // Tailwind red-600
+                tension: 0.3
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }
+        }
+    });
 </script>
+
+
+
+
 <script>
   document.getElementById('fileInput').addEventListener('change', function (e) {
     const file = e.target.files[0];

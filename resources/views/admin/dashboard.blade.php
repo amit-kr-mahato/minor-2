@@ -4,7 +4,7 @@
 
 
   <!-- Main Content -->
-  <main class="ml-64 p-8 ">
+  <main class="ml-64 p-8 w-full ">
 
     <h2 class="text-3xl font-bold text-gray-800 mb-6">Dashboard</h2>
 
@@ -12,7 +12,7 @@
 
     <div class="bg-white rounded shadow p-6">
       <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Users</h3>
-      <p class="text-4xl font-bold text-red-600">4,532</p>
+      <p class="text-4xl font-bold text-red-600"> {{ $totalUsers }}</p>
     </div>
 
     <div class="bg-white rounded shadow p-6">
@@ -29,9 +29,9 @@
 
     <!-- Chart -->
     <div class="bg-white rounded-xl shadow p-6 mb-8">
-    <h2 class="text-lg font-semibold mb-4">Site Activity</h2>
+    <h2 class="text-lg font-semibold mb-4">Site Activity (Weekly Signups)</h2>
     <canvas id="activityChart" height="100"></canvas>
-    
+
     </div>
 
     <section class="bg-white rounded shadow p-6">
