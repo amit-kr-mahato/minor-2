@@ -1,4 +1,5 @@
 
+
 <script>
   const ctx = document.getElementById('activityChart');
   new Chart(ctx, {

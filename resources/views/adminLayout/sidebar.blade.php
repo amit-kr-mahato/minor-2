@@ -1,57 +1,112 @@
-<!-- Sidebar -->
-<aside class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg flex flex-col z-50">
-  <!-- Profile Section -->
+  <!-- Sidebar -->
+  <aside class="fixed top-0 left-0 h-screen w-64 bg-white shadow-lg flex flex-col">
 
-<div class="p-6 border-b">
-  @foreach($users as $user)
-    <a href="{{ route('profile.edit,$user->id') }}" class="flex items-center gap-3 mb-4">
-      <img
-        src="{{ $user->profile_photo_path ? asset('storage/' . $user->profile_photo_path) : 'https://i.pravatar.cc/40?u=' . $user->id }}"
-        class="w-10 h-10 rounded-full object-cover"
-        alt="Profile"
-      >
-      <div>
-        <p class="text-sm font-medium text-gray-800">{{ $user->name }}</p>
-        <p class="text-xs text-gray-500">{{ $user->email }}</p>
+    <div class="p-6 border-b flex items-center gap-3">
+      <i class="fa-brands fa-yelp text-red-600 text-3xl"></i>
+      <h1 class="text-2xl font-bold text-red-600">Yelp Admin</h1>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto px-4 py-6 text-gray-700">
+
+      <!-- Dashboard -->
+      <a href="#dashboard" class="flex items-center gap-3 px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
+        <i class="fa-solid fa-chart-pie"></i>
+        Dashboard
+      </a>
+
+      <!-- Users submenu -->
+      <div x-data="{ open: false }" class="mt-4">
+        <a
+          href="#"
+          @click.prevent="open = !open"
+          class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold"
+        >
+          <span class="flex items-center gap-3">
+            <i class="fa-solid fa-users"></i> Users
+          </span>
+          <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
+        </a>
+        <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
+          <a href="#manage-users" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Users</a>
+          <a href="#user-roles" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">User Roles</a>
+          <a href="#banned-users" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Banned Users</a>
+        </div>
       </div>
-    </a>
-  @endforeach
-</div>
 
+      <!-- Businesses submenu -->
+      <div x-data="{ open: false }" class="mt-4">
+        <a
+          href="#"
+          @click.prevent="open = !open"
+          class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold"
+        >
+          <span class="flex items-center gap-3">
+            <i class="fa-solid fa-store"></i> Businesses
+          </span>
+          <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
+        </a>
+        <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
+          <a href="#manage-businesses" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Businesses</a>
+          <a href="#pending-approval" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Pending Approval</a>
+        </div>
+      </div>
 
-    <!-- Admin Title -->
-    <h1 class="text-2xl font-bold text-red-600">Admin</h1>
-  </div>
-  <nav class="flex-1 px-4 py-6 space-y-2 text-gray-700">
-    <a href="#" data-tab="dashboard"
-      class="tab-link flex items-center gap-3 px-4 py-2 rounded bg-red-100 text-red-600 font-semibold">
-      <i class="fa-solid fa-chart-line"></i> Dashboard
-    </a>
-    <a href="#" data-tab="users"
-      class="tab-link flex items-center gap-3 px-4 py-2 rounded hover:bg-red-100 hover:text-red-600">
-      <i class="fa-solid fa-users"></i> Users
-    </a>
-    <a href="#" data-tab="businesses"
-      class="tab-link flex items-center gap-3 px-4 py-2 rounded hover:bg-red-100 hover:text-red-600">
-      <i class="fa-solid fa-store"></i> Businesses
-    </a>
-    <a href="#" data-tab="reviews"
-      class="tab-link flex items-center gap-3 px-4 py-2 rounded hover:bg-red-100 hover:text-red-600">
-      <i class="fa-solid fa-star"></i> Reviews
-    </a>
-    <a href="#" data-tab="reports"
-      class="tab-link flex items-center gap-3 px-4 py-2 rounded hover:bg-red-100 hover:text-red-600">
-      <i class="fa-solid fa-flag"></i> Reports
-    </a>
-    <a href="#" data-tab="settings"
-      class="tab-link flex items-center gap-3 px-4 py-2 rounded hover:bg-red-100 hover:text-red-600">
-      <i class="fa-solid fa-cog"></i> Settings
-    </a>
-  </nav>
-  <div class="p-4 border-t">
-    <button
-      class="w-full text-left flex items-center gap-3 px-4 py-2 rounded hover:bg-red-100 hover:text-red-600 text-red-600 font-semibold">
-      <i class="fa-solid fa-right-from-bracket"></i> Logout
-    </button>
-  </div>
-</aside>
+      <!-- Reviews submenu -->
+      <div x-data="{ open: false }" class="mt-4">
+        <a
+          href="#"
+          @click.prevent="open = !open"
+          class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold"
+        >
+          <span class="flex items-center gap-3">
+            <i class="fa-solid fa-star"></i> Reviews
+          </span>
+          <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
+        </a>
+        <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
+          <a href="#manage-reviews" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Reviews</a>
+          <a href="#flagged-reviews" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Flagged Reviews</a>
+        </div>
+      </div>
+
+      <!-- Reports submenu -->
+      <div x-data="{ open: false }" class="mt-4">
+        <a
+          href="#"
+          @click.prevent="open = !open"
+          class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold"
+        >
+          <span class="flex items-center gap-3">
+            <i class="fa-solid fa-flag"></i> Reports
+          </span>
+          <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
+        </a>
+        <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
+          <a href="#user-reports" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">User Reports</a>
+          <a href="#business-reports" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Business Reports</a>
+          <a href="#review-reports" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Review Reports</a>
+        </div>
+      </div>
+
+      <!-- Settings submenu -->
+      <div x-data="{ open: false }" class="mt-4">
+        <a
+          href="#"
+          @click.prevent="open = !open"
+          class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold"
+        >
+          <span class="flex items-center gap-3">
+            <i class="fa-solid fa-cog"></i> Settings
+          </span>
+          <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
+        </a>
+        <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
+          <a href="#general-settings" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">General</a>
+          <a href="#email-settings" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Email</a>
+          <a href="#security-settings" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Security</a>
+        </div>
+      </div>
+
+    </nav>
+
+  </aside>
