@@ -2,27 +2,27 @@
 
 @section('content')
 
-<div class=" ml-64 w-full p-8">
+<div class=" ml-64 w-full p-8"> 
 <form method="POST" action="{{ route('admin.users.update', $user) }}">
   @csrf
  
   @method('PUT')
 
-  <input type="text" name="name" value="{{ $user->name }}" class="border p-2 w-full" required>
-  <input type="email" name="email" value="{{ $user->email }}" class="border p-2 w-full" required>
+  <input type="text" name="name" placeholder="Name" value="{{ $user->name }}" class="border p-2 w-full" required>
+  <input type="email" name="email"  placeholder="Email"  value="{{ $user->email }}" class="border p-2 w-full mt-4" required>
 
-  <select name="role" class="border p-2 w-full">
+  <select name="role" class="border p-2 w-full mt-4" placeholder="Role">
     <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
     <option value="businessowner" {{ $user->role == 'businessowner' ? 'selected' : '' }}>Businessowner</option>
     <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
   </select>
 
-  <select name="is_active" class="border p-2 w-full">
-    <option value="1" {{ $user->is_active ? 'selected' : '' }}>Active</option>
-    <option value="0" {{ !$user->is_active ? 'selected' : '' }}>Suspended</option>
+  <select name="status" class="border p-2 w-full mt-4"  placeholder="status" >
+    <option value="1" {{ $user->status ? 'selected' : '' }}>Active</option>
+    <option value="0" {{ !$user->status ? 'selected' : '' }}>Suspended</option>
   </select>
 
-  <button class="bg-blue-600 text-white px-4 py-2 rounded">Update</button>
+  <button class="bg-blue-600 text-white px-4 py-2 rounded mt-4">Update</button>
 </form>
 </div>
 @endsection

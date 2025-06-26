@@ -21,11 +21,11 @@ class AdminUserController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
-            'role' => 'required|in:admin,manager,user',
-            'is_active' => 'required|boolean',
+            'role' => 'required|in:admin,businessowner,user',
+            'status' => 'required|boolean',
         ]);
 
-        $user->update($request->only(['name', 'email', 'role', 'is_active']));
+        $user->update($request->only(['name', 'email', 'role', 'status']));
         return redirect()->route('admin.users.index')->with('success', 'User updated.');
     }
 

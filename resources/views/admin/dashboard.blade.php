@@ -17,7 +17,7 @@
 
     <div class="bg-white rounded shadow p-6">
       <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Businesses</h3>
-      <p class="text-4xl font-bold text-red-600">1,250</p>
+      <p class="text-4xl font-bold text-red-600">{{ $totalBusinesses }}</p>
     </div>
 
     <div class="bg-white rounded shadow p-6">
@@ -27,12 +27,27 @@
 
     </div>
 
-    <!-- Chart -->
-    <div class="bg-white rounded-xl shadow p-6 mb-8">
-    <h2 class="text-lg font-semibold mb-4">Site Activity (Weekly Signups)</h2>
-    <canvas id="activityChart" height="100"></canvas>
+
+    <div class="flex flex-col sm:flex-row gap-4 mb-8">
+    <!-- Chart 1 -->
+    <div class="bg-white rounded-xl shadow p-4 w-full sm:w-1/2">
+      <h2 class="text-sm font-semibold mb-2">Signups</h2>
+      <div class="relative w-full h-40"> <!-- Adjust h-40 (160px) as needed -->
+      <canvas id="activityChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Pie Chart Container (Tailwind + Responsive) -->
+    <div class="bg-white rounded-xl shadow p-4 w-full sm:w-1/2 ">
+      <h2 class="text-sm font-semibold mb-2 ">Overview</h2>
+      <div class="relative w-full h-64 ">
+      <canvas id="pieChart"></canvas>
+      </div>
+    </div>
 
     </div>
+
+
 
     <section class="bg-white rounded shadow p-6">
     <h3 class="text-xl font-semibold text-gray-800 mb-4">Recent Reviews</h3>
@@ -74,4 +89,60 @@
     </section>
   </main>
 
+ <script>
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Total Users', 'Total Businesses'],
+            datasets: [{
+                label: 'User vs Business',
+                data: [{{ $totalUsers }}, {{ $totalBusinesses }}],
+                backgroundColor: ['#36A2EB', '#FF6384'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                },
+                title: {
+                    display: true,
+                    text: 'User vs Business Distribution'
+                }
+            }
+        }
+    });
+    </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const activityCtx = document.getElementById('activityChart').getContext('2d');
+    new Chart(activityCtx, {
+    type: 'line',
+    data: {
+      labels: @json($labels),
+      datasets: [{
+      label: 'Signups',
+      data: @json($data),
+      borderColor: 'rgb(220, 38, 38)',
+      tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false, // allows chart to fill container height
+      scales: {
+      y: {
+        beginAtZero: true,
+        ticks: { precision: 0 }
+      }
+      }
+    }
+    });
+
+    // Repeat for pieChart if needed
+  </script>
 @endsection

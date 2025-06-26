@@ -14,13 +14,14 @@
                         <div class="mb-3">
                             <label for="country" class="form-label">Province <span class="required-star">*</span></label>
                             <select class="form-select" id="country" name="province">
-                                <option selected>Janakpur</option>
-                                <option value="option 1">Bagmati</option>
-                                <option value="option 2 ">Sudurpashchim</option>
-                                <option value="option 3">Lumbini</option>
-                                <option value="option 4">Koshi</option>
-                                <option value="option 5">Karnali</option>
-                                <option value="option 6">Gandaki</option>
+                                <option value="" disabled selected>Select a Province</option>
+                                <option value="Janakpur">Janakpur</option>
+                                <option value="Bagmati">Bagmati</option>
+                                <option value="Sudurpashchim">Sudurpashchim</option>
+                                <option value="Lumbini">Lumbini</option>
+                                <option value="Koshi">Koshi</option>
+                                <option value="Karnali">Karnali</option>
+                                <option value="Gandaki">Gandaki</option>
                             </select>
                             <div class="error" id="error-country"></div>
                         </div>
@@ -88,7 +89,7 @@
                         <div class="mb-3">
                             <label for="email" class="form-label fs-2"> Your Email Address <span
                                     class="required-star">*</span></label>
-                            <p>We’ll send you an email to verify your address</p>
+                            <p>We'll send you an email to verify your address</p>
                             <input type="text" class="form-control" name="email" oninput="getvalues()" id="email"
                                 placeholder="email">
                             <div class="error" id="error-email"></div>
