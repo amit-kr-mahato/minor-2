@@ -22,7 +22,7 @@
 
     <div class="bg-white rounded shadow p-6">
       <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Reviews</h3>
-      <p class="text-4xl font-bold text-red-600">12,800</p>
+      <p class="text-4xl font-bold text-red-600">{{ $totalReviews }}</p>
     </div>
 
     </div>
@@ -94,11 +94,11 @@
     const pieChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: ['Total Users', 'Total Businesses'],
+            labels: ['Total Users', 'Total Businesses','Total Review'],
             datasets: [{
                 label: 'User vs Business',
-                data: [{{ $totalUsers }}, {{ $totalBusinesses }}],
-                backgroundColor: ['#36A2EB', '#FF6384'],
+                data: [{{ $totalUsers }}, {{ $totalBusinesses }},{{ $totalReviews }}],
+                backgroundColor: ['#36A2EB', '#FF6384','#f4d03f '],
                 borderWidth: 1
             }]
         },
@@ -110,7 +110,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'User vs Business Distribution'
+                    text: 'User vs Business vs Reviews'
                 }
             }
         }

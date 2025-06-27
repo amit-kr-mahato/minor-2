@@ -7,8 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'business_id',
+        'user_id',
+        'rating',
+        'Review',
+        // other columns
+    ];
 
-    protected $fillable = ['rating', 'review'];
-     
+    // Define relationship if needed
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
+    }
 }

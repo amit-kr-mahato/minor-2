@@ -169,33 +169,33 @@
             text-decoration: underline;
         }
 
-         .guideline-container {
-      max-width: 1200px;
-      margin: 40px auto;
-      display: flex;
-      justify-content: space-around;
-      gap: 20px;
-      flex-wrap: wrap;
-      padding: 0 20px;
-      text-align: center;
-    }
+        .guideline-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+            text-align: center;
+        }
 
-    .guideline-item {
-      flex: 1 1 200px;
-      max-width: 250px;
-    }
+        .guideline-item {
+            flex: 1 1 200px;
+            max-width: 250px;
+        }
 
-    .guideline-item img {
-      width: 120px;
-      height: auto;
-      margin-bottom: 15px;
-    }
+        .guideline-item img {
+            width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+        }
 
-    .guideline-item p {
-      color: #444a57;
-      font-size: 14px;
-      line-height: 1.4;
-    }
+        .guideline-item p {
+            color: #444a57;
+            font-size: 14px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 
@@ -205,16 +205,16 @@
         <h2><span class="highlight">Mountain Mike's Pizza:</span> Add photos and videos</h2>
         <a href="#" class="view-link">View all photos and videos</a>
 
-        <div class="upload-box">
-            <img src="https://s3-media0.fl.yelpcdn.com/assets/public/photo_review_325x200_v2.yji-9de7a3277cea44fd0377.svg"
-                alt="Upload Illustration" class="upload-img" />
-            <h3 class="upload-text">Drag and drop photos/videos here</h3>
-            <p>or</p>
-            <form>
+        <form>
+            <div class="upload-box">
+                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/photo_review_325x200_v2.yji-9de7a3277cea44fd0377.svg"
+                    alt="Upload Illustration" class="upload-img" />
+                <h3 class="upload-text">Drag and drop photos/videos here</h3>
+                <p>or</p>
+
                 <label for="file-upload" class="browse-btn">Browse Files</label>
                 <input type="file" id="file-upload" multiple accept="image/*" />
-            </form>
-        </div>
+            </div>
     </div>
 
     <!-- Modal -->
@@ -234,6 +234,8 @@
             </div>
         </div>
     </div>
+
+    </form>
 
     <div class="guideline-container">
         <div class="guideline-item">

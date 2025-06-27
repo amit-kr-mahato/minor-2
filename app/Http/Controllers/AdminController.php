@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\Business;
@@ -12,7 +12,9 @@ class AdminController extends Controller {
     public function dashboard() {
         // Total users count
         $totalUsers = User::count();
-         $totalBusinesses = Business::count();
+        $totalBusinesses = Business::count();
+        // Total reviews count
+        $totalReviews = Review::count();
 
         // Get user signups grouped by week for the last 8 weeks
         $signups = User::select(
@@ -46,7 +48,7 @@ class AdminController extends Controller {
         }
 
         // Pass all data to view
-       return view('admin.dashboard', compact('totalUsers','totalBusinesses', 'labels', 'data'));
+        return view( 'admin.dashboard', compact( 'totalUsers', 'totalBusinesses', 'totalReviews', 'labels', 'data' ) );
 
     }
 }

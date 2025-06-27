@@ -119,3 +119,5 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 });
+
+// Route::get('/addbusiness', [BusinessController::class, 'searchOrAdd'])->name('addbusiness');

@@ -26,11 +26,14 @@
                             <div class="error" id="error-country"></div>
                         </div>
                         <div class="mb-3">
+                            <form action="#" method="POST">
+                                  @csrf
                             <label for="businessName" class="form-label">Business Name <span
                                     class="required-star">*</span></label>
-                            <input type="text" class="form-control" id="businessName" name="business_name"
+                            <input type="text" class="form-control" id="businessName" name="business_name"  value="{{ old('business_name', $business_name ?? '') }}" 
                                 placeholder="business name">
                             <div class="error" id="error-businessName"></div>
+                            </form>
                         </div>
                         <div class="mb-3">
                             <label for="address1" class="form-label">Address 1 <span class="required-star">*</span></label>

@@ -5,6 +5,22 @@ use App\Models\Business;
 use Illuminate\Http\Request;
 
 class BusinessController extends Controller {
+
+public function searchOrAdd(Request $request)
+{
+    $businessName = $request->query('business_name');
+
+    // Search for business in DB
+    $business = Business::where('business_name', 'like', "%{$businessName}%")->first();
+
+    return view('addbusiness', [
+        'business_name' => $business ? $business->business_name : $businessName,
+        'business' => $business
+    ]);
+}
+
+
+
     public function business_store( Request $request ) {
         $request->validate( [
             'province' => 'required|string',
