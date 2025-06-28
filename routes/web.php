@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\AdminReviewController;
+
 
 
 /*
@@ -120,4 +123,22 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
-// Route::get('/addbusiness', [BusinessController::class, 'searchOrAdd'])->name('addbusiness');
+Route::get('/upload', fn() => view('upload'));
+Route::post('/upload-images', [PhotoController::class, 'store'])->name('images.upload');
+
+// review manage
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+    Route::get('/reviews/{id}/edit', [AdminReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/reviews/{id}', [AdminReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{id}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
+});
+
+
+//business manage
+
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('businesses', BusinessController::class);
+});

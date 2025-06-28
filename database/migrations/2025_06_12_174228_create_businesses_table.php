@@ -15,6 +15,7 @@ return new class extends Migration
 {
     Schema::create('businesses', function (Blueprint $table) {
         $table->id();
+        $table->foreignId('user_id'); // owner
         $table->string('province');
         $table->string('business_name');
         $table->string('address1');
@@ -25,6 +26,7 @@ return new class extends Migration
         $table->decimal('latitude', 10, 8)->nullable(); 
         $table->string('phone');
         $table->string('web_address')->nullable();
+          $table->enum('status', ['active', 'pending', 'suspended'])->default('pending');
         $table->string('email');
         $table->json('categories'); // store as JSON array
         $table->timestamps();

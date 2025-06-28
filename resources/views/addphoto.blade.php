@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Multiple Image Upload with Captions & Delete</title>
     <style>
         body {
@@ -203,7 +204,7 @@
 
     <div class="container">
         <h2><span class="highlight">Mountain Mike's Pizza:</span> Add photos and videos</h2>
-        <a href="#" class="view-link">View all photos and videos</a>
+        <a href="{{route('seemorebusinessdetail')}}" class="view-link">View all photos and videos</a>
 
         <form>
             <div class="upload-box">
@@ -213,12 +214,12 @@
                 <p>or</p>
 
                 <label for="file-upload" class="browse-btn">Browse Files</label>
-                <input type="file" id="file-upload" multiple accept="image/*" />
+                <input type="file" id="file-upload" name="images[]" multiple accept="image/*" hidden />
             </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal" id="uploadModal">
+    <div class="modal" id="uploadModal" style="display:none;">
         <div class="modal-content">
             <span class="close-btn" title="Close modal">&times;</span>
             <h2>Add captions and upload</h2>
@@ -230,7 +231,7 @@
             <div class="modal-footer">
                 <a href="#" id="browseMore">Browse</a> or drag and drop more photos/videos
                 <br /><br />
-                <button class="upload-btn" id="uploadBtn">Upload</button>
+                <button class="upload-btn" type="submit" id="uploadBtn">Upload</button>
             </div>
         </div>
     </div>
@@ -264,121 +265,86 @@
 
     <script>
         const fileInput = document.getElementById('file-upload');
+        const dropArea = document.getElementById('dropArea');
         const modal = document.getElementById('uploadModal');
         const imagesContainer = document.getElementById('imagesContainer');
-        const closeBtn = modal.querySelector('.close-btn');
-        const browseMore = document.getElementById('browseMore');
-        const uploadBtn = document.getElementById('uploadBtn');
+        const closeModal = document.getElementById('closeModal');
 
-        // Store images and captions as objects { file: File, url: string, caption: string }
-        let imagesData = [];
+        let filesList = [];
 
-        function createImageCard(imageObj, index) {
-            const card = document.createElement('div');
-            card.className = 'image-card';
-
-            const img = document.createElement('img');
-            img.src = imageObj.url;
-            img.alt = `Image ${index + 1}`;
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-btn';
-            deleteBtn.title = 'Delete this image';
-            deleteBtn.innerHTML = '&times;';
-            deleteBtn.addEventListener('click', () => {
-                imagesData.splice(index, 1);
-                renderImages();
-            });
-
-            const captionGroup = document.createElement('div');
-            captionGroup.className = 'caption-group';
-
-            const label = document.createElement('label');
-            label.textContent = 'Caption (optional)';
-
-            const textarea = document.createElement('textarea');
-            textarea.placeholder = "What’s in this photo?";
-            textarea.value = imageObj.caption || '';
-            textarea.addEventListener('input', (e) => {
-                imagesData[index].caption = e.target.value;
-            });
-
-            captionGroup.appendChild(label);
-            captionGroup.appendChild(textarea);
-
-            card.appendChild(deleteBtn);
-            card.appendChild(img);
-            card.appendChild(captionGroup);
-
-            return card;
-        }
-
-        function renderImages() {
+        function openModal() {
             imagesContainer.innerHTML = '';
-            if (imagesData.length === 0) {
-                closeModal();
-                return;
-            }
-            imagesData.forEach((imgObj, idx) => {
-                const card = createImageCard(imgObj, idx);
-                imagesContainer.appendChild(card);
+            filesList.forEach((file, i) => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const div = document.createElement('div');
+                    div.classList.add('image-card');
+                    div.innerHTML = `
+                    <img src="${e.target.result}" class="preview-img"/>
+                    <input type="hidden" name="images[]" />
+                    <input type="text" name="captions[]" placeholder="Enter caption">
+                `;
+                    imagesContainer.appendChild(div);
+                };
+                reader.readAsDataURL(file);
             });
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-            // Optional: clear file input to allow re-upload same files if needed
-            fileInput.value = '';
-            imagesContainer.innerHTML = '';
-            imagesData = [];
+            modal.style.display = 'block';
         }
 
         fileInput.addEventListener('change', (e) => {
-            const files = Array.from(e.target.files);
-            files.forEach(file => {
-                if (!file.type.startsWith('image/')) return; // skip non-images
-                const url = URL.createObjectURL(file);
-                imagesData.push({ file, url, caption: '' });
-            });
-            if (imagesData.length) {
-                modal.style.display = 'block';
-                renderImages();
-            }
+            filesList = Array.from(e.target.files);
+            openModal();
         });
 
-        closeBtn.addEventListener('click', () => {
-            if (confirm("Are you sure you want to discard?")) {
-                closeModal();
-            }
+        dropArea.addEventListener('dragover', e => {
+            e.preventDefault();
+            dropArea.style.borderColor = '#000';
         });
 
-        // Clicking outside modal content closes modal with confirmation
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                if (confirm("Are you sure you want to discard?")) {
-                    closeModal();
-                }
-            }
+        dropArea.addEventListener('drop', e => {
+            e.preventDefault();
+            filesList = Array.from(e.dataTransfer.files);
+            openModal();
         });
 
-        browseMore.addEventListener('click', (e) => {
+        document.getElementById('browseMore').addEventListener('click', function (e) {
             e.preventDefault();
             fileInput.click();
         });
 
-        // Dummy upload action: just logs files and captions
-        uploadBtn.addEventListener('click', () => {
-            if (imagesData.length === 0) {
-                alert("No images to upload!");
-                return;
-            }
-            // You can replace this with your real upload logic (e.g. AJAX)
-            imagesData.forEach(({ file, caption }, i) => {
-                console.log(`Uploading file #${i + 1}:`, file);
-                console.log(`Caption: "${caption}"`);
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData();
+            const captions = document.querySelectorAll('input[name="captions[]"]');
+
+            filesList.forEach((file, i) => {
+                formData.append('images[]', file);
             });
-            alert("Upload simulated. Check console for output.");
-            closeModal();
+
+            captions.forEach((caption) => {
+                formData.append('captions[]', caption.value);
+            });
+
+            fetch("{{ route('images.upload') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert('Upload successful!');
+                    location.reload();
+                })
+                .catch(err => {
+                    console.error('Upload failed:', err);
+                    alert('Something went wrong.');
+                });
         });
     </script>
 

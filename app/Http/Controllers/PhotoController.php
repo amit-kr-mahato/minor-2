@@ -6,18 +6,21 @@ use Illuminate\Http\Request;
 
 class PhotoController extends Controller
 {
-    public function store(Request $request)
-{
-    $request->validate([
-        'photo' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
-    ]);
+public function store(Request $request)
+    {
+        $request->validate([
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'captions' => 'array'
+        ]);
 
-    $path = $request->file('photo')->store('public/photos');
+        foreach ($request->file('images') as $index => $image) {
+            $path = $image->store('uploads', 'public');
+            Photo::create([
+                'photo' => $path,
+                'caption' => $request->captions[$index] ?? null
+            ]);
+        }
 
-    $photo = new Photo();
-    $photo->photo = str_replace('public/', 'storage/', $path);
-    $photo->save();
-
-    return back()->with('success', 'Photo uploaded successfully!');
-}
+        return response()->json(['message' => 'Uploaded successfully']);
+    }
 }

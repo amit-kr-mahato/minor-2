@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('photos', function (Blueprint $table) {
             $table->id();
+                 $table->string('photo')->after('id');
             
             $table->foreignId('business_id') // BIGINT with foreign key
                   ->constrained('businesses'); // REFERENCES businesses(id)

@@ -14,10 +14,17 @@ class Review extends Model
         'Review',
         // other columns
     ];
+     // 👇 Add this to fix the error
+   public function user()
+{
+    return $this->belongsTo(User::class);
+}
 
     // Define relationship if needed
-    public function business()
-    {
-        return $this->belongsTo(Business::class);
-    }
+  public function business()
+{
+    return $this->belongsTo(Business::class);
+}
+    
+    
 }

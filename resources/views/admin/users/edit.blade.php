@@ -3,6 +3,7 @@
 @section('content')
 
 <div class=" ml-64 w-full p-8"> 
+  <a href="{{route('admin.users.index')}}" style="color:white;background-color: green;padding:10px;display:inline-block;border-radius: 10px;margin-bottom:10px">Back</a>
 <form method="POST" action="{{ route('admin.users.update', $user) }}">
   @csrf
  

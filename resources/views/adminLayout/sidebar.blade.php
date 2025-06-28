@@ -42,7 +42,6 @@
         <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
           <a href="{{route('admin.users.index')}}" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Users</a>
           <a href="#user-roles" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">User Roles</a>
-          <a href="#banned-users" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Banned Users</a>
         </div>
       </div>
 
@@ -59,7 +58,7 @@
           <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
         </a>
         <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
-          <a href="#manage-businesses" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Businesses</a>
+          <a href="{{route('admin.businesses.index')}}" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Businesses</a>
           <a href="#pending-approval" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Pending Approval</a>
         </div>
       </div>
@@ -77,9 +76,7 @@
           <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
         </a>
         <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
-          <a href="#manage-reviews" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Reviews</a>
-          <a href="#flagged-reviews" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Flagged Reviews</a>
-        </div>
+          <a href="{{route('admin.reviews.index')}}" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Reviews</a></div>
       </div>
 
       <!-- Reports submenu -->
