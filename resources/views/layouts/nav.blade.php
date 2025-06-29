@@ -27,7 +27,7 @@
                                         class="bi bi-house-add-fill me-3"></i>Add a business</a></li>
                             <li><a class="dropdown-item" href="{{ route('claim') }}"><i
                                         class="bi bi-check2-circle me-3"></i>Claim your business</a></li>
-                            <li><a class="dropdown-item" href="{{ route('login') }}"><i
+                            <li><a class="dropdown-item" href="{{ route('business-login') }}"><i
                                         class="bi bi-person-circle me-3"></i>Log in to Business Account</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -45,7 +45,20 @@
                             Project</a>
                     </li>
 
-                    <li class="nav-item">
+                  @auth
+                      <div x-data="{ open: false }" class="mt-4">
+      <form method="POST" action="{{ route('logout') }}" @submit="open = false">
+        @csrf
+        <button type="submit"
+          class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
+          <span class="flex items-center gap-3">
+            <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+          </span>
+        </button>
+      </form>
+    </div>
+                    @else
+                      <li class="nav-item">
                         <a class="nav-link me-3 text-decoration-none bg-primary rounded  text-light navver"
                             href="{{ route('sigin') }}">Login</a>
                     </li>
@@ -54,6 +67,7 @@
                         <a class="nav-link me-3 text-decoration-none bg-danger rounded  text-light navver"
                             href="{{ route('signup') }}">Signup</a>
                     </li>
+                  @endauth
 
                 </ul>
             </div>

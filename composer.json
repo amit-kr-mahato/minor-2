@@ -14,7 +14,7 @@
         "laravel/socialite": "^5.20",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.6",
-        "livewire/livewire": "^2.12",
+        "livewire/livewire": "*",
         "spatie/laravel-permission": "^6.20"
     },
     "require-dev": {

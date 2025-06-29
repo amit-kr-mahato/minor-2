@@ -1,15 +1,12 @@
 <?php
 
 namespace Database\Seeders;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
-class RolePermissionSeeder extends Seeder
+use Spatie\Permission\Models\Role;
+class RoleSeeder extends Seeder
 {
-
     /**
      * Run the database seeds.
      *
@@ -17,6 +14,9 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-     app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+       $role1 = Role::create(['name' => 'Admin']);
+       $role2 = Role::create(['name' => 'User']);
+       $role3 = Role::create(['name' => 'Business Owner']);
+
     }
 }

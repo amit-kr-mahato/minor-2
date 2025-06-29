@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
+use Spatie\Permission\Models\Role;
 
 class FrontendController extends Controller {
     public function home() {
@@ -52,7 +53,8 @@ class FrontendController extends Controller {
     }
 
     public function Signup() {
-        return view( 'signup' );
+        $roles = Role::where('name', '!=', 'Admin')->get();
+        return view( 'signup', compact('roles'));
     }
 
     public function insert( Request $request ) {
@@ -62,7 +64,7 @@ class FrontendController extends Controller {
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'role' => 'required|in:admin,businessowner,user',
+            'role' => 'required',
         ] );
 
         try {
@@ -74,8 +76,15 @@ class FrontendController extends Controller {
             $user->email = $request->email;
             $user->password = Hash::make( $request->password );
 
-            $user->role = $request->role;
+            $user->role = 'admin';
             $user->save();
+
+            $roleId= $request->role;
+            $role = Role::where('id',$roleId)->first();
+
+            $user->assignRole($role->name);
+
+
 
             $userData = [
                 'name'=> $user->name
@@ -108,18 +117,17 @@ class FrontendController extends Controller {
         $credentials = $request->validate( [
             'email' => 'required|email',
             'password' => 'required|min:6',
-            // 'role' => 'required|in:admin,businessowner,user',
         ] );
 
         if ( Auth::attempt( [ 'email' => $credentials[ 'email' ], 'password' => $credentials[ 'password' ] ] ) ) {
             $request->session()->regenerate();
             $user = Auth::user();
-
+            $userRole = $user->getRoleNames()[0];
             // Role-based redirection
-            return match ( $user->role ) {
-                'admin' => redirect()->route( 'admin.dashboard' ),
-                'businessowner' => redirect()->route( 'businessdashboard.dashboard' ),
-                'user' => redirect()->route( 'index' ),
+            return match ( $userRole ) {
+                'Admin' => redirect()->route( 'admin.dashboard' ),
+                'Business Owner' => redirect()->route( 'businessdashboard.dashboard' ),
+                'User' => redirect()->route( 'index' ),
                 default => redirect()->route( 'index' ), // fallback
             }
             ;

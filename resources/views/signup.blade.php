@@ -71,10 +71,10 @@
 
                                     <select name="role" style="margin-bottom: 30px;" required>
                                         <option value="">--Select Role--</option>
-                                        <option value="businessowner">businessowner</option>
-                                         
-                                         
-                                        <option value="user">User</option>
+                                        @foreach ($roles  as $role)
+                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                        @endforeach
+                                      
                                     </select>
                                     <div class="input-group mb-3">
                                         <button class="btn btn-lg btn-primary w-100 fs-6">Sign

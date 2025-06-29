@@ -30,10 +30,10 @@ Route::get('/', [FrontendController::class, 'home'])->name('index');
 
 
 //-------------------------------------help for business---------------------------
+Route::get('/business/login', [FrontendController::class, 'Login'])->name('business-login');
 Route::get('addbusiness', [FrontendController::class, 'addBusiness'])->name('addbusiness');
 Route::get('claim', [FrontendController::class, 'Claim'])->name('claim');
 Route::get('Explore', [FrontendController::class, 'explore'])->name('Explore');
-Route::get('login', [FrontendController::class, 'Login'])->name('login');
 
 //--------------------------------review and start project-----------------------
 Route::get('review', [FrontendController::class, 'Review'])->name('review');
@@ -66,22 +66,22 @@ Auth::routes(['verify' => true]);
 
 
 // Admin-only routes
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
 
 // Business owner routes
-Route::middleware(['auth', 'role:businessowner'])->prefix('business')->group(function () {
+Route::middleware(['auth', 'role:Business Owner'])->prefix('business')->group(function () {
     Route::get('/dashboard', [BusinessController::class, 'dashboard'])->name('businessdashboard.dashboard');
 });
 
 // User routes
-Route::middleware(['auth', 'role:user'])->group(function () {
+Route::middleware(['auth', 'role:User'])->group(function () {
     Route::get('/index', [UserController::class, 'dashboard'])->name('index');
 });
 
 // Shared route (e.g., admin + businessowner)
-Route::middleware(['auth', 'role:admin,businessowner'])->get('/reports', [ReportController::class, 'index'])->name('reports.index');
+Route::middleware(['auth', 'role:Admin,businessowner'])->get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
 
 Route::get('/unauthorized', function () {
@@ -116,7 +116,7 @@ Route::get('/admin/editprofile', [ProfileController::class, 'edit'])->name('prof
 Route::put('/admin/updateprofile', [ProfileController::class, 'update'])->name('profile.update');
 
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
@@ -128,7 +128,7 @@ Route::post('/upload-images', [PhotoController::class, 'store'])->name('images.u
 
 // review manage
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
     Route::get('/reviews/{id}/edit', [AdminReviewController::class, 'edit'])->name('reviews.edit');
     Route::put('/reviews/{id}', [AdminReviewController::class, 'update'])->name('reviews.update');
@@ -139,6 +139,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 //business manage
 
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('businesses', BusinessController::class);
 });
