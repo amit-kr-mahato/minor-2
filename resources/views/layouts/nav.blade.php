@@ -17,6 +17,9 @@
                     <button class="btn btn-danger btn-outline-danger text-light" type="submit">Search</button>
                 </form>
                 <ul class="navbar-nav mb-2 mb-lg-0">
+                    
+                        
+                 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle navver text-light" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,30 +47,32 @@
                         <a class="nav-link me-3  text-light navver" href="{{ route('project') }}">Start a
                             Project</a>
                     </li>
+                    
 
-                  @auth
-                      <div x-data="{ open: false }" class="mt-4">
-      <form method="POST" action="{{ route('logout') }}" @submit="open = false">
-        @csrf
-        <button type="submit"
-          class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
-          <span class="flex items-center gap-3">
-            <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
-          </span>
-        </button>
-      </form>
-    </div>
+                    @auth
+                        <div x-data="{ open: false }" class="mt-1 ms-2">
+                            <form method="POST" action="{{ route('logout') }}" @submit="open = false">
+                                @csrf
+                                <button type="submit" style="background-color: rgb(207, 27, 27); color: white;"
+                                    class="flex items-center justify-between bg-red-600  rounded hover:bg-red-500  font-semibold px-2 py-2">
+                                    <span class="flex items-center gap-3">
+                                        <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+                                    </span>
+                                </button>
+                            </form>
+                        </div>
+
                     @else
-                      <li class="nav-item">
-                        <a class="nav-link me-3 text-decoration-none bg-primary rounded  text-light navver"
-                            href="{{ route('sigin') }}">Login</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-3 text-decoration-none bg-primary rounded  text-light navver"
+                                href="{{ route('sigin') }}">Login</a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link me-3 text-decoration-none bg-danger rounded  text-light navver"
-                            href="{{ route('signup') }}">Signup</a>
-                    </li>
-                  @endauth
+                        <li class="nav-item">
+                            <a class="nav-link me-3 text-decoration-none bg-danger rounded  text-light navver"
+                                href="{{ route('signup') }}">Signup</a>
+                        </li>
+                    @endauth
 
                 </ul>
             </div>
