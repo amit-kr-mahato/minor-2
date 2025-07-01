@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Business extends Model
-{
+class Business extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -33,8 +32,14 @@ class Business extends Model
     ];
 
     // Relationship: owner user
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+
+    public function user() {
+        return $this->belongsTo( User::class );
+    }
+
+    // App\Models\Business.php
+
+    public function scopeStatus( $query, $status ) {
+        return $query->where( 'status', $status );
     }
 }

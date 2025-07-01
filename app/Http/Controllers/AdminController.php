@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\Business;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\BusinessController;
 use Carbon\Carbon;
 
 class AdminController extends Controller {
@@ -51,4 +52,22 @@ class AdminController extends Controller {
         return view( 'admin.dashboard', compact( 'totalUsers', 'totalBusinesses', 'totalReviews', 'labels', 'data' ) );
 
     }
+
+
+    // App\Http\Controllers\Admin\BusinessController.php
+
+public function updateStatus(Request $request, Business $business)
+{
+    $request->validate([
+        'status' => 'required|in:approved,suspended,banned',
+    ]);
+
+    $business->status = $request->status;
+    $business->save();
+
+    return back()->with('success', 'Business status updated successfully!');
+}
+
+
+
 }

@@ -123,6 +123,11 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
+//business update
+Route::patch('/admin/businesses/{business}/status', [BusinessController::class, 'updateStatus'])
+     ->name('admin.businesses.updateStatus');
+
+
 Route::get('/upload', fn() => view('upload'));
 Route::post('/upload-images', [PhotoController::class, 'store'])->name('images.upload');
 

@@ -18,7 +18,7 @@
     <table class="min-w-full bg-white shadow rounded table-auto">
       <thead class="bg-gray-100 text-left text-sm font-semibold text-gray-700 border-b">
       <tr>
-        <th class="p-3">#</th>
+        <th class="p-3">S.N</th>
         <th class="p-3">Name</th>
         <th class="p-3">Province</th>
         <th class="p-3">City</th>
@@ -31,31 +31,53 @@
       <tbody>
       @foreach ($businesses as $index => $business)
       <tr class="border-b hover:bg-gray-50 text-sm">
-        <td class="p-3">{{ $businesses->firstItem() + $index }}</td>
-        <td class="p-3 font-semibold">{{ $business->business_name }}</td>
-        <td class="p-3">{{ $business->province }}</td>
-        <td class="p-3">{{ $business->city }}</td>
-        <td class="p-3">{{ $business->user->name ?? 'N/A' }}</td>
-        <td class="p-3">
-        <span class="px-2 py-1 rounded text-xs
-        {{ $business->status === 'active' ? 'bg-green-100 text-green-700' :
-      ($business->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
-        {{ ucfirst($business->status) }}
-        </span>
-        </td>
-        <td class="p-3">{{ implode(', ', $business->categories ?? []) }}</td>
-        <td class="p-3 space-x-2">
-        <a href="{{ route('admin.businesses.edit', $business->id) }}"
-        class="bg-blue-600 text-white font-semibold rounded px-2 py-1 text-sm">Edit</a>
+      <td class="p-3">{{ $businesses->firstItem() + $index }}</td>
+      <td class="p-3 font-semibold">{{ $business->business_name }}</td>
+      <td class="p-3">{{ $business->province }}</td>
+      <td class="p-3">{{ $business->city }}</td>
+      <td class="p-3">{{ $business->user->name ?? 'N/A' }}</td>
 
-        <form action="{{ route('admin.businesses.destroy', $business->id) }}" method="POST" class="inline"
+      <td class="p-3">
+      <div class="checkbox-status flex items-center gap-3" data-business-id="{{ $business->id }}">
+        <label class="inline-flex items-center gap-1 cursor-pointer">
+        <input type="checkbox" value="pending" onchange="submitCheckboxStatus(this)" {{ $business->status === 'pending' ? 'checked' : '' }}>
+        <span class="status-label">Pending</span>
+        </label>
+
+        <label class="inline-flex items-center gap-1 cursor-pointer">
+        <input type="checkbox" value="approved" onchange="submitCheckboxStatus(this)" {{ $business->status === 'approved' ? 'checked' : '' }}>
+        <span class="status-label">Active</span>
+        </label>
+
+        <label class="inline-flex items-center gap-1 cursor-pointer">
+        <input type="checkbox" value="suspended" onchange="submitCheckboxStatus(this)" {{ $business->status === 'suspended' ? 'checked' : '' }}>
+        <span class="status-label">Suspended</span>
+        </label>
+
+        <div class="spinner hidden ml-2">
+        <svg class="animate-spin h-5 w-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        </div>
+      </div>
+      </td>
+
+
+      <td class="p-3">{{ implode(', ', $business->categories ?? []) }}</td>
+      <td class="p-3 space-x-2">
+      <a href="{{ route('admin.businesses.edit', $business->id) }}"
+        class="bg-blue-600 text-white font-semibold rounded px-2 py-1 text-sm">view</a>
+
+      <form action="{{ route('admin.businesses.destroy', $business->id) }}" method="POST" class="inline"
         onsubmit="return confirm('Are you sure you want to delete this business?');">
         @csrf
         @method('DELETE')
         <button
         class="bg-red-500 hover:bg-red-600 text-white font-semibold rounded px-2 py-1 text-sm">Delete</button>
-        </form>
-        </td>
+      </form>
+      </td>
       </tr>
     @endforeach
       </tbody>

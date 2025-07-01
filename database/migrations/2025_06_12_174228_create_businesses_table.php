@@ -26,7 +26,7 @@ return new class extends Migration
         $table->decimal('latitude', 10, 8)->nullable(); 
         $table->string('phone');
         $table->string('web_address')->nullable();
-          $table->enum('status', ['active', 'pending', 'suspended'])->default('pending');
+        $table->enum('status', ['approved', 'pending', 'suspended'])->default('pending');
         $table->string('email');
         $table->json('categories'); // store as JSON array
         $table->timestamps();

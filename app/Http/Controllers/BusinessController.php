@@ -54,28 +54,18 @@ class BusinessController extends Controller {
         ] );
     }
 
-    public function update( Request $request, Business $business ) {
-        $data = $request->validate( [
-            'user_id' => 'required|exists:users,id',
-            'province' => 'required|string|max:255',
-            'business_name' => 'required|string|max:255',
-            'address1' => 'required|string|max:255',
-            'address2' => 'nullable|string|max:255',
-            'city' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:20',
-            'longitude' => 'nullable|numeric',
-            'latitude' => 'nullable|numeric',
-            'phone' => 'required|string|max:50',
-            'web_address' => 'nullable|url|max:255',
-            'status' => 'required|in:active,pending,suspended',
-            'email' => 'required|email|max:255',
-            'categories' => 'required|array',
-            'categories.*' => 'string|max:50',
+    public function updateStatus( Request $request, Business $business ) {
+        $request->validate( [
+            'status' => 'required|in:approved,pending,suspended',
         ] );
 
-        $business->update( $data );
+        $business->status = $request->status;
+        $business->save();
 
-        return redirect()->route( 'admin.businesses.index' )->with( 'success', 'Business updated successfully.' );
+        return response()->json( [
+            'message' => 'Status updated successfully',
+            'status' => $business->status
+        ] );
     }
 
     public function destroy( Business $business ) {
