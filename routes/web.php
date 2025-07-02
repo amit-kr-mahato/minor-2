@@ -12,7 +12,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\AdminReviewController;
-
+ use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 
 
 /*
@@ -30,7 +31,7 @@ Route::get('/', [FrontendController::class, 'home'])->name('index');
 
 
 //-------------------------------------help for business---------------------------
-Route::get('/business/login', [FrontendController::class, 'Login'])->name('business-login');
+Route::get('/business/login', [FrontendController::class, 'Login'])->name('business.login');
 Route::get('addbusiness', [FrontendController::class, 'addBusiness'])->name('addbusiness');
 Route::get('claim', [FrontendController::class, 'Claim'])->name('claim');
 Route::get('Explore', [FrontendController::class, 'explore'])->name('Explore');
@@ -147,3 +148,8 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('businesses', BusinessController::class);
 });
+
+
+//profile password
+Route::put('/change-password', [ProfileController::class, 'updatePassword'])->name('password.update');
+

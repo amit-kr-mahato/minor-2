@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,6 +12,24 @@ class ProfileController extends Controller
 {
     $user = auth()->user();
     return view('admin.editprofile', compact('user'));
+}
+
+public function updatePassword(Request $request)
+{
+    $request->validate([
+        'current_password' => ['required'],
+        'new_password' => ['required', 'min:7', 'confirmed'],
+    ]);
+
+    if (!Hash::check($request->current_password, auth()->user()->password)) {
+        return back()->withErrors(['current_password' => 'Current password is incorrect']);
+    }
+
+    auth()->user()->update([
+        'password' => Hash::make($request->new_password),
+    ]);
+
+    return back()->with('status', 'Password changed successfully.');
 }
 
 

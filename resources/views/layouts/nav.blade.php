@@ -30,9 +30,7 @@
                                         class="bi bi-house-add-fill me-3"></i>Add a business</a></li>
                             <li><a class="dropdown-item" href="{{ route('claim') }}"><i
                                         class="bi bi-check2-circle me-3"></i>Claim your business</a></li>
-                            <li><a class="dropdown-item" href="{{ route('business-login') }}"><i
-                                        class="bi bi-person-circle me-3"></i>Log in to Business Account</a></li>
-                            <li>
+                           <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="{{ route('Explore') }}"><i

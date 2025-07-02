@@ -57,6 +57,64 @@
       Update &nbsp; <i class="fa fa-arrow-right"></i>
     </button>
   </div>
+
+
+   <!-- Change Password Trigger Button -->
+<div class="text-center pt-4">
+  <button 
+    type="button" 
+    class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded shadow-md"
+    onclick="document.getElementById('changePasswordModal').classList.remove('hidden')"
+  >
+  <i class="fa fa-arrow-right"></i>
+    Change Password
+  </button>
+</div>
+
 </form>
+
 @endsection
+
+<!-- Change Password Modal -->
+<div id="changePasswordModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+    
+    <h2 class="text-xl font-semibold mb-4 text-center text-gray-800">Change Password</h2>
+
+    <form method="POST" action="{{ route('password.update') }}">
+      @csrf
+      @method('PUT')
+
+      <div class="mb-4">
+        <label for="current_password" class="block text-gray-700">Current Password</label>
+        <input type="password" id="current_password" name="current_password" placeholder="more than 6 character" required
+               class="w-full mt-1 px-4 py-2 border rounded-md focus:ring focus:ring-blue-400" />
+      </div>
+
+      <div class="mb-4">
+        <label for="new_password" class="block text-gray-700">New Password</label>
+        <input type="password" id="new_password" name="new_password" required placeholder="more than 6 character"
+               class="w-full mt-1 px-4 py-2 border rounded-md focus:ring focus:ring-blue-400" />
+      </div>
+
+      <div class="mb-6">
+        <label for="new_password_confirmation" class="block text-gray-700">Confirm New Password</label>
+        <input type="password" id="new_password_confirmation" name="new_password_confirmation" placeholder="more than 6 character" required
+               class="w-full mt-1 px-4 py-2 border rounded-md focus:ring focus:ring-blue-400" />
+      </div>
+
+      <div class="flex justify-between">
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+          Update Password
+        </button>
+        <button type="button"
+                onclick="document.getElementById('changePasswordModal').classList.add('hidden')"
+                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
