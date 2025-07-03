@@ -40,7 +40,7 @@
       <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
         <a href="{{route('admin.users.index')}}"
           class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Users</a>
-          </div>
+      </div>
     </div>
 
     <!-- Businesses submenu -->
@@ -73,22 +73,26 @@
       </div>
     </div>
 
-    <!-- Reports submenu -->
-    {{-- <div x-data="{ open: false }" class="mt-4">
-      <a href="#" @click.prevent="open = !open"
+    <!-- Payment gateway -->
+    <div class="mt-4">
+      <a href="{{ route('admin.payment.transactions') }}"
         class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
         <span class="flex items-center gap-3">
-          <i class="fa-solid fa-flag"></i> Reports
+          <i class="fa-solid fa-credit-card"></i> Payment Gateway
         </span>
-        <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
       </a>
-      <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
-        <a href="#user-reports" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">User Reports</a>
-        <a href="#business-reports" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Business
-          Reports</a>
-        <a href="#review-reports" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Review Reports</a>
-      </div>
-    </div> --}}
+    </div>
+
+    <!-- Advertisements -->
+    <div class="mt-4">
+      <a href="{{route('admin.advertisements.create')}}"
+        class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
+        <span class="flex items-center gap-3">
+          <i class="fa-solid fa-rectangle-ad"></i> Advertisements
+        </span>
+      </a>
+    </div>
+
 
     <!-- Settings submenu -->
     <div x-data="{ open: false }" class="mt-4">
@@ -100,25 +104,24 @@
         <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
       </a>
       <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
-        <a href="#general-settings" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">General</a>
-        <a href="#email-settings" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Email</a>
-        <a href="#security-settings" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Security</a>
+        <a href="{{route('admin.settings.edit')}}"
+          class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">General</a>
+
       </div>
-    </div>
 
 
-    <!--logout-->
-    <div x-data="{ open: false }" class="mt-4">
-      <form method="POST" action="{{ route('logout') }}" @submit="open = false">
-        @csrf
-        <button type="submit"
-          class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
-          <span class="flex items-center gap-3">
-            <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
-          </span>
-        </button>
-      </form>
-    </div>
+      <!--logout-->
+      <div x-data="{ open: false }" class="mt-4">
+        <form method="POST" action="{{ route('logout') }}" @submit="open = false">
+          @csrf
+          <button type="submit"
+            class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
+            <span class="flex items-center gap-3">
+              <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+            </span>
+          </button>
+        </form>
+      </div>
 
 
   </nav>

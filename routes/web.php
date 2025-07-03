@@ -12,6 +12,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\AdminReviewController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\AdvertisementController;
+use App\Models\Advertisement; 
+use App\Http\Controllers\SettingController;
+
 
 
 
@@ -31,7 +36,7 @@ Route::get('/', [FrontendController::class, 'home'])->name('index');
 
 
 //-------------------------------------help for business---------------------------
-Route::get('/business/login', [FrontendController::class, 'Login'])->name('business.login');
+// Route::get('/business/login', [FrontendController::class, 'Login'])->name('business.login');
 Route::get('addbusiness', [FrontendController::class, 'addBusiness'])->name('addbusiness');
 Route::get('claim', [FrontendController::class, 'Claim'])->name('claim');
 Route::get('Explore', [FrontendController::class, 'explore'])->name('Explore');
@@ -153,3 +158,21 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 //profile password
 Route::put('/change-password', [ProfileController::class, 'updatePassword'])->name('password.update');
 
+//payment gateway
+Route::get('/admin/transactions', [PaymentController::class, 'transactions'])->name('admin.payment.transactions');
+
+
+//advertisement
+// Resourceful routes for advertisement management
+Route::resource('admin/advertisements', AdvertisementController::class)->names('admin.advertisements');
+
+// Toggle ad status (active/inactive) via checkbox
+Route::patch('admin/advertisements/{id}/toggle-status', [AdvertisementController::class, 'toggleStatus'])
+     ->name('admin.advertisements.toggleStatus');
+
+// Show only top ads
+Route::get('/ads/top', [AdvertisementController::class, 'showTopAds'])->name('ads.top');
+
+//fevicon setting 
+Route::get('/admin/settings', [SettingController::class, 'edit'])->name('admin.settings.edit');
+Route::put('/admin/settings', [SettingController::class, 'update'])->name('admin.settings.update');

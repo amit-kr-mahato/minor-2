@@ -28,9 +28,6 @@ class FrontendController extends Controller {
         return view( 'business.Explore' );
     }
 
-    public function Login() {
-        return view( 'business.login' );
-    }
 
     public function Review() {
         return view( 'review' );
