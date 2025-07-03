@@ -46,7 +46,7 @@
 
         <label class="inline-flex items-center gap-1 cursor-pointer">
         <input type="checkbox" value="approved" onchange="submitCheckboxStatus(this)" {{ $business->status === 'approved' ? 'checked' : '' }}>
-        <span class="status-label">Active</span>
+        <span class="status-label">Approved</span>
         </label>
 
         <label class="inline-flex items-center gap-1 cursor-pointer">

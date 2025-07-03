@@ -12,8 +12,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\AdminReviewController;
- use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegisterController;
+
+
 
 
 /*
