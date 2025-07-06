@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
@@ -8,102 +7,74 @@ use Illuminate\Support\Facades\Storage;
 
 class AdvertisementController extends Controller
 {
-public function index()
-{
-    return view('admin.advertisements.create', [
-        'ads' => Advertisement::latest()->get(), // Load all ads (no pagination)
-        'topAds' => Advertisement::where('position', 'top')->where('status', 'active')->get(),
-        'sidebarAds' => Advertisement::where('position', 'sidebar')->where('status', 'active')->get(),
-        'bottomAds' => Advertisement::where('position', 'bottom')->where('status', 'active')->get(),
-    ]);
-}
-
-
-
-    public function create()
-{
-    $ads = Advertisement::all();
-    return view('admin.advertisements.create', compact('ads'));
-}
-
-
-    public function toggleStatus($id)
-{
-    $ads = Advertisement::findOrFail($id);
-    $ads->status = $ads->status === 'active' ? 'inactive' : 'active';
-    $ads->save();
-
-    return redirect()->back()->with('success', 'Advertisement status updated.');
-}
-
+    public function index()
+    {
+        $ads = Advertisement::all();
+        return view('admin.advertisements.index', compact('ads'));
+    }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
             'image' => 'required|image|max:2048',
-            'position' => 'required|string',
             'status' => 'required|in:active,inactive',
         ]);
 
-        $imagePath = $request->file('image')->store('ads', 'public');
+        $path = $request->file('image')->store('ads_images', 'public');
 
         Advertisement::create([
-            'image' => $imagePath,
-            'position' => $request->position,
-            'status' => $request->status,
+            'title' => $validated['title'],
+            'image' => $path,
+            'status' => $validated['status'],
         ]);
 
-        return redirect()->route('admin.advertisements.index')
-                         ->with('success', 'Advertisement created successfully.');
+        return redirect()->route('admin.advertisements.index')->with('success', 'Advertisement created successfully.');
     }
 
-    public function edit(Advertisement $advertisement)
+    public function edit($id)
     {
-        return view('admin.advertisements.edit', compact('advertisement'));
+        $ad = Advertisement::findOrFail($id);
+        return view('admin.advertisements.edit', compact('ad'));
     }
 
-    public function update(Request $request, Advertisement $advertisement)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'position' => 'required|string',
-            'status' => 'required|in:active,inactive',
+        $ad = Advertisement::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
             'image' => 'nullable|image|max:2048',
+            'status' => 'required|in:active,inactive',
         ]);
-
-        $data = $request->only(['position', 'status']);
 
         if ($request->hasFile('image')) {
-            // delete old image
-            if ($advertisement->image) {
-                Storage::disk('public')->delete($advertisement->image);
-            }
-            $data['image'] = $request->file('image')->store('ads', 'public');
+            Storage::disk('public')->delete($ad->image);
+            $ad->image = $request->file('image')->store('ads_images', 'public');
         }
 
-        $advertisement->update($data);
+        $ad->title = $validated['title'];
+        $ad->status = $validated['status'];
+        $ad->save();
 
-        return redirect()->route('admin.advertisements.index')
-                         ->with('success', 'Advertisement updated successfully.');
+        return redirect()->route('admin.advertisements.index')->with('success', 'Advertisement updated successfully.');
     }
 
-    public function destroy(Advertisement $advertisement)
+    public function destroy($id)
     {
-        if ($advertisement->image) {
-            Storage::disk('public')->delete($advertisement->image);
-        }
+        $ad = Advertisement::findOrFail($id);
+        Storage::disk('public')->delete($ad->image);
+        $ad->delete();
 
-        $advertisement->delete();
-
-        return redirect()->route('admin.advertisements.index')
-                         ->with('success', 'Advertisement deleted successfully.');
+        return redirect()->route('admin.advertisements.index')->with('success', 'Advertisement deleted successfully.');
     }
 
-    public function showTopAds()
+    public function toggleStatus($id)
     {
-        $ads = Advertisement::where('position', 'top')
-                            ->where('status', 'active')
-                            ->get();
+        $ad = Advertisement::findOrFail($id);
+        $ad->status = $ad->status === 'active' ? 'inactive' : 'active';
+        $ad->save();
 
-        return view('ads.top', compact('ads'));
+        return redirect()->back()->with('success', 'Advertisement status updated.');
     }
 }

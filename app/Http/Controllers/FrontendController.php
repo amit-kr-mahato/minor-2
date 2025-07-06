@@ -5,7 +5,7 @@ use App\Notifications\VerificationEmail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Advertisement; 
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
@@ -13,7 +13,8 @@ use Spatie\Permission\Models\Role;
 
 class FrontendController extends Controller {
     public function home() {
-        return view( 'index' );
+         $ads = Advertisement::where('status', 'active')->get();
+         return view('index', compact('ads'));
     }
 
     public function addBusiness() {

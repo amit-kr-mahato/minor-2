@@ -1,28 +1,32 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Business;
 use App\Models\User;
 use Illuminate\Http\Request;
-
-class BusinessController extends Controller {
-
-    public function index() {
-        $businesses = Business::with( 'user' )->orderByDesc( 'created_at' )->paginate( 15 );
-        return view( 'admin.businesses.index', compact( 'businesses' ) );
+use App\Models\Review;
+use Illuminate\Support\Facades\DB;
+class BusinessController extends Controller
+{
+    public function index()
+    {
+        $businesses = Business::with('user')->orderByDesc('created_at')->paginate(15);
+        return view('admin.businesses.index', compact('businesses'));
     }
 
-    public function create() {
+    public function create()
+    {
         $users = User::all();
-        return view( 'admin.businesses.editdelete', [
+        return view('admin.businesses.editdelete', [
             'business' => new Business(),
             'users' => $users,
-        ] );
+        ]);
     }
 
-    public function store( Request $request ) {
-
-        $data = $request->validate( [
+    public function store(Request $request)
+    {
+        $data = $request->validate([
             'user_id' => 'required|exists:users,id',
             'province' => 'required|string|max:255',
             'business_name' => 'required|string|max:255',
@@ -36,57 +40,60 @@ class BusinessController extends Controller {
             'web_address' => 'nullable|url|max:255',
             'status' => 'required|in:active,pending,suspended',
             'email' => 'required|email|max:255',
-            'categories.*' => 'required|string',
-        ] );
+            'categories' => 'required|string',
+        ]);
 
-        $data[ 'categories' ] = json_encode( array_map( 'trim', explode( ',', $data[ 'categories' ] ) ) );
+        $data['categories'] = json_encode(array_map('trim', explode(',', $data['categories'])));
 
-        Business::create( $data );
+        Business::create($data);
 
-        return redirect()->route( 'admin.businesses.index' )->with( 'success', 'Business added successfully.' );
+        return redirect()->route('admin.businesses.index')->with('success', 'Business added successfully.');
     }
 
-    public function edit( Business $business ) {
+    public function edit(Business $business)
+    {
         $users = User::all();
-        return view( 'admin.businesses.editdelete', [
+        return view('admin.businesses.editdelete', [
             'business' => $business,
             'users' => $users,
-        ] );
+        ]);
     }
 
-    public function updateStatus( Request $request, Business $business ) {
-        $request->validate( [
-            'status' => 'required|in:approved,pending,suspended',
-        ] );
+    public function updateStatus(Request $request, Business $business)
+    {
+        $request->validate([
+            'status' => 'required|in:active,pending,suspended',
+        ]);
 
         $business->status = $request->status;
         $business->save();
 
-        return response()->json( [
+        return response()->json([
             'message' => 'Status updated successfully',
-            'status' => $business->status
-        ] );
+            'status' => $business->status,
+        ]);
     }
 
-    public function destroy( Business $business ) {
+    public function destroy(Business $business)
+    {
         $business->delete();
-        return redirect()->route( 'admin.businesses.index' )->with( 'success', 'Business deleted successfully.' );
+        return redirect()->route('admin.businesses.index')->with('success', 'Business deleted successfully.');
     }
 
-    public function searchOrAdd( Request $request ) {
-        $businessName = $request->query( 'business_name' );
+    public function searchOrAdd(Request $request)
+    {
+        $businessName = $request->query('business_name');
+        $business = Business::where('business_name', 'like', "%{$businessName}%")->first();
 
-        // Search for business in DB
-        $business = Business::where( 'business_name', 'like', "%{$businessName}%" )->first();
-
-        return view( 'addbusiness', [
+        return view('addbusiness', [
             'business_name' => $business ? $business->business_name : $businessName,
-            'business' => $business
-        ] );
+            'business' => $business,
+        ]);
     }
 
-    public function business_store( Request $request ) {
-        $request->validate( [
+    public function business_store(Request $request)
+    {
+        $request->validate([
             'province' => 'required|string',
             'business_name' => 'required|string',
             'address1' => 'required|string',
@@ -94,52 +101,71 @@ class BusinessController extends Controller {
             'postal_code' => 'required|string',
             'phone' => 'required|string',
             'email' => 'required|email',
+            'web_address' => 'nullable|url',
+            'address2' => 'nullable|string',
             'categories' => 'required|array|min:1',
-        ] );
+        ]);
 
-        $businesses = new Business();
-        $businesses->province = $request->input( 'province' );
-        $businesses->business_name = $request->input( 'business_name' );
-        $businesses->address1 = $request->input( 'address1' );
-        $businesses->address2 = $request->input( 'address2' );
-        $businesses->city = $request->input( 'city' );
-        $businesses->postal_code = $request->input( 'postal_code' );
-        $businesses->phone = $request->input( 'phone' );
-        $businesses->web_address = $request->input( 'web_address' );
-        $businesses->email = $request->input( 'email' );
-        $businesses->categories = $request->input( 'categories' );
+        $business = new Business();
+        $business->province = $request->province;
+        $business->business_name = $request->business_name;
+        $business->address1 = $request->address1;
+        $business->address2 = $request->address2;
+        $business->city = $request->city;
+        $business->postal_code = $request->postal_code;
+        $business->phone = $request->phone;
+        $business->web_address = $request->web_address;
+        $business->email = $request->email;
+        $business->categories = json_encode($request->categories);
+        $business->status = 'pending'; // default status
 
-        $businesses->save();
+        $business->save();
 
-        return redirect()->back()->with( 'success', 'Business added successfully!' );
+        return redirect()->back()->with('success', 'Business added successfully!');
     }
 
-    public function Repairs() {
-        return view( 'project.repair' );
-
+    public function Repairs()
+    {
+        return view('project.repair');
     }
 
-    public function Businessdetail() {
-        return view( 'businessdetail' );
-
+    public function Businessdetail()
+    {
+        return view('businessdetail');
     }
 
-    public function Seemorephoto() {
-        return view( 'seemorebusinessdetail' );
-
+    public function Seemorephoto()
+    {
+        return view('seemorebusinessdetail');
     }
 
-    public function businesssphoto() {
-        return view( 'addphoto' );
-
+    public function businesssphoto()
+    {
+        return view('addphoto');
     }
 
-    public function Blogin() {
-        return view( 'businesform.Businesform' );
-
+    public function Blogin()
+    {
+        return view('businesform.Businesform');
     }
+
+ 
 
     public function dashboard() {
-        return view( 'Businessdashboard.dashboard' );
-    }
+      $ratingCounts = DB::table('reviews')
+        ->select('rating', DB::raw('count(*) as total'))
+        ->groupBy('rating')
+        ->orderBy('rating')
+        ->get();
+
+    $ratings = $ratingCounts->pluck('rating'); // [1, 2, 3, 4, 5]
+    $totals = $ratingCounts->pluck('total');   // [3, 8, 15, 10, 4]
+
+    return view('Businessdashboard.dashboard', [
+        'ratings' => $ratings,
+        'ratingTotals' => $totals,
+        'recentReviews' => Review::with(['user', 'business'])->latest()->take(5)->get(),
+        'totalReviews' => Review::count(),
+    ]);
+}
 }

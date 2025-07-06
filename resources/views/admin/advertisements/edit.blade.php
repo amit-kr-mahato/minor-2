@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <div class="ml-64 w-full min-h-screen p-6 bg-gray-100">
 
   {{-- Flash Message --}}
@@ -15,14 +14,28 @@
   <div class="bg-white p-6 rounded shadow">
     <h2 class="text-2xl font-semibold mb-6">Edit Advertisement</h2>
 
-    <form action="{{ route('admin.advertisements.update', $advertisement->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <form action="{{ route('admin.advertisements.update', $ad->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
       @csrf
       @method('PUT')
+
+      {{-- Title --}}
+      <div>
+        <label for="title" class="block text-sm font-medium mb-1">Title:</label>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          value="{{ old('title', $ad->title) }}"
+          class="border p-2 rounded w-64"
+          placeholder="Enter ad title"
+          required
+        >
+      </div>
 
       {{-- Current Image --}}
       <div>
         <label class="block text-sm font-medium mb-1">Current Image:</label>
-        <img src="{{ asset('storage/' . $advertisement->image) }}" class="w-40 h-auto rounded border">
+        <img src="{{ asset('storage/' . $ad->image) }}" class="w-40 h-auto rounded border">
       </div>
 
       {{-- New Image --}}
@@ -31,22 +44,12 @@
         <input type="file" name="image" accept="image/*" class="border p-2 rounded w-64">
       </div>
 
-      {{-- Position --}}
-      <div>
-        <label class="block text-sm font-medium mb-1">Position:</label>
-        <select name="position" class="border p-2 rounded w-64">
-          <option value="top" {{ $advertisement->position === 'top' ? 'selected' : '' }}>Top</option>
-          <option value="bottom" {{ $advertisement->position === 'bottom' ? 'selected' : '' }}>Bottom</option>
-          <option value="sidebar" {{ $advertisement->position === 'sidebar' ? 'selected' : '' }}>Sidebar</option>
-        </select>
-      </div>
-
       {{-- Status --}}
       <div>
         <label class="block text-sm font-medium mb-1">Status:</label>
         <select name="status" class="border p-2 rounded w-64">
-          <option value="active" {{ $advertisement->status === 'active' ? 'selected' : '' }}>Active</option>
-          <option value="inactive" {{ $advertisement->status === 'inactive' ? 'selected' : '' }}>Inactive</option>
+          <option value="active" {{ $ad->status === 'active' ? 'selected' : '' }}>Active</option>
+          <option value="inactive" {{ $ad->status === 'inactive' ? 'selected' : '' }}>Inactive</option>
         </select>
       </div>
 

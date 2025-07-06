@@ -1,51 +1,50 @@
 @extends('layouts.app')
 
 @section('content')
+
     <!-- --------------------image-slider-------------------->
     <div class="carousel">
-
         <div class="list">
-
-            <div class="item" style="background-image:url('{{ asset('frontend/images/Chicken-Soup-main-2.webp') }}')">
-                <div class="content">
-                    <div class="title mb-4" style="color:white;">Praiseworthy soup</div>
-                    <div class="btn">
-                        <a href="#" class="btn btn-danger text-light text-decoration-none fw-bolder">Italian</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item"
-                style="background-image:url('{{ asset('frontend/images/plumber-fixing-white-sink-pipe-with-adjustable-wrench-picture-id1150199946.jpg') }}')">
-
-                <div class="content">
-                    <div class="container">
-                        <div class="title mb-4" style="color:white;">Time for a tune-up?</div>
-
-                        <div class="btn">
-                            <button class=" btn-danger" style="background-color: red;color:white"> <a href=""
-                                    class="text-light text-decoration-none fw-bolder">Auto Repaire</a></button>
-
+            @if($ads->isNotEmpty())
+                @foreach($ads as $ad)
+                    <div class="item" style="background-image:url('{{ asset('storage/' . $ad->image) }}')">
+                        <div class="content">
+                            <div class="title mb-4" style="color:white;">{{ $ad->title }}</div>
+                            
                         </div>
                     </div>
-                </div>
 
-            </div>
-
-            <div class="item"
-                style="background-image:url('{{ asset('frontend/images/6126-08643014en_Masterfile.jpg') }}');">
-
-                <div class="content">
-                    <div class="title mb-4" style="color:white;">Nothing like a new coat of paint</div>
-                    <div class="btn">
-                        <button class=" btn-danger" style="background-color: red;color:white"><a href=""
-                                class="text-light text-decoration-none fw-bolder">Painter</a></button>
-
+                @endforeach
+            @else
+                <div class="item" style="background-image:url('{{ asset('frontend/images/Chicken-Soup-main-2.webp') }}')">
+                    <div class="content">
+                        <div class="title mb-4" style="color:white;">Praiseworthy soup</div>
+                       
                     </div>
                 </div>
+                <div class="item"
+                    style="background-image:url('{{ asset('frontend/images/plumber-fixing-white-sink-pipe-with-adjustable-wrench-picture-id1150199946.jpg') }}')">
 
-            </div>
+                    <div class="content">
+                        <div class="container">
+                            <div class="title mb-4" style="color:white;">Time for a tune-up?</div>
 
+                           
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="item"
+                    style="background-image:url('{{ asset('frontend/images/6126-08643014en_Masterfile.jpg') }}');">
+
+                    <div class="content">
+                        <div class="title mb-4" style="color:white;">Nothing like a new coat of paint</div>
+                      
+                    </div>
+
+                </div>
+            @endif
         </div>
 
         <div class="arrows">
@@ -55,6 +54,7 @@
         </div>
 
     </div>
+
 
     <!------------------------------ Recent Acativity-------------------------------->
 

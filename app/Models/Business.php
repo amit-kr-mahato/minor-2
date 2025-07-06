@@ -10,6 +10,7 @@ class Business extends Model {
 
     protected $fillable = [
         'user_id',
+        'banner',
         'province',
         'business_name',
         'address1',
@@ -36,7 +37,10 @@ class Business extends Model {
     public function user() {
         return $this->belongsTo( User::class );
     }
-
+ public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
     // App\Models\Business.php
 
     public function scopeStatus( $query, $status ) {

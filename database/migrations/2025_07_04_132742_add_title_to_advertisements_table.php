@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-           Schema::create('advertisements', function (Blueprint $table) {
-            $table->id();
-            $table->string('image');
-             $table->string('title')->nullable()->after('image'); // nullable if optional
-            $table->enum('status', ['active', 'inactive'])->default('inactive');
-            $table->timestamps();
+        Schema::table('advertisements', function (Blueprint $table) {
+             $table->string('title')->after('id'); 
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('advertisements');
+        Schema::table('advertisements', function (Blueprint $table) {
+            //
+        });
     }
 };

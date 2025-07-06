@@ -138,6 +138,8 @@ function showSlider(type) {
 
 // Start the initial animation
 resetTimeAnimation();
+//===============================================end =======================================
+
 
 const map = L.map("map").setView([37.7749, -122.4194], 12);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -150,3 +152,5 @@ const locations = [
 locations.forEach((loc) => {
     L.marker(loc.coords).addTo(map).bindPopup(loc.popup);
 });
+
+

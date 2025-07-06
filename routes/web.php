@@ -14,9 +14,8 @@ use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\AdminReviewController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AdvertisementController;
-use App\Models\Advertisement; 
 use App\Http\Controllers\SettingController;
-
+use App\Http\Controllers\BusinessControlleer;
 
 
 
@@ -162,17 +161,39 @@ Route::put('/change-password', [ProfileController::class, 'updatePassword'])->na
 Route::get('/admin/transactions', [PaymentController::class, 'transactions'])->name('admin.payment.transactions');
 
 
-//advertisement
-// Resourceful routes for advertisement management
-Route::resource('admin/advertisements', AdvertisementController::class)->names('admin.advertisements');
+//advertisement\\
+Route::get('/admin/advertisements', [AdvertisementController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.advertisements.index');
 
-// Toggle ad status (active/inactive) via checkbox
-Route::patch('admin/advertisements/{id}/toggle-status', [AdvertisementController::class, 'toggleStatus'])
-     ->name('admin.advertisements.toggleStatus');
+Route::post('/admin/advertisements', [AdvertisementController::class, 'store'])->middleware(['auth', 'admin'])->name('admin.advertisements.store');
 
-// Show only top ads
-Route::get('/ads/top', [AdvertisementController::class, 'showTopAds'])->name('ads.top');
+Route::get('/admin/advertisements/{id}/edit', [AdvertisementController::class, 'edit'])->middleware(['auth', 'admin'])->name('admin.advertisements.edit');
+
+Route::put('/admin/advertisements/{id}', [AdvertisementController::class, 'update'])->middleware(['auth', 'admin'])->name('admin.advertisements.update');
+
+Route::delete('/admin/advertisements/{id}', [AdvertisementController::class, 'destroy'])->middleware(['auth', 'admin'])->name('admin.advertisements.destroy');
+
+Route::patch('/admin/advertisements/{id}/toggle-status', [AdvertisementController::class, 'toggleStatus'])->middleware(['auth', 'admin'])->name('admin.advertisements.toggleStatus');
 
 //fevicon setting 
 Route::get('/admin/settings', [SettingController::class, 'edit'])->name('admin.settings.edit');
 Route::put('/admin/settings', [SettingController::class, 'update'])->name('admin.settings.update');
+
+
+//Business Owner
+
+
+// Business owner routes (no group)
+
+
+
+
+Route::middleware(['auth', 'business'])->prefix('business')->name('business.')->group(function () {
+    Route::get('/businesses', [BusinessController::class, 'index'])->name('businesses.index');
+    Route::get('/businesses/create', [BusinessController::class, 'create'])->name('businesses.create');
+    Route::post('/businesses', [BusinessController::class, 'store'])->name('businesses.store');
+    Route::get('/businesses/{business}/edit', [BusinessController::class, 'edit'])->name('businesses.edit');
+    Route::put('/businesses/{business}', [BusinessController::class, 'update'])->name('businesses.update');
+    Route::delete('/businesses/{business}', [BusinessController::class, 'destroy'])->name('businesses.destroy');
+});
+
+
