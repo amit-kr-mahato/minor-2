@@ -108,6 +108,7 @@ class BusinessController extends Controller
         ]);
 
         $business = new Business();
+        $business->user_id = auth()->id();
         $business->province = $request->province;
         $business->business_name = $request->business_name;
         $business->address1 = $request->address1;

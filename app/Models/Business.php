@@ -27,7 +27,7 @@ class Business extends Model {
     ];
 
     protected $casts = [
-        // Remove 'categories' => 'array' if you're storing as a string
+        'categories' => 'array',
         'longitude' => 'decimal:8',
         'latitude' => 'decimal:8',
     ];
