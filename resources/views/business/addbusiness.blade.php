@@ -27,12 +27,12 @@
                         </div>
                         <div class="mb-3">
                             <form action="#" method="POST">
-                                  @csrf
-                            <label for="businessName" class="form-label">Business Name <span
-                                    class="required-star">*</span></label>
-                            <input type="text" class="form-control" id="businessName" name="business_name"  value="{{ old('business_name', $business_name ?? '') }}" 
-                                placeholder="business name">
-                            <div class="error" id="error-businessName"></div>
+                                @csrf
+                                <label for="businessName" class="form-label">Business Name <span
+                                        class="required-star">*</span></label>
+                                <input type="text" class="form-control" id="businessName" name="business_name"
+                                    value="{{ old('business_name', $business_name ?? '') }}" placeholder="business name">
+                                <div class="error" id="error-businessName"></div>
                             </form>
                         </div>
                         <div class="mb-3">
@@ -72,23 +72,25 @@
 
                         </div>
                         <div class="form-group mb-3">
-                            <label for="category">Categories <span class="required-star">*</span></label>
+                            <label for="category">Categories and Types <span class="required-star">*</span></label>
                             <div id="category-container">
                                 <div class="d-flex align-items-center mb-2 category-group">
-                                    <select class="form-control category-select me-2" name="categories[]" required>
-                                        <option value="">Select Category</option>
-                                        <option value="Food">Food</option>
-                                        <option value="Retail">Retail</option>
-                                        <option value="Services">Services</option>
-                                    </select>
+                                    <input list="categoryOptions" name="categories[]" class="form-control me-2"
+                                        placeholder="Select or type category" required>
+                                    <datalist id="categoryOptions">
+                                        <option value="Food">
+                                        <option value="Retail">
+                                        <option value="Services">
+                                    </datalist>
+
                                     <a href="#" class="text-danger remove-category"
                                         onclick="event.preventDefault(); this.closest('.category-group').remove();">Remove</a>
                                 </div>
                             </div>
+
                             <a href="#" id="moreButton" onclick="addCategory(event)">+ Add another category</a>
-
-
                         </div>
+
                         <div class="mb-3">
                             <label for="email" class="form-label fs-2"> Your Email Address <span
                                     class="required-star">*</span></label>

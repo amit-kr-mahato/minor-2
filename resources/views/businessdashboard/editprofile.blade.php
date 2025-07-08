@@ -1,10 +1,10 @@
 
 
-@extends('adminLayout.app')
+@extends('BusinessLayout.app')
 
 @section('content')
 
-<form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="ml-64 w-full p-8">
+<form action="{{ route('profile.UpdatePro') }}" method="POST" enctype="multipart/form-data" class="ml-64 w-full p-8">
   @csrf
   @method('PUT')
 

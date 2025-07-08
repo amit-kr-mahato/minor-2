@@ -12,7 +12,7 @@ class Review extends Model
         'user_id',
         'rating',
         'Review',
-        // other columns
+        
     ];
      // 👇 Add this to fix the error
    public function user()

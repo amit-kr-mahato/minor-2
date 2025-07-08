@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,40 +9,46 @@ class Business extends Model {
 
     protected $fillable = [
         'user_id',
-        'banner',
-        'province',
         'business_name',
+        'province',
+        'city',
         'address1',
         'address2',
-        'city',
         'postal_code',
         'longitude',
         'latitude',
         'phone',
         'web_address',
-        'status',
         'email',
-        'categories',
+        'categories', // as string or convert to array with proper input
+        'logo',
+        'banner',
+        // 'status', // if using status filtering
     ];
 
     protected $casts = [
-        'categories' => 'array',
+        // Remove 'categories' => 'array' if you're storing as a string
         'longitude' => 'decimal:8',
         'latitude' => 'decimal:8',
     ];
 
-    // Relationship: owner user
-
     public function user() {
-        return $this->belongsTo( User::class );
+        return $this->belongsTo(User::class);
     }
- public function reviews()
-    {
+
+    public function reviews() {
         return $this->hasMany(Review::class);
     }
-    // App\Models\Business.php
 
-    public function scopeStatus( $query, $status ) {
-        return $query->where( 'status', $status );
+    public function scopeStatus($query, $status) {
+        return $query->where('status', $status);
+    }
+
+    public function getLogoUrlAttribute() {
+        return $this->logo ? asset('storage/' . $this->logo) : null;
+    }
+
+    public function getBannerUrlAttribute() {
+        return $this->banner ? asset('storage/' . $this->banner) : null;
     }
 }

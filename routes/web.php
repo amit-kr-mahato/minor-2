@@ -79,7 +79,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
 Route::middleware(['auth', 'role:Business Owner'])->prefix('business')->group(function () {
     Route::get('/dashboard', [BusinessController::class, 'dashboard'])->name('businessdashboard.dashboard');
 });
-
 // User routes
 Route::middleware(['auth', 'role:User'])->group(function () {
     Route::get('/index', [UserController::class, 'dashboard'])->name('index');
@@ -119,6 +118,11 @@ Route::post('/business/review', [ReviewController::class, 'submitReview'])->name
 
 Route::get('/admin/editprofile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::put('/admin/updateprofile', [ProfileController::class, 'update'])->name('profile.update');
+
+
+//business upload photo
+Route::get('/businesses/editprofile', [ProfileController::class, 'Upload'])->name('profile.Upload');
+Route::put('/businesses/updateprofile', [ProfileController::class, 'UpdatePro'])->name('profile.UpdatePro');
 
 
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
@@ -182,18 +186,36 @@ Route::put('/admin/settings', [SettingController::class, 'update'])->name('admin
 //Business Owner
 
 
-// Business owner routes (no group)
+// Business owner routes
+
+Route::middleware(['auth', 'role:Business Owner'])
+    ->prefix('businessdashboard/businessinfo')
+    ->name('businessdashboard.businessinfo.')
+    ->group(function () {
+
+        // List all businesses
+        Route::get('/', [BusinessController::class, 'Businessindex'])->name('index');
+
+        // Show create form
+        Route::get('/create', [BusinessController::class, 'Businesscreate'])->name('create');
+
+        // Store new business
+        Route::post('/', [BusinessController::class, 'Businessstore'])->name('store');
+
+        // Show edit form
+        Route::get('/{business}/edit', [BusinessController::class, 'Businessedit'])->name('edit');
+
+        // Update business
+        Route::put('/{business}', [BusinessController::class, 'Businessupdate'])->name('update');
+
+        // Delete business
+        Route::delete('/{business}', [BusinessController::class, 'Businessdestroy'])->name('destroy');
+
+        // Show detail view
+        Route::get('/{business}/detail', [BusinessController::class, 'Business_detail'])->name('detail');
+    });
 
 
 
-
-Route::middleware(['auth', 'business'])->prefix('business')->name('business.')->group(function () {
-    Route::get('/businesses', [BusinessController::class, 'index'])->name('businesses.index');
-    Route::get('/businesses/create', [BusinessController::class, 'create'])->name('businesses.create');
-    Route::post('/businesses', [BusinessController::class, 'store'])->name('businesses.store');
-    Route::get('/businesses/{business}/edit', [BusinessController::class, 'edit'])->name('businesses.edit');
-    Route::put('/businesses/{business}', [BusinessController::class, 'update'])->name('businesses.update');
-    Route::delete('/businesses/{business}', [BusinessController::class, 'destroy'])->name('businesses.destroy');
-});
 
 

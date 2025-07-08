@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Review;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 class BusinessController extends Controller
 {
     public function index()
@@ -161,11 +162,99 @@ class BusinessController extends Controller
     $ratings = $ratingCounts->pluck('rating'); // [1, 2, 3, 4, 5]
     $totals = $ratingCounts->pluck('total');   // [3, 8, 15, 10, 4]
 
-    return view('Businessdashboard.dashboard', [
+    return view('businessdashboard.dashboard', [
         'ratings' => $ratings,
         'ratingTotals' => $totals,
         'recentReviews' => Review::with(['user', 'business'])->latest()->take(5)->get(),
         'totalReviews' => Review::count(),
     ]);
 }
+
+
+//business controller of all business CRUD Operation
+     
+    public function Businessindex()
+    {
+        $businesses = Business::where('user_id', auth()->id())->get();
+        return view('businessdashboard.businessinfo.index', compact('businesses'));
+    }
+
+    public function Businesscreate()
+    {
+        return view('businessdashboard.businessinfo.form', ['mode' => 'create']);
+    }
+
+    public function Businessstore(Request $request)
+    {
+        $validated = $request->validate([
+            // validation rules ...
+        ]);
+        $validated['user_id'] = auth()->id();
+
+        // handle file uploads (logo/banner)
+        if ($request->hasFile('logo')) {
+            $validated['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+        if ($request->hasFile('banner')) {
+            $validated['banner'] = $request->file('banner')->store('banners', 'public');
+        }
+
+        Business::create($validated);
+
+        return redirect()->route('businessdashboard.businessinfo.index')->with('success', 'Business created.');
+    }
+
+    public function Businessedit(Business $business)
+    {
+        $this->authorizeBusiness($business);
+        return view('businessdashboard.businessinfo.form', ['business' => $business, 'mode' => 'edit']);
+    }
+
+    public function Businessupdate(Request $request, Business $business)
+    {
+        $this->authorizeBusiness($business);
+
+        $validated = $request->validate([
+            // validation rules ...
+        ]);
+
+        if ($request->hasFile('logo')) {
+            if ($business->logo) Storage::disk('public')->delete($business->logo);
+            $validated['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
+        if ($request->hasFile('banner')) {
+            if ($business->banner) Storage::disk('public')->delete($business->banner);
+            $validated['banner'] = $request->file('banner')->store('banners', 'public');
+        }
+
+        $business->update($validated);
+
+        return redirect()->route('businessdashboard.businessinfo.index')->with('success', 'Business updated.');
+    }
+
+    public function Businessdestroy(Business $business)
+    {
+        $this->authorizeBusiness($business);
+
+        if ($business->logo) Storage::disk('public')->delete($business->logo);
+        if ($business->banner) Storage::disk('public')->delete($business->banner);
+
+        $business->delete();
+
+        return redirect()->route('businessdashboard.businessinfo.index')->with('success', 'Business deleted.');
+    }
+
+    public function Business_detail(Business $business)
+    {
+        $this->authorizeBusiness($business);
+        return view('businessdashboard.businessinfo.businessdetail', compact('business'));
+    }
+
+    private function authorizeBusiness(Business $business)
+    {
+        if ($business->user_id !== auth()->id()) {
+            abort(403);
+        }
+    }
 }

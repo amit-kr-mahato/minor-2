@@ -1,44 +1,21 @@
-function addCategory(event) {
-    event.preventDefault();
 
-    const container = document.getElementById("category-container");
+    function addCategory(event) {
+        event.preventDefault();
+        const container = document.getElementById('category-container');
 
-    // Create wrapper div
-    const wrapper = document.createElement("div");
-    wrapper.className = "d-flex align-items-center mb-2 category-group";
+        const group = document.createElement('div');
+        group.className = 'd-flex align-items-center mb-2 category-group';
 
-    // Create select element
-    const select = document.createElement("select");
-    select.className = "form-control category-select me-2";
-    select.name = "categories[]";
-    select.required = true;
+        group.innerHTML = `
+            <input list="categoryOptions" name="categories[]" class="form-control me-2" placeholder="Select or type category" required>
+            
+            <a href="#" class="text-danger remove-category"
+                onclick="event.preventDefault(); this.closest('.category-group').remove();">Remove</a>
+        `;
 
-    // Add options
-    const options = ["", "Food", "Retail", "Services"];
-    options.forEach(text => {
-        const option = document.createElement("option");
-        option.value = text;
-        option.textContent = text === "" ? "Select Category" : text;
-        select.appendChild(option);
-    });
+        container.appendChild(group);
+    }
 
-    // Create remove link
-    const removeLink = document.createElement("a");
-    removeLink.href = "#";
-    removeLink.className = "text-danger remove-category";
-    removeLink.textContent = "Remove";
-    removeLink.onclick = function(e) {
-        e.preventDefault();
-        wrapper.remove();
-    };
-
-    // Add elements to wrapper
-    wrapper.appendChild(select);
-    wrapper.appendChild(removeLink);
-
-    // Append wrapper to container
-    container.appendChild(wrapper);
-}
 
 
  // Only one checkbox can be checked

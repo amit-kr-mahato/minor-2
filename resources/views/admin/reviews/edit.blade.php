@@ -35,9 +35,11 @@
         </select>
       </div>
 
+      
+
       <div class="mb-4">
         <label for="comment" class="block text-gray-700 font-bold mb-2">Comment</label>
-        <textarea name="comment" id="comment" rows="4" class="border border-gray-300 rounded w-full py-2 px-3" required>{{ $review->review }}</textarea>
+       </div>
       </div>
 
       <div class="flex justify-end">
