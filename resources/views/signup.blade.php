@@ -62,19 +62,34 @@
                                         <input type="text" name="email" class="form-control form-control-lg bg-light fs-6"
                                             placeholder="Email address">
                                     </div>
+                                    <!-- Password Input with Eye Icon -->
                                     <div class="input-group mb-3">
-                                        <input type="password" name="password"
+                                        <input type="password" name="password" id="myInput"
                                             class="form-control form-control-lg bg-light fs-6" placeholder="Password"
-                                            oninput="checkStrength(this.value)" id="myInput">
+                                            oninput="checkStrength(this.value)">
+                                        <span class="input-group-text toggle-password" onclick="togglePassword()">
+                                            <i class="fa-solid fa-eye" id="toggleIcon"></i>
+                                        </span>
                                     </div>
-                                    <p id="text" style="padding:3px; color: rgb(7, 6, 6);text-align: center;"></p>
 
-                                    <select name="role" style="margin-bottom: 30px;" required>
+                                    <!-- Strength Progress Bar -->
+                                    <div class="progress input-group mb-3">
+                                        <div id="strengthBar" class="progress-bar" role="progressbar" style="width: 0%;">
+                                        </div>
+                                    </div>
+
+                                    <!-- Strength Message -->
+                                    <p id="text"></p>
+
+                                    <select name="role" required class="w-full mb-3  py-2 text-base rounded-md
+                                     border-2 border-gray-100
+                                     bg-white
+                                     focus:outline-none focus:ring-2 
+                                     cursor-pointer" style="margin-left: 3%;">
                                         <option value="">--Select Role--</option>
-                                        @foreach ($roles  as $role)
-                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
                                         @endforeach
-                                      
                                     </select>
                                     <div class="input-group mb-3">
                                         <button class="btn btn-lg btn-primary w-100 fs-6">Sign

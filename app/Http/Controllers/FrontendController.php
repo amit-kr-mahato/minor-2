@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use Spatie\Permission\Models\Role;
+use App\Models\Business;
 
 class FrontendController extends Controller {
     public function home() {
@@ -38,9 +39,10 @@ class FrontendController extends Controller {
         return view( 'project' );
     }
 
-    public function Takeout() {
-        return view( 'resturant.Takeout' );
-    }
+  public function Takeout() {
+    $businesses = Business::all();
+    return view('resturant.Takeout', compact('businesses'));
+}
 
     public function Contractor() {
         return view( 'contractor' );

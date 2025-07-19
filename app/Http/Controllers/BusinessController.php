@@ -8,26 +8,23 @@ use Illuminate\Http\Request;
 use App\Models\Review;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-class BusinessController extends Controller
-{
-    public function index()
-    {
-        $businesses = Business::with('user')->orderByDesc('created_at')->paginate(15);
-        return view('admin.businesses.index', compact('businesses'));
+
+class BusinessController extends Controller {
+    public function index() {
+        $businesses = Business::with( 'user' )->orderByDesc( 'created_at' )->paginate( 15 );
+        return view( 'admin.businesses.index', compact( 'businesses' ) );
     }
 
-    public function create()
-    {
+    public function create() {
         $users = User::all();
-        return view('admin.businesses.editdelete', [
+        return view( 'admin.businesses.editdelete', [
             'business' => new Business(),
             'users' => $users,
-        ]);
+        ] );
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
+    public function store( Request $request ) {
+        $data = $request->validate( [
             'user_id' => 'required|exists:users,id',
             'province' => 'required|string|max:255',
             'business_name' => 'required|string|max:255',
@@ -42,59 +39,54 @@ class BusinessController extends Controller
             'status' => 'required|in:active,pending,suspended',
             'email' => 'required|email|max:255',
             'categories' => 'required|string',
-        ]);
+        ] );
 
-        $data['categories'] = json_encode(array_map('trim', explode(',', $data['categories'])));
+        $data[ 'categories' ] = json_encode( array_map( 'trim', explode( ',', $data[ 'categories' ] ) ) );
 
-        Business::create($data);
+        Business::create( $data );
 
-        return redirect()->route('admin.businesses.index')->with('success', 'Business added successfully.');
+        return redirect()->route( 'admin.businesses.index' )->with( 'success', 'Business added successfully.' );
     }
 
-    public function edit(Business $business)
-    {
+    public function edit( Business $business ) {
         $users = User::all();
-        return view('admin.businesses.editdelete', [
+        return view( 'admin.businesses.editdelete', [
             'business' => $business,
             'users' => $users,
-        ]);
+        ] );
     }
 
-    public function updateStatus(Request $request, Business $business)
-    {
-        $request->validate([
+    public function updateStatus( Request $request, Business $business ) {
+        $request->validate( [
             'status' => 'required|in:active,pending,suspended',
-        ]);
+        ] );
 
         $business->status = $request->status;
         $business->save();
 
-        return response()->json([
+        return response()->json( [
             'message' => 'Status updated successfully',
             'status' => $business->status,
-        ]);
+        ] );
     }
 
-    public function destroy(Business $business)
-    {
+    public function destroy( Business $business ) {
         $business->delete();
-        return redirect()->route('admin.businesses.index')->with('success', 'Business deleted successfully.');
+        return redirect()->route( 'admin.businesses.index' )->with( 'success', 'Business deleted successfully.' );
     }
 
-    public function searchOrAdd(Request $request)
-    {
-        $businessName = $request->query('business_name');
-        $business = Business::where('business_name', 'like', "%{$businessName}%")->first();
+    public function searchOrAdd( Request $request ) {
+        $businessName = $request->query( 'business_name' );
+        $business = Business::where( 'business_name', 'like', "%{$businessName}%" )->first();
 
-        return view('addbusiness', [
+        return view( 'addbusiness', [
             'business_name' => $business ? $business->business_name : $businessName,
             'business' => $business,
-        ]);
+        ] );
     }
 
-    public function business_store(Request $request)
-    {
-        $request->validate([
+    public function business_store( Request $request ) {
+        $request->validate( [
             'province' => 'required|string',
             'business_name' => 'required|string',
             'address1' => 'required|string',
@@ -105,7 +97,7 @@ class BusinessController extends Controller
             'web_address' => 'nullable|url',
             'address2' => 'nullable|string',
             'categories' => 'required|array|min:1',
-        ]);
+        ] );
 
         $business = new Business();
         $business->user_id = auth()->id();
@@ -118,144 +110,198 @@ class BusinessController extends Controller
         $business->phone = $request->phone;
         $business->web_address = $request->web_address;
         $business->email = $request->email;
-        $business->categories = json_encode($request->categories);
-        $business->status = 'pending'; // default status
+        $business->categories = json_encode( $request->categories );
+        $business->status = 'pending';
+        // default status
 
         $business->save();
 
-        return redirect()->back()->with('success', 'Business added successfully!');
+        return redirect()->back()->with( 'success', 'Business added successfully!' );
     }
 
-    public function Repairs()
-    {
-        return view('project.repair');
+    public function Repairs() {
+        return view( 'project.repair' );
     }
 
-    public function Businessdetail()
-    {
-        return view('businessdetail');
+    public function Businessdetail() {
+        $businesses = Business::all();
+        return view( 'businessdetail' ,compact('businesses'));
     }
 
-    public function Seemorephoto()
-    {
-        return view('seemorebusinessdetail');
+    public function Seemorephoto() {
+        return view( 'seemorebusinessdetail' );
     }
 
-    public function businesssphoto()
-    {
-        return view('addphoto');
+    public function businesssphoto() {
+        return view( 'addphoto' );
     }
 
-    public function Blogin()
-    {
-        return view('businesform.Businesform');
+    public function Blogin() {
+        return view( 'businesform.Businesform' );
     }
-
- 
 
     public function dashboard() {
-      $ratingCounts = DB::table('reviews')
-        ->select('rating', DB::raw('count(*) as total'))
-        ->groupBy('rating')
-        ->orderBy('rating')
+        $ratingCounts = DB::table( 'reviews' )
+        ->select( 'rating', DB::raw( 'count(*) as total' ) )
+        ->groupBy( 'rating' )
+        ->orderBy( 'rating' )
         ->get();
 
-    $ratings = $ratingCounts->pluck('rating'); // [1, 2, 3, 4, 5]
-    $totals = $ratingCounts->pluck('total');   // [3, 8, 15, 10, 4]
+        $ratings = $ratingCounts->pluck( 'rating' );
+        // [ 1, 2, 3, 4, 5 ]
+        $totals = $ratingCounts->pluck( 'total' );
+        // [ 3, 8, 15, 10, 4 ]
 
-    return view('businessdashboard.dashboard', [
-        'ratings' => $ratings,
-        'ratingTotals' => $totals,
-        'recentReviews' => Review::with(['user', 'business'])->latest()->take(5)->get(),
-        'totalReviews' => Review::count(),
-    ]);
-}
-
-
-//business controller of all business CRUD Operation
-     
-    public function Businessindex()
-    {
-        $businesses = Business::where('user_id', auth()->id())->get();
-        return view('businessdashboard.businessinfo.index', compact('businesses'));
+        return view( 'businessdashboard.dashboard', [
+            'ratings' => $ratings,
+            'ratingTotals' => $totals,
+            'recentReviews' => Review::with( [ 'user', 'business' ] )->latest()->take( 5 )->get(),
+            'totalReviews' => Review::count(),
+        ] );
     }
 
-    public function Businesscreate()
-    {
-        return view('businessdashboard.businessinfo.form', ['mode' => 'create']);
+    //business controller of all business CRUD Operation
+    // List all businesses for logged-in user
+
+    public function Businessindex() {
+        $businesses = Business::where( 'user_id', auth()->id() )->get();
+
+        // dd( $businesses );
+
+        return view( 'businessdashboard.businessinfo.index', compact( 'businesses' ) );
     }
 
-    public function Businessstore(Request $request)
-    {
-        $validated = $request->validate([
-            // validation rules ...
-        ]);
-        $validated['user_id'] = auth()->id();
+    // Show the form to create a new business
 
-        // handle file uploads (logo/banner)
-        if ($request->hasFile('logo')) {
-            $validated['logo'] = $request->file('logo')->store('logos', 'public');
-        }
-        if ($request->hasFile('banner')) {
-            $validated['banner'] = $request->file('banner')->store('banners', 'public');
-        }
-
-        Business::create($validated);
-
-        return redirect()->route('businessdashboard.businessinfo.index')->with('success', 'Business created.');
+    public function Businesscreate() {
+        return view( 'businessdashboard.businessinfo.create' );
     }
 
-    public function Businessedit(Business $business)
-    {
-        $this->authorizeBusiness($business);
-        return view('businessdashboard.businessinfo.form', ['business' => $business, 'mode' => 'edit']);
-    }
+    // Store new business in DB
 
-    public function Businessupdate(Request $request, Business $business)
-    {
-        $this->authorizeBusiness($business);
+    public function Businessstore( Request $request ) {
+        $validated = $this->validateBusiness( $request );
+        $validated[ 'user_id' ] = auth()->id();
 
-        $validated = $request->validate([
-            // validation rules ...
-        ]);
-
-        if ($request->hasFile('logo')) {
-            if ($business->logo) Storage::disk('public')->delete($business->logo);
-            $validated['logo'] = $request->file('logo')->store('logos', 'public');
+        if ( $request->hasFile( 'logo' ) ) {
+            $validated[ 'logo' ] = $request->file( 'logo' )->store( 'logos', 'public' );
         }
 
-        if ($request->hasFile('banner')) {
-            if ($business->banner) Storage::disk('public')->delete($business->banner);
-            $validated['banner'] = $request->file('banner')->store('banners', 'public');
+        if ( $request->hasFile( 'banner' ) ) {
+            $validated[ 'banner' ] = $request->file( 'banner' )->store( 'banners', 'public' );
         }
 
-        $business->update($validated);
+        Business::create( $validated );
 
-        return redirect()->route('businessdashboard.businessinfo.index')->with('success', 'Business updated.');
+        return redirect()->route( 'businessdashboard.businessinfo.index' )
+        ->with( 'success', 'Business created successfully.' );
     }
 
-    public function Businessdestroy(Business $business)
-    {
-        $this->authorizeBusiness($business);
+    // Show details of a single business
 
-        if ($business->logo) Storage::disk('public')->delete($business->logo);
-        if ($business->banner) Storage::disk('public')->delete($business->banner);
+    public function Businessshow( Business $business ) {
+        $this->authorizeOwner( $business );
+
+        return view( 'businessdashboard.businessinfo.show', compact( 'business' ) );
+    }
+
+    // Show the edit form for a business
+
+    public function Businessedit( Business $business ) {
+        $this->authorizeOwner( $business );
+
+        return view( 'businessdashboard.businessinfo.edit', compact( 'business' ) );
+    }
+
+    // Update business in DB
+
+    public function Businessupdate( Request $request, Business $business ) {
+        $validated = $request->validate( [
+            'business_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'province' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'address1' => 'required|string|max:255',
+            'address2' => 'nullable|string|max:255',
+            'postal_code' => 'required|string|max:20',
+            'phone' => 'required|string|max:20',
+            'web_address' => 'nullable|url',
+            'email' => 'nullable|email',
+            'categories' => 'nullable|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg|max:4096',
+        ] );
+
+        // Handle logo upload
+        if ( $request->hasFile( 'logo' ) ) {
+            if ( $business->logo && Storage::exists( $business->logo ) ) {
+                Storage::delete( $business->logo );
+            }
+            $validated[ 'logo' ] = $request->file( 'logo' )->store( 'logos', 'public' );
+        }
+
+        // Handle banner upload
+        if ( $request->hasFile( 'banner' ) ) {
+            if ( $business->banner && Storage::exists( $business->banner ) ) {
+                Storage::delete( $business->banner );
+            }
+            $validated[ 'banner' ] = $request->file( 'banner' )->store( 'banners', 'public' );
+        }
+
+        $business->update( $validated );
+
+        return redirect()->route( 'businessdashboard.businessinfo.index' )
+        ->with( 'success', 'Business updated successfully.' );
+    }
+
+    // Delete a business
+
+    public function Businessdestroy( Business $business ) {
+        $this->authorizeOwner( $business );
+
+        if ( $business->logo ) {
+            Storage::disk( 'public' )->delete( $business->logo );
+        }
+
+        if ( $business->banner ) {
+            Storage::disk( 'public' )->delete( $business->banner );
+        }
 
         $business->delete();
 
-        return redirect()->route('businessdashboard.businessinfo.index')->with('success', 'Business deleted.');
+        return redirect()->route( 'businessdashboard.businessinfo.index' )
+        ->with( 'success', 'Business deleted successfully.' );
     }
 
-    public function Business_detail(Business $business)
-    {
-        $this->authorizeBusiness($business);
-        return view('businessdashboard.businessinfo.businessdetail', compact('business'));
-    }
+    // Authorization: only owner can access
 
-    private function authorizeBusiness(Business $business)
-    {
-        if ($business->user_id !== auth()->id()) {
-            abort(403);
+    private function authorizeOwner( Business $business ) {
+        if ( $business->user_id !== auth()->id() ) {
+            abort( 403, 'Unauthorized access.' );
         }
+    }
+
+    // Validation rules for create/update
+
+    private function validateBusiness( Request $request ): array {
+        return $request->validate( [
+            'business_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'province' => 'required|string',
+            'city' => 'required|string',
+            'address1' => 'required|string',
+            'address2' => 'nullable|string',
+            'postal_code' => 'required|string|max:10',
+            'phone' => 'required|string|max:20',
+            'web_address' => 'nullable|url',
+            'email' => 'nullable|email',
+            'categories' => 'nullable|string',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'banner' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+        ] );
     }
 }

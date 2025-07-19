@@ -1,65 +1,58 @@
 @extends('BusinessLayout.app')
 
 @section('content')
-<div class="p-6 ml-64">
+    <div class="ml-64 w-full min-h-screen p-6 bg-gray-300">
+        <div class="max-w-[900px] px-4">
+            <h2 class="text-3xl font-bold mb-6">My Businesses</h2>
 
-    @if(session('success'))
-        <div class="bg-green-100 text-green-800 p-3 mb-4 rounded">
-            {{ session('success') }}
+            {{-- <a href="{{ route('businessdashboard.businessinfo.create') }}"
+                class="bg-green-600 text-white px-4 py-2 rounded mb-4 inline-block">
+                Add New
+            </a> --}}
+
+            @if(session('success'))
+                <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <table class="w-full border table-auto bg-white">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="border px-4 py-2">Name</th>
+                        <th class="border px-4 py-2">City</th>
+                        <th class="border px-4 py-2">Phone</th>
+                        <th class="border px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($businesses as $business)
+                        <tr>
+                            <td class="border px-4 py-2">{{ $business->business_name }}</td>
+                            <td class="border px-4 py-2">{{ $business->city }}</td>
+                            <td class="border px-4 py-2">{{ $business->phone }}</td>
+                            <td class="border px-4 py-2 space-x-2">
+                                <a href="{{ route('businessdashboard.businessinfo.show', $business) }}"
+                                    class="text-green-600">View</a>
+                                <a href="{{ route('businessdashboard.businessinfo.edit', $business) }}"
+                                    class="text-blue-600">Edit</a>
+                                <form action="{{ route('businessdashboard.businessinfo.destroy', $business) }}" method="POST"
+                                    class="inline-block"
+                                    onsubmit="return confirm('Are you sure you want to delete this business?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-gray-500">No businesses found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+
+            </table>
         </div>
-    @endif
-
-    <h1 class="text-2xl font-bold mb-4">My Businesses</h1>
-
-    <a href="{{ route('businessdashboard.businessinfo.form') }}"
-       class="inline-block mb-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-        + Add New Business
-    </a>
-
-    <table class="w-full border-collapse border text-left">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="p-2 border">Logo</th>
-                <th class="p-2 border">Name</th>
-                <th class="p-2 border">City</th>
-                <th class="p-2 border">Email</th>
-                <th class="p-2 border">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($businesses as $business)
-                <tr class="border-t hover:bg-gray-50">
-                    <td class="p-2 border">
-                        @if($business->logo)
-                            <img src="{{ asset('storage/' . $business->logo) }}" alt="Logo" width="50">
-                        @else
-                            <span class="text-gray-400 italic">No Logo</span>
-                        @endif
-                    </td>
-                    <td class="p-2 border font-semibold">{{ $business->business_name }}</td>
-                    <td class="p-2 border">{{ $business->city }}</td>
-                    <td class="p-2 border">{{ $business->email }}</td>
-                    <td class="p-2 border flex gap-2 items-center">
-                        <a href="{{ route('businessdashboard.businessinfo.businessdetail', $business) }}"
-                           class="text-sm text-green-600 hover:underline">View</a>
-                        <a href="{{ route('businessdashboard.businessinfo.edit', $business) }}"
-                           class="text-sm text-blue-600 hover:underline">Edit</a>
-                        <form action="{{ route('businessdashboard.businessinfo.destroy', $business) }}"
-                              method="POST"
-                              onsubmit="return confirm('Are you sure you want to delete this business?');"
-                              class="inline-block">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-sm text-red-600 hover:underline">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5" class="p-4 text-center text-gray-500">No businesses found.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
+    </div>
 @endsection

@@ -29,6 +29,7 @@ return new class extends Migration
         $table->enum('status', ['approved', 'pending', 'suspended'])->default('pending');
         $table->string('email');
         $table->json('categories'); // store as JSON array
+        $table->string('logo')->nullable();
         $table->timestamps();
     });
 }

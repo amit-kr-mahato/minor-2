@@ -13,8 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('businesses', function (Blueprint $table) {
-             $table->enum('status', ['active', 'pending', 'suspended'])->default('pending');
+        Schema::create('menu_images', function (Blueprint $table) {
+            $table->id();
+             $table->foreignId('menu_id')->constrained()->onDelete('cascade');
+            $table->string('image_path');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('businesses', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('menu_images');
     }
 };

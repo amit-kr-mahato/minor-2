@@ -89,6 +89,8 @@
 </footer>
 
 
+<!-- Include Bootstrap 5 JS just before </body> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"
@@ -102,6 +104,76 @@
 <script src="{{ asset('frontend/main.js') }}"></script>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Strength + Toggle Logic -->
+<script>
+function togglePassword() {
+    const input = document.getElementById("myInput");
+    const icon = document.getElementById("toggleIcon");
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+
+function checkStrength(password) {
+    const bar = document.getElementById("strengthBar");
+    const text = document.getElementById("text");
+
+    let strength = 0;
+
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[\W_]/.test(password);
+    const isLong = password.length > 6;
+
+    if (hasUppercase) strength++;
+    if (hasNumber) strength++;
+    if (hasSpecial) strength++;
+
+    let color = "", message = "";
+
+    if (!password) {
+        bar.style.width = "0%";
+        bar.className = "progress-bar";
+        message = "";
+    } else if (!isLong) {
+        bar.style.width = "25%";
+        bar.className = "progress-bar bg-danger";
+        message = "Too Short";
+        color = "#dc3545";
+    } else if (strength === 0) {
+        bar.style.width = "25%";
+        bar.className = "progress-bar bg-danger";
+        message = "Very Weak";
+        color = "#dc3545";
+    } else if (strength === 1) {
+        bar.style.width = "50%";
+        bar.className = "progress-bar bg-warning";
+        message = "Weak";
+        color = "#ffc107";
+    } else if (strength === 2) {
+        bar.style.width = "75%";
+        bar.className = "progress-bar bg-info";
+        message = "Good";
+        color = "#0dcaf0";
+    } else if (strength === 3 && isLong) {
+        bar.style.width = "100%";
+        bar.className = "progress-bar bg-success";
+        message = "Strong";
+        color = "#198754";
+    }
+
+    text.innerText = message;
+    text.style.color = color;
+}
+</script>
 
 <script>
     function validateForm() {

@@ -26,313 +26,45 @@
 
                     <h5 class="text-muted">Sponsored Results</h5>
                     <ul>
+                        @foreach ($businesses as $business)
+                            <a href="{{route('businessdetail')}}" class="text-decoration-none text-dark">
+                                <div class="card fleftem mb-3 shadow-sm">
+                                    <div class="row box-s g-0">
+                                        <div class="col-md-2" style="padding-top:20px;">
+                                            <img src="{{ $business->logo ? asset('storage/' . $business->logo) : 'https://via.placeholder.com/100x100?text=No+Logo' }}"
+                                                class="restaurant-img" alt="{{ $business->business_name }}">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title fw-bold">{{ $business->business_name }}</h5>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <div class="rating-stars me-2">★★★★★</div>
+                                                    <div class="text-muted ms-2 font">4.4 (57 reviews)</div>
+                                                </div>
+                                                <div class="text-muted font">
+                                                    📍 {{ $business->city }} <span class="text-danger fw-semibold">Closed until
+                                                        10:00 AM</span>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <span class="custom-badge me-2 font">🌱{{ $business->categories }}</span>
+                                                    <span class="text-muted font">👥 Large group friendly</span>
+                                                </div>
+                                                <div class="text-primary mb-1 font">📝 Make an Online Reservation</div>
+                                                <p class="card-text text-muted font">“I've been here twice and I enjoyed my
+                                                    ramen both
+                                                    times... <span class="text-decoration-none">more</span></p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="tag">{{ $business->categories }}</span>
 
-                        <a href="{{route('businessdetail')}}" class="text-decoration-none text-dark">
-                            <div class="card fleftem mb-3 shadow-sm">
-                                <div class="row box-s g-0">
-                                    <div class="col-md-2" style="padding-top:20px;">
-                                        <img src=""
-                                            class="restaurant-img" alt="Hinodeya Ramen Bar">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold">Hinodeya Ramen Bar</h5>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div class="rating-stars me-2">★★★★★</div>
-                                                <div class="text-muted ms-2 font">4.4 (57 reviews)</div>
-                                            </div>
-                                            <div class="text-muted font">
-                                                📍 Marina/Cow Hollow · <span class="text-danger fw-semibold">Closed until
-                                                    10:00 AM</span>
-                                            </div>
-                                            <div class="mb-2">
-                                                <span class="custom-badge me-2 font">🌱 Vegan friendly</span>
-                                                <span class="text-muted font">👥 Large group friendly</span>
-                                            </div>
-                                            <div class="text-primary mb-1 font">📝 Make an Online Reservation</div>
-                                            <p class="card-text text-muted font">“I've been here twice and I enjoyed my
-                                                ramen both
-                                                times... <span class="text-decoration-none">more</span></p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="tag">Ramen</span>
-                                                <button class="btn btn-danger"
-                                                    onclick="event.preventDefault(); window.location.href='https://your-reserve-link.com';">
-                                                    <i class="bi bi-calendar-event me-1 magnet"></i> Reserve
-                                                </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
-                        <a href="https://your-link.com" class="text-decoration-none text-dark">
-                            <div class="card fleftem mb-3 shadow-sm">
-                                <div class="row box-s g-0">
-                                    <div class="col-md-2" style="padding-top:20px;">
-                                        <img src="https://images.unsplash.com/photo-1603574670812-d24560880210?fit=crop&w=600&q=80"
-                                            class="restaurant-img" alt="Hinodeya Ramen Bar">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold">Hinodeya Ramen Bar</h5>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div class="rating-stars me-2">★★★★★</div>
-                                                <div class="text-muted ms-2 font">4.4 (57 reviews)</div>
-                                            </div>
-                                            <div class="text-muted font">
-                                                📍 Marina/Cow Hollow · <span class="text-danger fw-semibold">Closed until
-                                                    10:00 AM</span>
-                                            </div>
-                                            <div class="mb-2">
-                                                <span class="custom-badge me-2 font">🌱 Vegan friendly</span>
-                                                <span class="text-muted font">👥 Large group friendly</span>
-                                            </div>
-                                            <div class="text-primary mb-1 font">📝 Make an Online Reservation</div>
-                                            <p class="card-text text-muted font">“I've been here twice and I enjoyed my
-                                                ramen both
-                                                times... <span class="text-decoration-none">more</span></p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="tag">Ramen</span>
-                                                <button class="btn btn-danger"
-                                                    onclick="event.preventDefault(); window.location.href='https://your-reserve-link.com';">
-                                                    <i class="bi bi-calendar-event me-1 magnet"></i> Reserve
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://your-link.com" class="text-decoration-none text-dark">
-                            <div class="card fleftem mb-3 shadow-sm">
-                                <div class="row box-s g-0">
-                                    <div class="col-md-2" style="padding-top:20px;">
-                                        <img src="https://images.unsplash.com/photo-1603574670812-d24560880210?fit=crop&w=600&q=80"
-                                            class="restaurant-img" alt="Hinodeya Ramen Bar">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold">Hinodeya Ramen Bar</h5>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div class="rating-stars me-2">★★★★★</div>
-                                                <div class="text-muted ms-2 font">4.4 (57 reviews)</div>
-                                            </div>
-                                            <div class="text-muted font">
-                                                📍 Marina/Cow Hollow · <span class="text-danger fw-semibold">Closed until
-                                                    10:00 AM</span>
-                                            </div>
-                                            <div class="mb-2">
-                                                <span class="custom-badge me-2 font">🌱 Vegan friendly</span>
-                                                <span class="text-muted font">👥 Large group friendly</span>
-                                            </div>
-                                            <div class="text-primary mb-1 font">📝 Make an Online Reservation</div>
-                                            <p class="card-text text-muted font">“I've been here twice and I enjoyed my
-                                                ramen both
-                                                times... <span class="text-decoration-none">more</span></p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="tag">Ramen</span>
-                                                <button class="btn btn-danger"
-                                                    onclick="event.preventDefault(); window.location.href='https://your-reserve-link.com';">
-                                                    <i class="bi bi-calendar-event me-1 magnet"></i> Reserve
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://your-link.com" class="text-decoration-none text-dark">
-                            <div class="card fleftem mb-3 shadow-sm">
-                                <div class="row box-s g-0">
-                                    <div class="col-md-2" style="padding-top:20px;">
-                                        <img src="https://images.unsplash.com/photo-1603574670812-d24560880210?fit=crop&w=600&q=80"
-                                            class="restaurant-img" alt="Hinodeya Ramen Bar">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold">Hinodeya Ramen Bar</h5>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div class="rating-stars me-2">★★★★★</div>
-                                                <div class="text-muted ms-2 font">4.4 (57 reviews)</div>
-                                            </div>
-                                            <div class="text-muted font">
-                                                📍 Marina/Cow Hollow · <span class="text-danger fw-semibold">Closed until
-                                                    10:00 AM</span>
-                                            </div>
-                                            <div class="mb-2">
-                                                <span class="custom-badge me-2 font">🌱 Vegan friendly</span>
-                                                <span class="text-muted font">👥 Large group friendly</span>
-                                            </div>
-                                            <div class="text-primary mb-1 font">📝 Make an Online Reservation</div>
-                                            <p class="card-text text-muted font">“I've been here twice and I enjoyed my
-                                                ramen both
-                                                times... <span class="text-decoration-none">more</span></p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="tag">Ramen</span>
-                                                <button class="btn btn-danger"
-                                                    onclick="event.preventDefault(); window.location.href='https://your-reserve-link.com';">
-                                                    <i class="bi bi-calendar-event me-1 magnet"></i> Reserve
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://your-link.com" class="text-decoration-none text-dark">
-                            <div class="card fleftem mb-3 shadow-sm">
-                                <div class="row box-s g-0">
-                                    <div class="col-md-2" style="padding-top:20px;">
-                                        <img src="https://images.unsplash.com/photo-1603574670812-d24560880210?fit=crop&w=600&q=80"
-                                            class="restaurant-img" alt="Hinodeya Ramen Bar">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold">Hinodeya Ramen Bar</h5>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div class="rating-stars me-2">★★★★★</div>
-                                                <div class="text-muted ms-2 font">4.4 (57 reviews)</div>
-                                            </div>
-                                            <div class="text-muted font">
-                                                📍 Marina/Cow Hollow · <span class="text-danger fw-semibold">Closed until
-                                                    10:00 AM</span>
-                                            </div>
-                                            <div class="mb-2">
-                                                <span class="custom-badge me-2 font">🌱 Vegan friendly</span>
-                                                <span class="text-muted font">👥 Large group friendly</span>
-                                            </div>
-                                            <div class="text-primary mb-1 font">📝 Make an Online Reservation</div>
-                                            <p class="card-text text-muted font">“I've been here twice and I enjoyed my
-                                                ramen both
-                                                times... <span class="text-decoration-none">more</span></p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="tag">Ramen</span>
-                                                <button class="btn btn-danger"
-                                                    onclick="event.preventDefault(); window.location.href='https://your-reserve-link.com';">
-                                                    <i class="bi bi-calendar-event me-1 magnet"></i> Reserve
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://your-link.com" class="text-decoration-none text-dark">
-                            <div class="card fleftem mb-3 shadow-sm">
-                                <div class="row box-s g-0">
-                                    <div class="col-md-2" style="padding-top:20px;">
-                                        <img src="https://images.unsplash.com/photo-1603574670812-d24560880210?fit=crop&w=600&q=80"
-                                            class="restaurant-img" alt="Hinodeya Ramen Bar">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold">Hinodeya Ramen Bar</h5>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div class="rating-stars me-2">★★★★★</div>
-                                                <div class="text-muted ms-2 font">4.4 (57 reviews)</div>
-                                            </div>
-                                            <div class="text-muted font">
-                                                📍 Marina/Cow Hollow · <span class="text-danger fw-semibold">Closed until
-                                                    10:00 AM</span>
-                                            </div>
-                                            <div class="mb-2">
-                                                <span class="custom-badge me-2 font">🌱 Vegan friendly</span>
-                                                <span class="text-muted font">👥 Large group friendly</span>
-                                            </div>
-                                            <div class="text-primary mb-1 font">📝 Make an Online Reservation</div>
-                                            <p class="card-text text-muted font">“I've been here twice and I enjoyed my
-                                                ramen both
-                                                times... <span class="text-decoration-none">more</span></p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="tag">Ramen</span>
-                                                <button class="btn btn-danger"
-                                                    onclick="event.preventDefault(); window.location.href='https://your-reserve-link.com';">
-                                                    <i class="bi bi-calendar-event me-1 magnet"></i> Reserve
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://your-link.com" class="text-decoration-none text-dark">
-                            <div class="card fleftem mb-3 shadow-sm">
-                                <div class="row box-s g-0">
-                                    <div class="col-md-2" style="padding-top:20px;">
-                                        <img src="https://images.unsplash.com/photo-1603574670812-d24560880210?fit=crop&w=600&q=80"
-                                            class="restaurant-img" alt="Hinodeya Ramen Bar">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold">Hinodeya Ramen Bar</h5>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div class="rating-stars me-2">★★★★★</div>
-                                                <div class="text-muted ms-2 font">4.4 (57 reviews)</div>
-                                            </div>
-                                            <div class="text-muted font">
-                                                📍 Marina/Cow Hollow · <span class="text-danger fw-semibold">Closed until
-                                                    10:00 AM</span>
-                                            </div>
-                                            <div class="mb-2">
-                                                <span class="custom-badge me-2 font">🌱 Vegan friendly</span>
-                                                <span class="text-muted font">👥 Large group friendly</span>
-                                            </div>
-                                            <div class="text-primary mb-1 font">📝 Make an Online Reservation</div>
-                                            <p class="card-text text-muted font">“I've been here twice and I enjoyed my
-                                                ramen both
-                                                times... <span class="text-decoration-none">more</span></p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="tag">Ramen</span>
-                                                <button class="btn btn-danger"
-                                                    onclick="event.preventDefault(); window.location.href='https://your-reserve-link.com';">
-                                                    <i class="bi bi-calendar-event me-1 magnet"></i> Reserve
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://your-link.com" class="text-decoration-none text-dark">
-                            <div class="card fleftem mb-3 shadow-sm">
-                                <div class="row box-s g-0">
-                                    <div class="col-md-2" style="padding-top:20px;">
-                                        <img src="https://images.unsplash.com/photo-1603574670812-d24560880210?fit=crop&w=600&q=80"
-                                            class="restaurant-img" alt="Hinodeya Ramen Bar">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold">Hinodeya Ramen Bar</h5>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div class="rating-stars me-2">★★★★★</div>
-                                                <div class="text-muted ms-2 font">4.4 (57 reviews)</div>
-                                            </div>
-                                            <div class="text-muted font">
-                                                📍 Marina/Cow Hollow · <span class="text-danger fw-semibold">Closed until
-                                                    10:00 AM</span>
-                                            </div>
-                                            <div class="mb-2">
-                                                <span class="custom-badge me-2 font">🌱 Vegan friendly</span>
-                                                <span class="text-muted font">👥 Large group friendly</span>
-                                            </div>
-                                            <div class="text-primary mb-1 font">📝 Make an Online Reservation</div>
-                                            <p class="card-text text-muted font">“I've been here twice and I enjoyed my
-                                                ramen both
-                                                times... <span class="text-decoration-none">more</span></p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="tag">Ramen</span>
-                                                <button class="btn btn-danger"
-                                                    onclick="event.preventDefault(); window.location.href='https://your-reserve-link.com';">
-                                                    <i class="bi bi-calendar-event me-1 magnet"></i> Reserve
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                            </a>
 
 
+                        @endforeach
 
                     </ul>
                 </div>

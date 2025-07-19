@@ -37,6 +37,9 @@
                                         class="bi bi-search me-3"></i>Explore help for Business</a></li>
                         </ul>
                     </li>
+
+
+                    
                     <li class="nav-item">
                         <a class="nav-link me-2 active text-light navver" aria-current="page"
                             href="{{ route('review') }}">Write a Review</a>

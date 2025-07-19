@@ -29,6 +29,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
-
+<style>
+    .progress {
+      height: 6px;
+      border-radius: 4px;
+      margin-left: 3%;
+    
+    }
+</style>
 
 </head>

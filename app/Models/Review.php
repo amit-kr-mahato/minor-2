@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     protected $fillable = [
-        'business_id',
-        'user_id',
+        // 'business_id',
+        // 'user_id',
         'rating',
         'Review',
         

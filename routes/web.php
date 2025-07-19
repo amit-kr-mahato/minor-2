@@ -16,6 +16,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\BusinessControlleer;
+use App\Http\Controllers\ListingController;
+use App\Http\Controllers\MenuController;
 
 
 
@@ -80,9 +82,6 @@ Route::middleware(['auth', 'role:Business Owner'])->prefix('business')->group(fu
     Route::get('/dashboard', [BusinessController::class, 'dashboard'])->name('businessdashboard.dashboard');
 });
 // User routes
-Route::middleware(['auth', 'role:User'])->group(function () {
-    Route::get('/index', [UserController::class, 'dashboard'])->name('index');
-});
 
 // Shared route (e.g., admin + businessowner)
 Route::middleware(['auth', 'role:Admin,businessowner'])->get('/reports', [ReportController::class, 'index'])->name('reports.index');
@@ -111,7 +110,7 @@ Route::get('/business/review', [BusinessController::class, 'review'])->name('wri
 //rewivew
 Route::get('/business/review', [ReviewController::class, 'review'])->name('writereview');
 
-Route::post('/business/review', [ReviewController::class, 'submitReview'])->name('review');
+Route::post('/business/review', [ReviewController::class, 'submitReview'])->name('review')->middleware('auth');
 
 
 //upload photo
@@ -183,39 +182,37 @@ Route::get('/admin/settings', [SettingController::class, 'edit'])->name('admin.s
 Route::put('/admin/settings', [SettingController::class, 'update'])->name('admin.settings.update');
 
 
-//Business Owner
+
 
 
 // Business owner routes
 
 Route::middleware(['auth', 'role:Business Owner'])
-    ->prefix('businessdashboard/businessinfo')
+    ->prefix('dashboard/business')
     ->name('businessdashboard.businessinfo.')
     ->group(function () {
+        Route::get('/', [BusinessController::class, 'Businessindex'])->name('index');              // GET dashboard/business
+        Route::get('/create', [BusinessController::class, 'Businesscreate'])->name('create');      // GET dashboard/business/create
+        Route::post('/store', [BusinessController::class, 'Businessstore'])->name('store');        // POST dashboard/business/store
 
-        // List all businesses
-        Route::get('/', [BusinessController::class, 'Businessindex'])->name('index');
-
-        // Show create form
-        Route::get('/create', [BusinessController::class, 'Businesscreate'])->name('create');
-
-        // Store new business
-        Route::post('/', [BusinessController::class, 'Businessstore'])->name('store');
-
-        // Show edit form
-        Route::get('/{business}/edit', [BusinessController::class, 'Businessedit'])->name('edit');
-
-        // Update business
-        Route::put('/{business}', [BusinessController::class, 'Businessupdate'])->name('update');
-
-        // Delete business
-        Route::delete('/{business}', [BusinessController::class, 'Businessdestroy'])->name('destroy');
-
-        // Show detail view
-        Route::get('/{business}/detail', [BusinessController::class, 'Business_detail'])->name('detail');
+        Route::get('/{business}', [BusinessController::class, 'Businessshow'])->name('show');      // GET dashboard/business/{business}
+        Route::get('/{business}/edit', [BusinessController::class, 'Businessedit'])->name('edit'); // GET dashboard/business/{business}/edit
+        Route::put('/{business}', [BusinessController::class, 'Businessupdate'])->name('update');  // PUT dashboard/business/{business}
+        Route::delete('/{business}', [BusinessController::class, 'Businessdestroy'])->name('destroy'); // DELETE dashboard/business/{business}
     });
 
 
+//menu item
+
+Route::prefix('businessdashboard')->group(function () {
+    Route::get('menu', [MenuController::class, 'index'])->name('menu.index');
+    Route::get('menu/create', [MenuController::class, 'create'])->name('menu.create');
+    Route::post('menu', [MenuController::class, 'store'])->name('menu.store');
+    Route::get('menu/{menu}/edit', [MenuController::class, 'edit'])->name('menu.edit');
+    Route::put('menu/{menu}', [MenuController::class, 'update'])->name('menu.update');
+    Route::delete('menu/{menu}', [MenuController::class, 'destroy'])->name('menu.destroy');
+    Route::delete('menu-image/{menuImage}', [MenuController::class, 'deleteImage'])->name('menu.image.delete');
+});
 
 
 

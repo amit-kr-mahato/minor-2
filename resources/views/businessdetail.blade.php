@@ -10,72 +10,74 @@
 </head>
 <style>
   .btn {
-  display: inline-block;
-  padding: 10px 15px;
-  background-color: #8b7676;
-  color: #f3eeee;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 15px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  transition: background-color 0.3s;
-}
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #8b7676;
+    color: #f3eeee;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 15px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s;
+  }
 
-.btn i {
-  margin-right: 6px;
-  color: rgb(238, 20, 67);
-}
+  .btn i {
+    margin-right: 6px;
+    color: rgb(238, 20, 67);
+  }
 
-.btn:hover {
-  background-color: #0f0c0c;
-  color: white
-}
-
+  .btn:hover {
+    background-color: #0f0c0c;
+    color: white
+  }
 </style>
 
 <body>
 
 
   <!-- Slider Section -->
-  <div class="slider-container">
-    <div class="slides">
-      <img src="{{ asset('frontend/images/Roofing_iStock-934626558.0-1-scaled.jpg.optimal.jpg') }}" alt="Salad" />
-      <img src="{{ asset('frontend/images/Roofing_iStock-934626558.0-1-scaled.jpg.optimal.jpg') }}" alt="Pizza" />
-      <img src="{{ asset('frontend/images/Roofing_iStock-934626558.0-1-scaled.jpg.optimal.jpg') }}" alt="Storefront" />
-      <img src="{{ asset('frontend/images/Roofing_iStock-934626558.0-1-scaled.jpg.optimal.jpg') }}" alt="Extra" />
-    </div>
+<div class="slider-container">
+  @foreach ($businesses as $business)
+    <div class="business-slideRr slide">
+        <img style="width: 100%" src="{{ $business->banner ? asset('storage/' . $business->banner) : asset('frontend/images/default-banner.jpg') }}" alt="{{ $business->business_name }} Banner" />
+       
+      </div>
 
-    <div class="overlay">
-      <div class="title">Mountain Mike's Pizza</div>
-      <div class="stars">
-        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-        <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-        <span>4.2 (157 reviews)</span>
+      <div class="overlay">
+        <div class="title" style="color: #0f0c0c">{{ $business->business_name }}</div>
+        <div class="stars">
+          <i class="fas fa-star" ></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+          <span style="color: #0f0c0c">4.2 (157 reviews)</span>
+        </div>
+        <div class="info">
+          <span style="color: #0f0c0c"><i class="fas fa-check-circle" style="color:lightblue"></i> Claimed</span>
+          <span style="color: #0f0c0c">{{ $business->categories }}</span>
+        </div>
+        <div class="info" style="color: #0f0c0c">
+          <span class="status">Open</span> 10:00 AM - 2:00 AM (Next day)
+        </div>
+        <div class="info">
+          <a href="#" class="button">See hours</a>
+          <span style="color:lightblue">Updated 2 months ago</span>
+        </div>
       </div>
-      <div class="info">
-        <span><i class="fas fa-check-circle" style="color:lightblue"></i> Claimed</span>
-        <span>$$</span>
-        <span>Pizza, Chicken Wings</span>
-      </div>
-      <div class="info">
-        <span class="status">Open</span> 10:00 AM - 2:00 AM (Next day)
-      </div>
-      <div class="info">
-        <a href="#" class="button">See hours</a>
-        <span style="color:lightblue">Updated 2 months ago</span>
-      </div>
-    </div>
 
-    <a href="{{route('seemorebusinessdetail')}}" target="_blank" class="photos-link">See all 154 photos</a>
-  </div>
+      <a href="{{ route('seemorebusinessdetail', $business->id) }}" target="_blank" class="photos-link">
+        See all photos
+      </a>
+    </div>
+  @endforeach
+</div>
+
 
   <!-- Top bar with action buttons -->
   <div class="top-bar">
     <div class="action-buttons">
       <a href="{{route('writereview')}}" class="btn"><i class="fa-solid fa-star"></i> Write a review</a>
       <a href="{{route('addphoto')}}" target="_blank" class="btn"><i class="fa-solid fa-camera"></i> Add photo</a>
- 
+
 
     </div>
   </div>

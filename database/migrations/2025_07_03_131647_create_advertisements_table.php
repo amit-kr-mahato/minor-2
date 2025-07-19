@@ -16,7 +16,7 @@ return new class extends Migration
            Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
             $table->string('image');
-             $table->string('title')->nullable()->after('image'); // nullable if optional
+            $table->string('title')->nullable(); // nullable if optional
             $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->timestamps();
         });
