@@ -17,9 +17,7 @@
                     <button class="btn btn-danger btn-outline-danger text-light" type="submit">Search</button>
                 </form>
                 <ul class="navbar-nav mb-2 mb-lg-0">
-                    
-                        
-                 
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle navver text-light" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -30,7 +28,7 @@
                                         class="bi bi-house-add-fill me-3"></i>Add a business</a></li>
                             <li><a class="dropdown-item" href="{{ route('claim') }}"><i
                                         class="bi bi-check2-circle me-3"></i>Claim your business</a></li>
-                           <li>
+                            <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="{{ route('Explore') }}"><i
@@ -39,7 +37,7 @@
                     </li>
 
 
-                    
+
                     <li class="nav-item">
                         <a class="nav-link me-2 active text-light navver" aria-current="page"
                             href="{{ route('review') }}">Write a Review</a>
@@ -48,7 +46,7 @@
                         <a class="nav-link me-3  text-light navver" href="{{ route('project') }}">Start a
                             Project</a>
                     </li>
-                    
+
 
                     @auth
                         <div x-data="{ open: false }" class="mt-1 ms-2">

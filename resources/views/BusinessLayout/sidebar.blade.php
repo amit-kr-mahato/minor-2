@@ -67,7 +67,7 @@
         <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
       </a>
       <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
-        <a href="" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Reviews</a>
+        <a href="{{route('businessdashboard.reviews.index')}}" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Reviews</a>
       </div>
     </div>
 

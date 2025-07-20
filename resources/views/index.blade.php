@@ -10,7 +10,7 @@
                     <div class="item" style="background-image:url('{{ asset('storage/' . $ad->image) }}')">
                         <div class="content">
                             <div class="title mb-4" style="color:white;">{{ $ad->title }}</div>
-                            
+
                         </div>
                     </div>
 
@@ -19,7 +19,7 @@
                 <div class="item" style="background-image:url('{{ asset('frontend/images/Chicken-Soup-main-2.webp') }}')">
                     <div class="content">
                         <div class="title mb-4" style="color:white;">Praiseworthy soup</div>
-                       
+
                     </div>
                 </div>
                 <div class="item"
@@ -29,7 +29,7 @@
                         <div class="container">
                             <div class="title mb-4" style="color:white;">Time for a tune-up?</div>
 
-                           
+
                         </div>
                     </div>
 
@@ -40,7 +40,7 @@
 
                     <div class="content">
                         <div class="title mb-4" style="color:white;">Nothing like a new coat of paint</div>
-                      
+
                     </div>
 
                 </div>
@@ -57,65 +57,48 @@
 
 
     <!------------------------------ Recent Acativity-------------------------------->
-
     <div class="container mt-4">
         <h1 class="text-center">Recent Activity</h1>
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card p-3 shadow-sm">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="{{ asset('frontend/images/Chicken-Soup-main-2.webp') }}" class="rounded-circle me-2"
-                            width="50" height="50" alt="User Image">
-                        <div>
-                            <p class="mb-0"><strong>Phil A.</strong> wrote a review</p>
-                            <small class="text-muted">28 minutes ago</small>
+            @foreach ($reviews as $review)
+                <div class="col-md-4">
+                    <div class="card p-3 shadow-sm h-100">
+                        <!-- User Info -->
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="{{ asset('frontend/images/Chicken-Soup-main-2.webp') }}" class="rounded-circle me-2"
+                                width="50" height="50" alt="User">
+                            <div>
+                                <p class="mb-0"><strong>{{ $review->user->name ?? 'Anonymous' }}</strong> wrote a review</p>
+                                <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                            </div>
                         </div>
-                    </div>
-                    <img src="{{ asset('frontend/images/plumber-fixing-white-sink-pipe-with-adjustable-wrench-picture-id1150199946.jpg') }}"
-                        class="img-fluid rounded mb-2" alt="City Image">
-                    <a href="#" class="text-dark text-decoration-none">
-                        <h5>city of the evil</h5>
-                    </a>
-                    <p class="text-danger">★★★★☆</p>
-                    <p class="short-paragraph">Emeryville is a small city, right next to the bay, that's sandwiched in
-                        between Oakland and Berkeley!...</p>
-                    <p class="full-paragraph" style="display: none;">Emeryville is a small city, right next to the bay,
-                        that's sandwiched in between Oakland and Berkeley! It has a vibrant community and offers various
-                        activities for residents and visitors alike. The city is known for its art scene, parks, and
-                        waterfront views. Whether you're looking to explore local shops or enjoy a meal at one of the many
-                        restaurants, Emeryville has something for everyone.</p>
-                    <a href="#" class="text-dark read-more">Read more</a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card p-3 shadow-sm">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="{{ asset('frontend/images/Chicken-Soup-main-2.webp') }}" class="rounded-circle me-2"
-                            width="50" height="50" alt="User Image">
-                        <div>
-                            <p class="mb-0"><strong>Thomas M.</strong> wrote a review</p>
-                            <small class="text-muted">30 minutes ago</small>
-                        </div>
-                    </div>
-                    <img src="{{ asset('frontend/images/Roofing_iStock-934626558.0-1-scaled.jpg.optimal.jpg') }}"
-                        class="img-fluid rounded mb-2" alt="Restaurant Image">
-                    <a href="#" class="text-dark text-decoration-none">
-                        <h5>606</h5>
-                    </a>
-                    <p class="text-danger">★★★★★</p>
-                    <p class="short-paragraph">Emeryville is a small city, right next to the bay, that's sandwiched in
-                        between Oakland and Berkeley!...</p>
-                    <p class="full-paragraph" style="display: none;">Emeryville is a small city, right next to the bay,
-                        that's sandwiched in between Oakland and Berkeley! It has a vibrant community and offers various
-                        activities for residents and visitors alike. The city is known for its art scene, parks, and
-                        waterfront views. Whether you're looking to explore local shops or enjoy a meal at one of the many
-                        restaurants, Emeryville has something for everyone.</p>
-                    <a href="#" class="text-dark read-more">Read more</a>
-                </div>
-            </div>
-        </div>
 
+                        <!-- Business Banner -->
+                        @if($review->business && $review->business->banner)
+                            <img src="{{ asset('storage/' . $review->business->banner) }}" class="img-fluid rounded mb-2"
+                                alt="Business Image">
+                        @endif
+
+                        <!-- Business Name  -->
+                        <h5>{{ $review->business->business_name ?? 'Business Name' }}</h5>
+                        <!-- Rating Stars -->
+                        <p class="text-danger mb-1">
+                            {{ str_repeat('★', $review->rating) . str_repeat('☆', 5 - $review->rating) }}
+                        </p>
+
+                        <!-- Comment -->
+                        <p class="short-paragraph">{{ Str::limit($review->review, 100) }}</p>
+                        <p class="full-paragraph" style="display: none;">{{ $review->review }}</p>
+
+                        <!-- Toggle Read More -->
+                        <a href="javascript:void(0);" class="text-dark read-more">Read more</a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
     </div>
+
+
 
     <!------------------------------category-------------------------------->
 
@@ -280,3 +263,28 @@
 
     </div>
 @endsection
+<!-- Read More Toggle Script -->
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.read-more').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const card = this.closest('.card');
+                    const shortPara = card.querySelector('.short-paragraph');
+                    const fullPara = card.querySelector('.full-paragraph');
+
+                    if (fullPara.style.display === 'none') {
+                        fullPara.style.display = 'block';
+                        shortPara.style.display = 'none';
+                        this.textContent = 'Show less';
+                    } else {
+                        fullPara.style.display = 'none';
+                        shortPara.style.display = 'block';
+                        this.textContent = 'Read more';
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

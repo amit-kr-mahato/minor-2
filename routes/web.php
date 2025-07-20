@@ -18,6 +18,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\BusinessControlleer;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\BusinessReviewController;
 
 
 
@@ -213,6 +214,17 @@ Route::prefix('businessdashboard')->group(function () {
     Route::delete('menu/{menu}', [MenuController::class, 'destroy'])->name('menu.destroy');
     Route::delete('menu-image/{menuImage}', [MenuController::class, 'deleteImage'])->name('menu.image.delete');
 });
+
+//business reviews
+
+// Grouped under 'businessdashboard' prefix (if you're using a dashboard layout or middleware)
+Route::prefix('businessdashboard')->name('businessdashboard.')->middleware(['auth'])->group(function () {
+    Route::get('/reviews', [BusinessReviewController::class, 'index'])->name('reviews.index');
+    Route::get('/reviews/{id}/edit', [BusinessReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/reviews/{id}', [BusinessReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{id}', [BusinessReviewController::class, 'destroy'])->name('reviews.destroy');
+});
+
 
 
 

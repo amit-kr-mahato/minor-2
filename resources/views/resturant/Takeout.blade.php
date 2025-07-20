@@ -6,24 +6,6 @@
             <div id="fleft">
 
                 <div class="container my-4 flet">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Restaurants</a></li>
-                            <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Takeout</a></li>
-                        </ol>
-                    </nav>
-
-                    {{-- <h2 class="fw-bold">Top 10 Best Takeout Near San Francisco, California</h2>
-
-                    <div class="d-flex gap-2 my-3">
-                        <button class="btn btn-outline-secondary">Price</button>
-                        <button class="btn btn-outline-primary">Open at 11:00 pm</button>
-                        <button class="btn btn-outline-secondary">Reservations</button>
-                        <button class="btn btn-outline-secondary">Offers Online Waitlist</button>
-                        <button class="btn btn-outline-secondary">Offers Delivery</button>
-                        <button class="btn btn-outline-secondary">Offers Takeout</button>
-                    </div> --}}
-
                     <h5 class="text-muted">Sponsored Results</h5>
                     <ul>
                         @foreach ($businesses as $business)

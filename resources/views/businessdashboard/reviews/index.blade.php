@@ -35,7 +35,7 @@
       </div>
       </td>
       <td class="p-3 space-x-2 whitespace-nowrap">
-      <a href="{{ route('admin.reviews.edit', $review->id) }}"
+      <a href="{{ route('businessdashboard.reviews.edit', $review->id) }}"
         class="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded px-2 py-1 text-sm">Edit</a>
 
      <div x-data="{ showConfirm: false }" class="inline">
@@ -56,7 +56,7 @@
         <button @click="showConfirm = false"
           class="px-4 py-2 rounded text-gray-700 hover:underline">Cancel</button>
 
-        <form action="{{ route('admin.reviews.destroy', $review->id) }}" method="POST">
+        <form action="{{ route('businessdashboard.reviews.destroy', $review->id) }}" method="POST">
           @csrf
           @method('DELETE')
           <button type="submit"

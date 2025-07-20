@@ -5,17 +5,23 @@ use App\Notifications\VerificationEmail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Advertisement; 
+use App\Models\Advertisement;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use Spatie\Permission\Models\Role;
 use App\Models\Business;
+use App\Models\Review;
 
 class FrontendController extends Controller {
     public function home() {
-         $ads = Advertisement::where('status', 'active')->get();
-         return view('index', compact('ads'));
+        $ads = Advertisement::where( 'status', 'active' )->get();
+        $reviews = Review::with( [ 'user', 'business' ] )
+        ->latest()
+        ->take( 6 )
+        ->get();
+        return view( 'index', compact( 'ads', 'reviews' ) );
     }
 
     public function addBusiness() {
@@ -30,7 +36,6 @@ class FrontendController extends Controller {
         return view( 'business.Explore' );
     }
 
-
     public function Review() {
         return view( 'review' );
     }
@@ -39,10 +44,10 @@ class FrontendController extends Controller {
         return view( 'project' );
     }
 
-  public function Takeout() {
-    $businesses = Business::all();
-    return view('resturant.Takeout', compact('businesses'));
-}
+    public function Takeout() {
+        $businesses = Business::all();
+        return view( 'resturant.Takeout', compact( 'businesses' ) );
+    }
 
     public function Contractor() {
         return view( 'contractor' );
@@ -53,8 +58,8 @@ class FrontendController extends Controller {
     }
 
     public function Signup() {
-        $roles = Role::where('name', '!=', 'Admin')->get();
-        return view( 'signup', compact('roles'));
+        $roles = Role::where( 'name', '!=', 'Admin' )->get();
+        return view( 'signup', compact( 'roles' ) );
     }
 
     public function insert( Request $request ) {
@@ -79,12 +84,10 @@ class FrontendController extends Controller {
             $user->role = 'admin';
             $user->save();
 
-            $roleId= $request->role;
-            $role = Role::where('id',$roleId)->first();
+            $roleId = $request->role;
+            $role = Role::where( 'id', $roleId )->first();
 
-            $user->assignRole($role->name);
-
-
+            $user->assignRole( $role->name );
 
             $userData = [
                 'name'=> $user->name
@@ -122,7 +125,7 @@ class FrontendController extends Controller {
         if ( Auth::attempt( [ 'email' => $credentials[ 'email' ], 'password' => $credentials[ 'password' ] ] ) ) {
             $request->session()->regenerate();
             $user = Auth::user();
-            $userRole = $user->getRoleNames()[0];
+            $userRole = $user->getRoleNames()[ 0 ];
             // Role-based redirection
             return match ( $userRole ) {
                 'Admin' => redirect()->route( 'admin.dashboard' ),
