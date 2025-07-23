@@ -4,7 +4,7 @@
     <div class="ml-64 w-full min-h-screen p-6 bg-gray-100">
         <div class="max-w-4xl mx-auto px-4">
             <h1 class="text-2xl font-bold mb-6 text-gray-800">Edit Menu {{ $menu->id }}</h1>
-
+                <a href="{{ route('menu.index') }}" class="text-blue-600 hover:underline">← Back</a>
             <form method="POST" action="{{ route('menu.update', $menu) }}" enctype="multipart/form-data" class="mb-8 space-y-4 bg-white p-6 rounded shadow">
                 @csrf
                 @method('PUT')

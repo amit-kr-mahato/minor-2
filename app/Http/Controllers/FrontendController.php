@@ -62,58 +62,43 @@ class FrontendController extends Controller {
         return view( 'signup', compact( 'roles' ) );
     }
 
-    public function insert( Request $request ) {
-        // Validate the inputs
+   public function insert(Request $request) {
+    $request->validate([
+        'name' => 'required|string',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6',
+        'role' => 'required|exists:roles,id',  // Validate role exists in roles table
+    ]);
 
-        $request->validate( [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'role' => 'required',
-        ] );
+    try {
+        DB::beginTransaction();
 
-        try {
-            DB::beginTransaction();
+        $role = Role::find($request->role);
 
-            // Step 2: Create and save the user
-            $user = new User();
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = Hash::make( $request->password );
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
 
-            $user->role = 'admin';
-            $user->save();
+        $user->assignRole($role->name);
 
-            $roleId = $request->role;
-            $role = Role::where( 'id', $roleId )->first();
+        $userData = [
+            'name' => $user->name,
+        ];
 
-            $user->assignRole( $role->name );
+        Notification::route('mail', $request->email)->notify(new VerificationEmail($userData));
 
-            $userData = [
-                'name'=> $user->name
-            ];
+        DB::commit();
 
-            Notification::route( 'mail', $request->email )->notify( new VerificationEmail( $userData ) );
-            // auth()->login( $user );
-            // Log them in
+        return redirect('sigin')->with('success', 'Registration successful.');
+    } catch (\Exception $e) {
+        DB::rollBack();
 
-            // $user->sendEmailVerificationNotification();
-            // // Send verification link
-
-            // return redirect( '/email/verify' );
-            // // Built-in page saying “Please verify your email”
-
-            DB::commit();
-            // Commit the transaction
-
-            return redirect( 'sigin' )->with( 'success', 'Registration successful.' );
-        } catch ( \Exception $e ) {
-            DB::rollBack();
-            // Rollback on error
-
-            return back()->withErrors( [ 'error' => 'Registration failed. Please try again.' ] );
-        }
+        return back()->withErrors(['error' => $e->getMessage()]);
     }
+}
+
     //dropdown for admin panel and user
 
     public function SigninCheck( Request $request ) {

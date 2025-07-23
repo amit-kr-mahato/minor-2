@@ -60,16 +60,55 @@
                                     </div>
 
 
+                                    <!-- Trigger link -->
+                                    <small>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot
+                                            Password?</a>
+                                    </small>
 
-                                    <div class="input-group mb-5 d-flex justify-content-between">
+                                    <!-- Password Reset Modal -->
+                                    {{-- <div class="modal fade" id="forgotPasswordModal" tabindex="-1"
+                                        aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content shadow rounded-3">
+                                                <div class="modal-header border-0">
+                                                    <h5 class="modal-title" id="forgotPasswordModalLabel">Reset Your
+                                                        Password</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
 
+                                                <form method="POST" action="{{ route('password.email') }}">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="resetEmail" class="form-label">Enter your email
+                                                                address</label>
+                                                            <input type="email" name="email" id="resetEmail"
+                                                                class="form-control @error('email') is-invalid @enderror"
+                                                                required placeholder="you@example.com">
 
-                                        <div class="forgot">
-                                            <small><a href="#">Forgot
-                                                    Password?</a></small>
+                                                            @error('email')
+                                                                <span class="text-danger small">{{ $message }}</span>
+                                                            @enderror
+
+                                                            @if(session('status'))
+                                                                <div class="alert alert-success mt-2" role="alert">
+                                                                    {{ session('status') }}
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal-footer border-0">
+                                                        <button type="submit" class="btn btn-primary w-100">Send Reset
+                                                            Link</button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
+                                    </div> --}}
 
-                                    </div>
 
                                     <div class="input-group mb-3">
                                         <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Login</button>

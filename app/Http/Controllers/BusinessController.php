@@ -125,7 +125,7 @@ class BusinessController extends Controller {
 
     public function Businessdetail() {
         $businesses = Business::all();
-        return view( 'businessdetail' ,compact('businesses'));
+        return view( 'businessdetail', compact( 'businesses' ) );
     }
 
     public function Seemorephoto() {
@@ -304,4 +304,30 @@ class BusinessController extends Controller {
             'banner' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
         ] );
     }
+
+   public function search(Request $request)
+{
+    $query = Business::query();
+
+    // Filter by business name if provided
+    if ($request->filled('name')) {
+        $query->where('business_name', 'like', '%' . $request->name . '%');
+    }
+
+    // Filter by city OR province matching the single 'location' input
+    if ($request->filled('location')) {
+        $location = $request->location;
+
+        $query->where(function ($q) use ($location) {
+            $q->where('city', 'like', '%' . $location . '%')
+              ->orWhere('province', 'like', '%' . $location . '%');
+        });
+    }
+
+    $businesses = $query->get();
+
+    return view('resturant.Takeout', compact('businesses'));
+}
+
+
 }

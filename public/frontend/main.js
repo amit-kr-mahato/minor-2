@@ -118,16 +118,16 @@ resetTimeAnimation();
 //===============================================end =======================================
 
 
-const map = L.map("map").setView([37.7749, -122.4194], 12);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors",
-}).addTo(map);
-const locations = [
-    { coords: [37.7749, -122.4194], popup: "San Francisco City Center" },
-    { coords: [37.7849, -122.4094], popup: "Elite Electricians HQ" },
-];
-locations.forEach((loc) => {
-    L.marker(loc.coords).addTo(map).bindPopup(loc.popup);
-});
+// const map = L.map("map").setView([37.7749, -122.4194], 12);
+// L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+//     attribution: "&copy; OpenStreetMap contributors",
+// }).addTo(map);
+// const locations = [
+//     { coords: [37.7749, -122.4194], popup: "San Francisco City Center" },
+//     { coords: [37.7849, -122.4094], popup: "Elite Electricians HQ" },
+// ];
+// locations.forEach((loc) => {
+//     L.marker(loc.coords).addTo(map).bindPopup(loc.popup);
+// });
 
 

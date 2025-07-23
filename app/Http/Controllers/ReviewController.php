@@ -17,10 +17,10 @@ class ReviewController extends Controller {
 
     public function submitReview(Request $request)
     {
-        // dd($request->all());
+        //dd($request->all());
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'review' => 'required|string|min:85',
+            'review' => 'required|string|min:40|max:85',
         ]);
 
         Review::create([

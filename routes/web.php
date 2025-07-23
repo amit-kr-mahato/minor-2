@@ -19,7 +19,8 @@ use App\Http\Controllers\BusinessControlleer;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BusinessReviewController;
-
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 
 
@@ -226,5 +227,20 @@ Route::prefix('businessdashboard')->name('businessdashboard.')->middleware(['aut
 });
 
 
+Route::get('/search', [BusinessController::class, 'search'])->name('business.search');
 
 
+// //password reset
+// Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+// Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+
+// // Show reset form
+// Route::get('/reset-password/{token}', function ($token) {
+//     return view('auth.reset-password', ['token' => $token]);
+// })->middleware('guest')->name('password.reset');
+
+// // Handle reset form POST
+// Route::post('/reset-password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])
+//     ->middleware('guest')
+//     ->name('password.update');

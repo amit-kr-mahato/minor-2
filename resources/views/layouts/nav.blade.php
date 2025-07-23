@@ -11,9 +11,12 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <form class="d-flex me-5">
-                    <input class="form-control me-2" type="search" placeholder="Things to do" aria-label="Search">
-                    <input class="form-control me-2" type="search" placeholder="Location" aria-label="Search">
+                <!-- Inside your navbar layout -->
+                <form action="{{ route('business.search') }}" method="GET" class="d-flex me-5">
+                    <input class="form-control me-2" type="search" name="name" placeholder="Things to do"
+                        value="{{ request('name') }}">
+                    <input class="form-control me-2" type="search" name="location" placeholder="Location"
+                        value="{{ request('location') }}">
                     <button class="btn btn-danger btn-outline-danger text-light" type="submit">Search</button>
                 </form>
                 <ul class="navbar-nav mb-2 mb-lg-0">

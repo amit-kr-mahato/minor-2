@@ -1,67 +1,108 @@
 @extends('layouts.app')
 
 @section('content')
-    <div id="feature">
-        <div id="featureimg">
-            <div id="fleft">
-
-                <div class="container my-4 flet">
-                    <h5 class="text-muted">Sponsored Results</h5>
-                    <ul>
-                        @foreach ($businesses as $business)
-                            <a href="{{route('businessdetail')}}" class="text-decoration-none text-dark">
-                                <div class="card fleftem mb-3 shadow-sm">
-                                    <div class="row box-s g-0">
-                                        <div class="col-md-2" style="padding-top:20px;">
-                                            <img src="{{ $business->logo ? asset('storage/' . $business->logo) : 'https://via.placeholder.com/100x100?text=No+Logo' }}"
-                                                class="restaurant-img" alt="{{ $business->business_name }}">
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <h5 class="card-title fw-bold">{{ $business->business_name }}</h5>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <div class="rating-stars me-2">★★★★★</div>
-                                                    <div class="text-muted ms-2 font">4.4 (57 reviews)</div>
-                                                </div>
-                                                <div class="text-muted font">
-                                                    📍 {{ $business->city }} <span class="text-danger fw-semibold">Closed until
-                                                        10:00 AM</span>
-                                                </div>
-                                                <div class="mb-2">
-                                                    <span class="custom-badge me-2 font">🌱{{ $business->categories }}</span>
-                                                    <span class="text-muted font">👥 Large group friendly</span>
-                                                </div>
-                                                <div class="text-primary mb-1 font">📝 Make an Online Reservation</div>
-                                                <p class="card-text text-muted font">“I've been here twice and I enjoyed my
-                                                    ramen both
-                                                    times... <span class="text-decoration-none">more</span></p>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <span class="tag">{{ $business->categories }}</span>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-
-
-                        @endforeach
-
-                    </ul>
+@if($businesses->isEmpty())
+    <div class="alert alert-warning text-center mt-4">
+        No businesses found for your search.
+    </div>
+@else
+    <div style="display: flex; height: 90vh; gap: 1rem; overflow: hidden;">
+        <!-- Business List -->
+        <div style="flex: 1; overflow-y: auto; padding: 1rem; border-right: 1px solid #ccc;">
+            <h5 class="text-muted mb-3">Search Results</h5>
+            @foreach ($businesses as $business)
+                <div onclick="highlightBusiness({{ $business->id }})"
+                    style="cursor: pointer; margin-bottom: 1rem; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <img src="{{ $business->logo ? asset('storage/' . $business->logo) : 'https://via.placeholder.com/80x80?text=No+Logo' }}"
+                            alt="{{ $business->business_name }}"
+                            style="width: 80px; height: 80px; object-fit: cover; border-radius: 6px;" />
+                        <div>
+                            <h6 style="margin: 0;">{{ $business->business_name }}</h6>
+                            <small>📍 {{ $business->city }}</small><br>
+                            <small class="text-muted">{{ $business->categories }}</small>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div id="fright">
-                <div class="images">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56947.66644355438!2d85.7569402747768!3d26.86445967876073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ec6f054dc2f283%3A0x283f99d0f55f25ed!2sAurahi%2C%2045700!5e0!3m2!1sen!2snp!4v1744282421508!5m2!1sen!2snp"
-                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-                </div>
-            </div>
+            @endforeach
         </div>
-    </div>
 
+        <!-- Map Container -->
+        <div id="map" style="flex: 2; height: 100%; border-radius: 8px;"></div>
     </div>
+@endif
 @endsection
+
+@push('scripts')
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+    <!-- MarkerCluster CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+    <script>
+        const map = L.map('map').setView([27.7, 85.3], 12);
+
+        // OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+            maxZoom: 19,
+        }).addTo(map);
+
+        const defaultIcon = L.icon({
+            iconUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+        });
+
+        const highlightIcon = L.icon({
+            iconUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-red.png',
+            iconSize: [30, 45],
+            iconAnchor: [15, 45],
+            popupAnchor: [1, -34],
+        });
+
+        const markers = {};
+        const markerCluster = L.markerClusterGroup();
+
+        @foreach ($businesses as $business)
+            const marker{{ $business->id }} = L.marker(
+                [{{ $business->latitude }}, {{ $business->longitude }}],
+                { icon: defaultIcon }
+            ).bindPopup(`
+                <strong>{{ addslashes($business->business_name) }}</strong><br>
+                {{ addslashes($business->address1) }}<br>
+                📍 {{ addslashes($business->city) }}
+            `);
+            markers[{{ $business->id }}] = marker{{ $business->id }};
+            markerCluster.addLayer(marker{{ $business->id }});
+        @endforeach
+
+        map.addLayer(markerCluster);
+
+        // Zoom to and highlight marker on list click
+        function highlightBusiness(id) {
+            const marker = markers[id];
+            if (!marker) return;
+
+            map.setView(marker.getLatLng(), 15);
+            marker.openPopup();
+            marker.setIcon(highlightIcon);
+
+            setTimeout(() => {
+                marker.setIcon(defaultIcon);
+            }, 3000);
+        }
+
+        // Fix map sizing after page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
+        });
+    </script>
+@endpush

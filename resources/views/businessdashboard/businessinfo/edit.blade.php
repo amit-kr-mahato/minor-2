@@ -4,9 +4,11 @@
 <div class="ml-64 w-full min-h-screen p-6 bg-gray-300">
     <div class="max-w-[900px] px-4 shadow-md">
         <h2 class="text-2xl font-bold mb-6">Edit Business</h2>
+        <a href="{{ route('businessdashboard.businessinfo.index') }}" class="text-blue-600 hover:underline">← Back</a>
 
-        <form action="{{ route('businessdashboard.businessinfo.update', $business) }}" method="POST" enctype="multipart/form-data"
-            class="space-y-4">
+
+        <form action="{{ route('businessdashboard.businessinfo.update', $business) }}" method="POST"
+            enctype="multipart/form-data" class="space-y-4">
             @csrf
             @method('PUT')
             <div>
