@@ -5,7 +5,6 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
@@ -21,6 +20,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BusinessReviewController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\KhaltiController;
 
 
 
@@ -230,6 +230,9 @@ Route::prefix('businessdashboard')->name('businessdashboard.')->middleware(['aut
 Route::get('/search', [BusinessController::class, 'search'])->name('business.search');
 
 
+Route::post('/forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+
 // //password reset
 // Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 // Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
@@ -244,3 +247,18 @@ Route::get('/search', [BusinessController::class, 'search'])->name('business.sea
 // Route::post('/reset-password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])
 //     ->middleware('guest')
 //     ->name('password.update');
+
+
+
+
+Route::get('/review', [ReviewController::class, 'review'])->name('review.form');
+Route::post('/review', [ReviewController::class, 'submitReview'])->name('review.submit');
+
+
+//khalti integration
+
+Route::prefix('businessdashboard')->middleware('auth')->name('businessdashboard.')->group(function () {
+    Route::get('/payment/khalti', [KhaltiController::class, 'index'])->name('khalti.page');
+    Route::post('/payment/khalti/verify', [KhaltiController::class, 'verify'])->name('khalti.verify');
+});
+

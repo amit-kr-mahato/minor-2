@@ -47,9 +47,9 @@
       </div>
     </div>
 
-       <!-- Menu Item -->
+    <!-- Menu Item -->
     <div class="mt-4">
-      <a href="{{ route('menu.index') }}" 
+      <a href="{{ route('menu.index') }}"
         class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
         <span class="flex items-center gap-3">
           <i class="fa-solid fa-store"></i> Menu Management
@@ -67,26 +67,21 @@
         <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
       </a>
       <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
-        <a href="{{route('businessdashboard.reviews.index')}}" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Reviews</a>
+        <a href="{{route('businessdashboard.reviews.index')}}"
+          class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">Manage Reviews</a>
       </div>
     </div>
 
     <!-- Payment gateway -->
-    <div x-data="{ open: false }" class="mt-4">
-      <a href="" @click.prevent="open = !open"
+    <div class="mt-4">
+      <a href="{{ route('businessdashboard.khalti.page') }}"
         class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
         <span class="flex items-center gap-3">
           <i class="fa-solid fa-credit-card"></i> Payment Gateway
         </span>
-        <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
       </a>
-      <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
-        <a href="" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">payment with E-sewa</a>
-      </div>
-      <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
-        <a href="" class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">payment with Khalti</a>
-      </div>
     </div>
+
 
     <!-- Logout -->
     <div class="mt-4">

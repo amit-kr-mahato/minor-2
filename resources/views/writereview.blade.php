@@ -1,7 +1,6 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -106,7 +105,7 @@
       color: #666;
     }
 
-       /* Add styles for errors */
+    /* Add styles for errors */
     .error-message {
       color: red;
       font-size: 13px;
@@ -117,9 +116,11 @@
     #review-modal {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
       justify-content: center;
       align-items: center;
       z-index: 1000;
@@ -183,6 +184,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="container">
@@ -191,74 +193,84 @@
     <h1>Mountain Mike's Pizza</h1>
 
     <h3>How would you rate your experience?</h3>
-     <form method="POST" action="{{ route('review') }}" id="review-form" onsubmit="return validateReview();">
+
+    @if(session('success'))
+    <div class="text-green-600">{{ session('success') }}</div>
+  @endif
+    <form method="POST" action="{{ route('review.submit') }}" id="review-form" onsubmit="return validateReview();">
       @csrf
       <input type="hidden" name="rating" id="rating-input" value="0">
-   <div class="rating-stars" id="rating">
-    <span data-value="1">&#9733;</span>
-    <span data-value="2">&#9733;</span>
-    <span data-value="3">&#9733;</span>
-    <span data-value="4">&#9733;</span>
-    <span data-value="5">&#9733;</span>
-  </div>
+      <div class="rating-stars" id="rating">
+        <span data-value="1">&#9733;</span>
+        <span data-value="2">&#9733;</span>
+        <span data-value="3">&#9733;</span>
+        <span data-value="4">&#9733;</span>
+        <span data-value="5">&#9733;</span>
+      </div>
       <div class="rating-text" id="rating-feedback">Select your rating</div>
+      @error('rating')
+      <div>{{ $message }}</div>
+    @enderror
 
+      <h3>Tell us about your experience</h3>
+      <p style="font-size: 14px;">A few things to consider in your review</p>
 
-    <h3>Tell us about your experience</h3>
-    <p style="font-size: 14px;">A few things to consider in your review</p>
+      <textarea id="review" name="review" placeholder="Start your review..."></textarea>
+      <p class="note">Reviews need to be at least 85 characters.</p>
+      @error('review')
+      <div>{{ $message }}</div>
+    @enderror
 
-    <textarea id="review" name="review" placeholder="Start your review..."></textarea>
-    <p class="note">Reviews need to be at least 85 characters.</p>
-
-    <button class="post-btn" type="submit" onclick="validateReview()">Post Review</button>
-     </form>
+      <button class="post-btn" type="submit" onclick="validateReview()">Post Review</button>
+    </form>
   </div>
 
- <script>
-const stars = document.querySelectorAll('.rating-stars span');
-const feedbackText = document.getElementById('rating-feedback');
-const ratingInput = document.getElementById('rating-input');
-let selectedRating = 0;
+  <script>
+    const stars = document.querySelectorAll('.rating-stars span');
+    const feedbackText = document.getElementById('rating-feedback');
+    const ratingInput = document.getElementById('rating-input');
+    let selectedRating = 0;
 
-const feedbackMessages = {
-  1: { text: 'Not good', color: 'red' },
-  2: { text: 'Could have been better', color: 'orange' },
-  3: { text: 'Okay', color: '#f9a825' },
-  4: { text: 'Good', color: 'green' },
-  5: { text: 'Excellent', color: 'darkgreen' }
-};
+    const feedbackMessages = {
+      1: { text: 'Not good', color: 'red' },
+      2: { text: 'Could have been better', color: 'orange' },
+      3: { text: 'Okay', color: '#f9a825' },
+      4: { text: 'Good', color: 'green' },
+      5: { text: 'Excellent', color: 'darkgreen' }
+    };
 
-stars.forEach(star => {
-  star.addEventListener('click', () => {
-    selectedRating = parseInt(star.getAttribute('data-value'));
-    ratingInput.value = selectedRating;
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        selectedRating = parseInt(star.getAttribute('data-value'));
+        ratingInput.value = selectedRating;
 
-    stars.forEach(s => {
-      s.classList.remove('selected');
-      if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
-        s.classList.add('selected');
-      }
+        stars.forEach(s => {
+          s.classList.remove('selected');
+          if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
+            s.classList.add('selected');
+          }
+        });
+
+        const feedback = feedbackMessages[selectedRating];
+        feedbackText.textContent = feedback.text;
+        feedbackText.style.color = feedback.color;
+      });
     });
 
-    const feedback = feedbackMessages[selectedRating];
-    feedbackText.textContent = feedback.text;
-    feedbackText.style.color = feedback.color;
-  });
-});
-
-function validateReview() {
-  const reviewText = document.getElementById('review').value.trim();
-  if (ratingInput.value == 0) {
-    alert("Please select a rating.");
-    return false;
-  }
-  if (reviewText.length < 85) {
-    alert("Your review must be at least 85 characters.");
-    return false;
-  }
-  return true;
-}
-</script>
+    function validateReview() {
+      const reviewText = document.getElementById('review').value.trim();
+      if (ratingInput.value == 0) {
+        alert("Please select a rating.");
+        return false;
+      }
+      if (reviewText.length < 85) {
+        alert("Your review must be at least 85 characters.");
+        return false;
+      }
+      return true;
+    }
+  </script>
 
 </body>
+
 </html>

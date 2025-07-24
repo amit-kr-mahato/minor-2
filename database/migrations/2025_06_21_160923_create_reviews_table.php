@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reviews', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedTinyInteger('rating');
-            $table->text('review')->nullable();
-            $table->timestamps();
-        });
+       Schema::create('reviews', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedTinyInteger('rating'); // from 1 to 5
+        $table->string('review', 85); // limit to 85 characters
+        $table->timestamps();
+    });
     }
 
     /**

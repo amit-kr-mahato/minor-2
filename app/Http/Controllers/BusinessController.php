@@ -230,8 +230,9 @@ class BusinessController extends Controller {
             'categories' => 'nullable|string',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg|max:4096',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
+
         ] );
 
         // Handle logo upload
