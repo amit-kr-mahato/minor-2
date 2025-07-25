@@ -87,7 +87,7 @@
                                      focus:outline-none focus:ring-2 
                                      cursor-pointer" style="margin-left: 3%;">
                                      <option value="">--select your role</option>
-                                        <option value="admin">Admin</option>
+                                        {{-- <option value="admin">Admin</option> --}}
                                         <option value="businessowner">BusinessOwner</option>
                                          <option value="user">User</option>
                                     </select>

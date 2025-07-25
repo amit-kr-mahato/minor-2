@@ -134,8 +134,7 @@ Route::middleware(['auth', 'checkRole:admin'])->prefix('admin')->group(function 
 });
 
 //business update
-Route::patch('/admin/businesses/{business}/status', [BusinessController::class, 'updateStatus'])
-     ->name('admin.businesses.updateStatus');
+Route::post('/admin/businesses/{id}/status', [BusinessController::class, 'updateStatus']);
 
 
 Route::get('/upload', fn() => view('upload'));

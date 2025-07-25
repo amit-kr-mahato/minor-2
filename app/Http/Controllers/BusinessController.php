@@ -56,19 +56,23 @@ class BusinessController extends Controller {
         ] );
     }
 
-    public function updateStatus( Request $request, Business $business ) {
-        $request->validate( [
-            'status' => 'required|in:active,pending,suspended',
-        ] );
+    public function updateStatus(Request $request, $id)
+{
+    $request->validate([
+        'status' => 'required|in:pending,approved,suspended',
+    ]);
 
-        $business->status = $request->status;
-        $business->save();
-
-        return response()->json( [
-            'message' => 'Status updated successfully',
-            'status' => $business->status,
-        ] );
+    $business = Business::find($id);
+    if (!$business) {
+        return response()->json(['success' => false, 'message' => 'Business not found'], 404);
     }
+
+    $business->status = $request->status;
+    $business->save();
+
+    return response()->json(['success' => true, 'message' => 'Status updated']);
+}
+
 
     public function destroy( Business $business ) {
         $business->delete();
@@ -164,8 +168,9 @@ class BusinessController extends Controller {
     // List all businesses for logged-in user
 
     public function Businessindex() {
+       
         $businesses = Business::where( 'user_id', auth()->id() )->get();
-
+        //dd(auth()->id());
         // dd( $businesses );
 
         return view( 'businessdashboard.businessinfo.index', compact( 'businesses' ) );

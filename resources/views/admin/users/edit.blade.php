@@ -17,12 +17,11 @@
 
     <label for="">Role <br>
       @foreach($roles as $role)
-
-      <input style="margine:30px" type="radio" name="role" value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'checked' : '' }}>
-      {{ $role->name }}
-
+      <input style="margin: 0 10px 0 0;" type="radio" name="role" value="{{ $role }}" {{ $user->role === $role ? 'checked' : '' }}>
+      {{ ucfirst($role) }}
     @endforeach
     </label>
+
 
     <select name="status" class="border p-2 w-full mt-4" placeholder="status">
       <option value="1" {{ $user->status ? 'selected' : '' }}>Active</option>

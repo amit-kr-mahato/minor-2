@@ -38,23 +38,33 @@
       <td class="p-3">{{ $business->user->name ?? 'N/A' }}</td>
 
       <td class="p-3">
-      <div class="checkbox-status flex items-center gap-3" data-business-id="{{ $business->id }}">
-        <label class="inline-flex items-center gap-1 cursor-pointer">
+      <div id="status-box-{{ $business->id }}"
+        class="checkbox-status flex items-center gap-3 p-2 rounded-md transition duration-200"
+        data-business-id="{{ $business->id }}" data-current-status="{{ $business->status }}">
+
+        <!-- Pending -->
+        <label id="pending-label-{{ $business->id }}"
+        class="inline-flex items-center gap-1 cursor-pointer px-2 py-1 rounded">
         <input type="checkbox" value="pending" onchange="submitCheckboxStatus(this)" {{ $business->status === 'pending' ? 'checked' : '' }}>
-        <span class="status-label">Pending</span>
+        <span>Pending</span>
         </label>
 
-        <label class="inline-flex items-center gap-1 cursor-pointer">
+        <!-- Approved -->
+        <label id="approved-label-{{ $business->id }}"
+        class="inline-flex items-center gap-1 cursor-pointer px-2 py-1 rounded">
         <input type="checkbox" value="approved" onchange="submitCheckboxStatus(this)" {{ $business->status === 'approved' ? 'checked' : '' }}>
-        <span class="status-label">Approved</span>
+        <span>Approved</span>
         </label>
 
-        <label class="inline-flex items-center gap-1 cursor-pointer">
+        <!-- Suspended -->
+        <label id="suspended-label-{{ $business->id }}"
+        class="inline-flex items-center gap-1 cursor-pointer px-2 py-1 rounded">
         <input type="checkbox" value="suspended" onchange="submitCheckboxStatus(this)" {{ $business->status === 'suspended' ? 'checked' : '' }}>
-        <span class="status-label">Suspended</span>
+        <span>Suspended</span>
         </label>
 
-        <div class="spinner hidden ml-2">
+        <!-- Spinner -->
+        <div class="spinner hidden ml-2" id="spinner-{{ $business->id }}">
         <svg class="animate-spin h-5 w-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none"
         viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -65,7 +75,10 @@
       </td>
 
 
-      <td class="p-3">{{ implode(', ', $business->categories ?? []) }}</td>
+
+
+
+      <td class="p-3">{{ $business->categories }}</td>
       <td class="p-3 space-x-2">
       <a href="{{ route('admin.businesses.edit', $business->id) }}"
         class="bg-blue-600 text-white font-semibold rounded px-2 py-1 text-sm">view</a>

@@ -18,18 +18,20 @@
     <tr class="border-b">
       <td class="p-3">{{ $user->name }}</td>
       <td>{{ $user->email }}</td>
-      <td>{{ $user->roles[0]['name'] }}</td>
+      <td>{{ $user->role ?? 'N/A' }}</td>
       <td>{{ $user->status ? 'Active' : 'Suspended' }}</td>
       <td class="space-x-2">
-      <a href="{{ route('admin.users.edit', $user) }}" class="text-white-500 font-bold bg-blue-500 rounded p-1">Edit</a>
+      <a href="{{ route('admin.users.edit', $user) }}" class="text-white font-bold bg-blue-500 rounded p-1">Edit</a>
       <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="inline">
-      @csrf @method('DELETE')
-      <button class="text-black-500 bg-red-500 font-bold rounded p-1">Delete</button>
+      @csrf
+      @method('DELETE')
+      <button class="text-black font-bold bg-red-500 rounded p-1">Delete</button>
       </form>
       </td>
     </tr>
     @endforeach
     </tbody>
+
   </table>
   {{ $users->links() }}
 @endsection
