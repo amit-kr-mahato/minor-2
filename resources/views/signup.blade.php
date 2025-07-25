@@ -86,10 +86,10 @@
                                      bg-white
                                      focus:outline-none focus:ring-2 
                                      cursor-pointer" style="margin-left: 3%;">
-                                        <option value="">--Select Role--</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                        @endforeach
+                                     <option value="">--select your role</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="businessowner">BusinessOwner</option>
+                                         <option value="user">User</option>
                                     </select>
                                     <div class="input-group mb-3">
                                         <button class="btn btn-lg btn-primary w-100 fs-6">Sign

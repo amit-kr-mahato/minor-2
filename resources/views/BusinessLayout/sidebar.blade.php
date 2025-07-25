@@ -84,17 +84,16 @@
 
 
     <!-- Logout -->
-    <div class="mt-4">
-      <form method="POST" action="{{ route('logout') }}">
-
-        <button type="submit"
-          class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
-          <span class="flex items-center gap-3">
+    <form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit"
+        class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
+        <span class="flex items-center gap-3">
             <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
-          </span>
-        </button>
-      </form>
-    </div>
+        </span>
+    </button>
+</form>
+
 
   </nav>
 

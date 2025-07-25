@@ -16,10 +16,11 @@ class ReviewController extends Controller
     // Handle review submission
     public function submitReview(Request $request)
     {
+        //dd($request->all());
         // Validate input
         $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'review' => 'required|string|max:85',
+            'rating' => 'required',
+            'review' => 'required',
         ]);
 
         // Save to database
@@ -27,6 +28,11 @@ class ReviewController extends Controller
             'rating' => $request->rating,
             'review' => $request->review,
         ]);
+
+        // $r = Review::new();
+        // $r->rating = $request->rating;
+        // $r->rating =$request->review;
+        // $r->save();
 
         // Redirect with success message
         return back()->with('success', 'Review submitted successfully!');

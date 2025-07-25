@@ -37,7 +37,7 @@ use App\Http\Controllers\KhaltiController;
 
 Route::get('/', [FrontendController::class, 'home'])->name('index');
 
-
+Route::get('/about', [FrontendController::class, 'About'])->name('about');
 //-------------------------------------help for business---------------------------
 // Route::get('/business/login', [FrontendController::class, 'Login'])->name('business.login');
 Route::get('addbusiness', [FrontendController::class, 'addBusiness'])->name('addbusiness');
@@ -75,18 +75,18 @@ Auth::routes(['verify' => true]);
 
 
 // Admin-only routes
-Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'checkRole:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
 
 // Business owner routes
-Route::middleware(['auth', 'role:Business Owner'])->prefix('business')->group(function () {
+Route::middleware(['auth', 'checkRole:businessowner'])->prefix('business')->group(function () {
     Route::get('/dashboard', [BusinessController::class, 'dashboard'])->name('businessdashboard.dashboard');
 });
 // User routes
 
 // Shared route (e.g., admin + businessowner)
-Route::middleware(['auth', 'role:Admin,businessowner'])->get('/reports', [ReportController::class, 'index'])->name('reports.index');
+Route::middleware(['auth', 'checkRole:admin,businessowner'])->get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
 
 Route::get('/unauthorized', function () {
@@ -126,7 +126,7 @@ Route::get('/businesses/editprofile', [ProfileController::class, 'Upload'])->nam
 Route::put('/businesses/updateprofile', [ProfileController::class, 'UpdatePro'])->name('profile.UpdatePro');
 
 
-Route::middleware(['auth', 'role:Admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'checkRole:admin'])->prefix('admin')->group(function () {
     Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
@@ -143,7 +143,7 @@ Route::post('/upload-images', [PhotoController::class, 'store'])->name('images.u
 
 // review manage
 
-Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'checkRole:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
     Route::get('/reviews/{id}/edit', [AdminReviewController::class, 'edit'])->name('reviews.edit');
     Route::put('/reviews/{id}', [AdminReviewController::class, 'update'])->name('reviews.update');
@@ -154,7 +154,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 //business manage
 
 
-Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'checkRole:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('businesses', BusinessController::class);
 });
 
@@ -189,7 +189,7 @@ Route::put('/admin/settings', [SettingController::class, 'update'])->name('admin
 
 // Business owner routes
 
-Route::middleware(['auth', 'role:Business Owner'])
+Route::middleware(['auth', 'checkRole:businessowner'])
     ->prefix('dashboard/business')
     ->name('businessdashboard.businessinfo.')
     ->group(function () {

@@ -4,7 +4,7 @@
             <div class="col-md-3">
                 <h6>About</h6>
                 <ul class="list-unstyled">
-                    <li><a href="#">About Yelp</a></li>
+                    <li><a href="{{route('about')}}">About Yelp</a></li>
                     <li><a href="#">Careers</a></li>
                     <li><a href="#">Press</a></li>
                     <li><a href="#">Investor Relations</a></li>

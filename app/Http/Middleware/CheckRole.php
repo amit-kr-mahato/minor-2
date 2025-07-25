@@ -1,23 +1,33 @@
 <?php
 
 namespace App\Http\Middleware;
-use Illuminate\Support\Facades\Auth;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    // public function handle($request, Closure $next, ...$roles)
-    // {
-    //     if (!Auth::check()) {
-    //         return redirect()->route('sigin')->with('error', 'Please login first.');
-    //     }
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  mixed  ...$roles
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     */
+    public function handle(Request $request, Closure $next, ...$roles)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('sigin')->with('error', 'Please login first.');
+        }
 
-    //     if (!in_array(Auth::user()->role, $roles)) {
-    //         return redirect()->route('sigin')->with('error', 'Unauthorized access.');
-    //     }
+        $user = Auth::user();
 
-    //     return $next($request);
-    // }
+        if (!in_array($user->role, $roles)) {
+            return redirect()->route('sigin')->with('error', 'Unauthorized access.');
+        }
+
+        return $next($request);
+    }
 }

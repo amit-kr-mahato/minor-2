@@ -28,7 +28,16 @@
         </div>
 
         <!-- Map Container -->
-        <div id="map" style="flex: 2; height: 100%; border-radius: 8px;"></div>
+        <div id="map" style="flex: 2; height: 100%; border-radius: 8px;">
+            <iframe
+                width="600"
+                height="450"
+                frameborder="0"
+                style="border:0"
+                src="https://maps.google.com/maps?q=YOUR_LATITUDE,YOUR_LONGITUDE&hl=en&z=YOUR_ZOOM_LEVEL&output=embed"
+                allowfullscreen
+                ></iframe>
+        </div>
     </div>
 @endif
 @endsection

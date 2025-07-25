@@ -1,128 +1,133 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Advertisement;
+use App\Models\Business;
+use App\Models\Review;
+use App\Models\User;
 use App\Notifications\VerificationEmail;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Advertisement;
-
-use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Notification;
-use Spatie\Permission\Models\Role;
-use App\Models\Business;
-use App\Models\Review;
 
-class FrontendController extends Controller {
-    public function home() {
-        $ads = Advertisement::where( 'status', 'active' )->get();
-        $reviews = Review::with( [ 'user', 'business' ] )
-        ->latest()
-        ->take( 6 )
-        ->get();
-        return view( 'index', compact( 'ads', 'reviews' ) );
+class FrontendController extends Controller
+{
+    public function home()
+    {
+        $ads = Advertisement::where('status', 'active')->get();
+        $reviews = Review::with(['user', 'business'])->latest()->take(6)->get();
+        return view('index', compact('ads', 'reviews'));
     }
 
-    public function addBusiness() {
-        return view( 'business.addbusiness' );
+    public function addBusiness()
+    {
+        return view('business.addbusiness');
     }
 
-    public function Claim() {
-        return view( 'business.claim' );
+    public function Claim()
+    {
+        return view('business.claim');
     }
 
-    public function explore() {
-        return view( 'business.Explore' );
+    public function explore()
+    {
+        return view('business.Explore');
     }
 
-    public function Review() {
-        return view( 'review' );
+    public function Review()
+    {
+        return view('review');
     }
 
-    public function Project() {
-        return view( 'project' );
+    public function Project()
+    {
+        return view('project');
     }
 
-    public function Takeout() {
+    public function Takeout()
+    {
         $businesses = Business::all();
-        return view( 'resturant.Takeout', compact( 'businesses' ) );
+        return view('resturant.Takeout', compact('businesses'));
     }
 
-    public function Contractor() {
-        return view( 'contractor' );
+    public function Contractor()
+    {
+        return view('contractor');
     }
 
-    public function Sigin() {
-        return view( 'sigin' );
+    public function Sigin()
+    {
+        return view('sigin');
     }
 
-    public function Signup() {
-        $roles = Role::where( 'name', '!=', 'Admin' )->get();
-        return view( 'signup', compact( 'roles' ) );
+    public function Signup()
+    {
+        $roles = ['user', 'businessowner']; // Static roles for dropdown
+        return view('signup', compact('roles'));
     }
 
-   public function insert(Request $request) {
-    $request->validate([
-        'name' => 'required|string',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|string|min:6',
-        'role' => 'required|exists:roles,id',  // Validate role exists in roles table
-    ]);
+    public function insert(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'role' => 'required|in:user,businessowner,admin', // Validate role input
+        ]);
 
-    try {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        $role = Role::find($request->role);
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->role = $request->role;
+            $user->save();
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
+            Notification::route('mail', $user->email)->notify(new VerificationEmail([
+                'name' => $user->name,
+            ]));
 
-        $user->assignRole($role->name);
-
-        $userData = [
-            'name' => $user->name,
-        ];
-
-        Notification::route('mail', $request->email)->notify(new VerificationEmail($userData));
-
-        DB::commit();
-
-        return redirect('sigin')->with('success', 'Registration successful.');
-    } catch (\Exception $e) {
-        DB::rollBack();
-
-        return back()->withErrors(['error' => $e->getMessage()]);
+            DB::commit();
+            return redirect('sigin')->with('success', 'Registration successful.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
-}
 
-    //dropdown for admin panel and user
-
-    public function SigninCheck( Request $request ) {
-        $credentials = $request->validate( [
+    public function SigninCheck(Request $request)
+    {
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
-        ] );
+        ]);
 
-        if ( Auth::attempt( [ 'email' => $credentials[ 'email' ], 'password' => $credentials[ 'password' ] ] ) ) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
             $user = Auth::user();
-            $userRole = $user->getRoleNames()[ 0 ];
-            // Role-based redirection
-            return match ( $userRole ) {
-                'Admin' => redirect()->route( 'admin.dashboard' ),
-                'Business Owner' => redirect()->route( 'businessdashboard.dashboard' ),
-                'User' => redirect()->route( 'index' ),
-                default => redirect()->route( 'index' ), // fallback
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'businessowner') {
+                return redirect()->route('businessdashboard.dashboard');
+            } else {
+                return redirect()->route('index');
             }
-            ;
         }
 
-        return back()->withErrors( [
+        return back()->withErrors([
             'email' => 'The email or password is incorrect.',
-        ] )->withInput();
+        ])->withInput();
+    }
+
+    public function About()
+    {
+        return view('about');
     }
 }
