@@ -206,8 +206,11 @@
         <h2><span class="highlight">Mountain Mike's Pizza:</span> Add photos and videos</h2>
         <a href="{{route('seemorebusinessdetail')}}" class="view-link">View all photos and videos</a>
 
-        <form>
-            <div class="upload-box">
+
+
+        <form action="{{ route('images.upload') }}" method="POST" enctype="multipart/form-data" id="uploadForm">
+            @csrf
+            <div class="upload-box" id="dropArea">
                 <img src="https://s3-media0.fl.yelpcdn.com/assets/public/photo_review_325x200_v2.yji-9de7a3277cea44fd0377.svg"
                     alt="Upload Illustration" class="upload-img" />
                 <h3 class="upload-text">Drag and drop photos/videos here</h3>
@@ -216,52 +219,49 @@
                 <label for="file-upload" class="browse-btn">Browse Files</label>
                 <input type="file" id="file-upload" name="images[]" multiple accept="image/*" hidden />
             </div>
-    </div>
 
-    <!-- Modal -->
-    <div class="modal" id="uploadModal" style="display:none;">
-        <div class="modal-content">
-            <span class="close-btn" title="Close modal">&times;</span>
-            <h2>Add captions and upload</h2>
+            <!-- Modal -->
+            <div class="modal" id="uploadModal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-btn" id="closeModal" title="Close modal">&times;</span>
+                    <h2>Add captions and upload</h2>
 
-            <div class="images-container" id="imagesContainer">
-                <!-- Dynamically added image cards will go here -->
+                    <div class="images-container" id="imagesContainer">
+                        <!-- Dynamically added image cards will go here -->
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="#" id="browseMore">Browse</a> or drag and drop more photos/videos
+                        <br /><br />
+                        <button class="upload-btn" type="submit" id="uploadBtn">Upload</button>
+                    </div>
+                </div>
             </div>
+        </form>
 
-            <div class="modal-footer">
-                <a href="#" id="browseMore">Browse</a> or drag and drop more photos/videos
-                <br /><br />
-                <button class="upload-btn" type="submit" id="uploadBtn">Upload</button>
+        <div class="guideline-container">
+            <div class="guideline-item">
+                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/shaky_photos_200x150_v2.yji-d2edbe3d0cecbb3aad01.svg"
+                    alt="No shaky photos">
+                <p>Refrain from posting shaky or out of focus photos.</p>
+            </div>
+            <div class="guideline-item">
+                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/flash_photos_200x150_v2.yji-1f472f098de4f1ce3e8b.svg"
+                    alt="Well lit photos">
+                <p>Your photos should be well lit and bright. Don’t be afraid to use the flash on your camera.</p>
+            </div>
+            <div class="guideline-item">
+                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/photo_filters_200x150_v2.yji-8ee4efb202a260383e73.svg"
+                    alt="Minimal filters">
+                <p>If you’re applying filters, don’t overdo them. Subtlety is key.</p>
+            </div>
+            <div class="guideline-item">
+                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/business_photos_200x150_v2.yji-ec69f38b451e03e2e9a5.svg"
+                    alt="Only business photos">
+                <p>Lastly, please only post photos of the business.</p>
             </div>
         </div>
     </div>
-
-    </form>
-
-    <div class="guideline-container">
-        <div class="guideline-item">
-            <img src="https://s3-media0.fl.yelpcdn.com/assets/public/shaky_photos_200x150_v2.yji-d2edbe3d0cecbb3aad01.svg"
-                alt="No shaky photos">
-            <p>Refrain from posting shaky or out of focus photos.</p>
-        </div>
-        <div class="guideline-item">
-            <img src="https://s3-media0.fl.yelpcdn.com/assets/public/flash_photos_200x150_v2.yji-1f472f098de4f1ce3e8b.svg"
-                alt="Well lit photos">
-            <p>Your photos should be well lit and bright. Don’t be afraid to use the flash on your camera.</p>
-        </div>
-        <div class="guideline-item">
-            <img src="https://s3-media0.fl.yelpcdn.com/assets/public/photo_filters_200x150_v2.yji-8ee4efb202a260383e73.svg"
-                alt="Minimal filters">
-            <p>If you’re applying filters, don’t overdo them. Subtlety is key.</p>
-        </div>
-        <div class="guideline-item">
-            <img src="https://s3-media0.fl.yelpcdn.com/assets/public/business_photos_200x150_v2.yji-ec69f38b451e03e2e9a5.svg"
-                alt="Only business photos">
-            <p>Lastly, please only post photos of the business.</p>
-        </div>
-                
-    </div>
-
 
     <script>
         const fileInput = document.getElementById('file-upload');
@@ -269,45 +269,42 @@
         const modal = document.getElementById('uploadModal');
         const imagesContainer = document.getElementById('imagesContainer');
         const closeModal = document.getElementById('closeModal');
+        const browseMore = document.getElementById('browseMore');
+        const uploadForm = document.getElementById('uploadForm');
 
         let filesList = [];
 
-        function openModal() {
-            imagesContainer.innerHTML = '';
-            filesList.forEach((file, i) => {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const div = document.createElement('div');
-                    div.classList.add('image-card');
-                    div.innerHTML = `
-                    <img src="${e.target.result}" class="preview-img"/>
-                    <input type="hidden" name="images[]" />
-                    <input type="text" name="captions[]" placeholder="Enter caption">
-                `;
-                    imagesContainer.appendChild(div);
-                };
-                reader.readAsDataURL(file);
+        // Prevent default drag/drop behaviors on dropArea
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, e => {
+                e.preventDefault();
+                e.stopPropagation();
             });
-            modal.style.display = 'block';
-        }
-
-        fileInput.addEventListener('change', (e) => {
-            filesList = Array.from(e.target.files);
-            openModal();
         });
 
-        dropArea.addEventListener('dragover', e => {
-            e.preventDefault();
+        dropArea.addEventListener('dragover', () => {
             dropArea.style.borderColor = '#000';
         });
 
-        dropArea.addEventListener('drop', e => {
-            e.preventDefault();
-            filesList = Array.from(e.dataTransfer.files);
-            openModal();
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.borderColor = '#ccc';
         });
 
-        document.getElementById('browseMore').addEventListener('click', function (e) {
+        dropArea.addEventListener('drop', e => {
+            const droppedFiles = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+            filesList = filesList.concat(droppedFiles);
+            openModal();
+            dropArea.style.borderColor = '#ccc';
+        });
+
+        fileInput.addEventListener('change', e => {
+            const selectedFiles = Array.from(e.target.files).filter(f => f.type.startsWith('image/'));
+            filesList = filesList.concat(selectedFiles);
+            openModal();
+            fileInput.value = ''; // Reset so user can select the same file again if needed
+        });
+
+        browseMore.addEventListener('click', e => {
             e.preventDefault();
             fileInput.click();
         });
@@ -316,37 +313,79 @@
             modal.style.display = 'none';
         });
 
-        document.getElementById('uploadForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData();
-            const captions = document.querySelectorAll('input[name="captions[]"]');
-
+        // Render images in modal with captions and delete button
+        function openModal() {
+            imagesContainer.innerHTML = '';
             filesList.forEach((file, i) => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const div = document.createElement('div');
+                    div.classList.add('image-card');
+                    div.innerHTML = `
+                        <img src="${e.target.result}" class="preview-img" alt="Image Preview"/>
+                        <textarea name="captions[]" placeholder="Enter caption"></textarea>
+                        <button type="button" class="delete-btn" title="Remove image">&times;</button>
+                    `;
+                    // Delete button removes the correct file by index (use closure to capture i)
+                    div.querySelector('.delete-btn').addEventListener('click', () => {
+                        filesList.splice(i, 1);
+                        openModal(); // Refresh modal after deletion
+                    });
+                    imagesContainer.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+            modal.style.display = 'block';
+        }
+
+        uploadForm.addEventListener('submit', async e => {
+            e.preventDefault();
+
+            if (filesList.length === 0) {
+                alert("Please select images before uploading.");
+                return;
+            }
+
+            const formData = new FormData();
+
+            filesList.forEach(file => {
                 formData.append('images[]', file);
             });
 
-            captions.forEach((caption) => {
-                formData.append('captions[]', caption.value);
+            const captions = imagesContainer.querySelectorAll('textarea[name="captions[]"]');
+            captions.forEach(caption => {
+                formData.append('captions[]', caption.value.trim());
             });
 
-            fetch("{{ route('images.upload') }}", {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: formData
-            })
-                .then(res => res.json())
-                .then(data => {
-                    alert('Upload successful!');
-                    location.reload();
-                })
-                .catch(err => {
-                    console.error('Upload failed:', err);
-                    alert('Something went wrong.');
+            try {
+                const response = await fetch("{{ route('images.upload') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json' // important for JSON response on error
+                    },
+                    body: formData
                 });
+
+                if (!response.ok) {
+                    // Try to parse error response JSON, fallback to text
+                    const errData = await response.json().catch(() => null);
+                    throw new Error(errData?.message || 'Upload failed');
+                }
+
+                const data = await response.json();
+                alert(data.message || 'Upload successful!');
+                filesList = [];
+                modal.style.display = 'none';
+                location.reload();
+
+            } catch (error) {
+                console.error('Upload failed:', error);
+                alert(error.message || 'Something went wrong.');
+            }
         });
     </script>
+
 
 </body>
 

@@ -12,7 +12,7 @@
                     Once it is approved, you'll receive an email with instructions on how to claim your business page.
                 </p>
 
-                <form action="{{ route('business.business_store') }}" method="POST">
+                <form action="{{ route('business_storedetail') }}" method="POST">
                     @csrf
 
                     <div class="mb-3">

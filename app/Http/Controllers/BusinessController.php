@@ -89,7 +89,7 @@ class BusinessController extends Controller {
         ] );
     }
 
-    public function business_store( Request $request ) {
+    public function storeDetail( Request $request ) {
         $request->validate( [
             'province' => 'required|string',
             'business_name' => 'required|string',
@@ -127,13 +127,16 @@ class BusinessController extends Controller {
         return view( 'project.repair' );
     }
 
-    public function Businessdetail() {
-        $businesses = Business::all();
-        return view( 'businessdetail', compact( 'businesses' ) );
-    }
+    public function Businessdetail($id)
+{
+    $business = Business::with('reviews')->findOrFail($id);
+    return view('businessdetail', compact('business'));
+}
+
 
     public function Seemorephoto() {
-        return view( 'seemorebusinessdetail' );
+        
+        return view( 'seemorebusinessdetail');
     }
 
     public function businesssphoto() {

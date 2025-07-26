@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('photos', function (Blueprint $table) {
+        Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('business_id');
-            $table->string('caption')->nullable();
-            $table->string('photo')->nullable();
+            $table->string('category');  // starters, main_courses, drinks, desserts
+            $table->string('name');
+            $table->integer('price');
+            $table->string('image')->nullable(); 
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('photos');
+        Schema::dropIfExists('menu_items');
     }
 };

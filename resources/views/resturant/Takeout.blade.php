@@ -2,7 +2,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-sA+zN1b+gKldvDX7J6ZZWnWo3wY6ZP3prWwslrYxPtk=" crossorigin=""/>
+        integrity="sha256-sA+zN1b+gKldvDX7J6ZZWnWo3wY6ZP3prWwslrYxPtk=" crossorigin="" />
 @endpush
 
 @section('content')
@@ -16,20 +16,23 @@
             <div style="flex: 1; overflow-y: auto; padding: 1rem; border-right: 1px solid #ccc;">
                 <h5 class="text-muted mb-3">Search Results</h5>
                 @foreach ($businesses as $business)
-                    <div onclick="highlightBusiness({{ $business->id }})"
-                         style="cursor: pointer; margin-bottom: 1rem; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                        <div style="display: flex; gap: 1rem; align-items: center;">
-                            <img src="{{ $business->logo ? asset('storage/' . $business->logo) : 'https://via.placeholder.com/80x80?text=No+Logo' }}"
-                                 alt="{{ $business->business_name }}"
-                                 style="width: 80px; height: 80px; object-fit: cover; border-radius: 6px;" />
-                            <div>
-                                <h6 style="margin: 0;">{{ $business->business_name }}</h6>
-                                <small>📍 {{ $business->city }}</small><br>
-                                <small class="text-muted">{{ $business->categories }}</small>
+                    <a href="{{ route('businessdetail', $business->id) }}" style="text-decoration: none; color: inherit;">
+                        <div
+                            style="cursor: pointer; margin-bottom: 1rem; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                <img src="{{ $business->logo ? asset('storage/' . $business->logo) : 'https://via.placeholder.com/80x80?text=No+Logo' }}"
+                                    alt="{{ $business->business_name }}"
+                                    style="width: 80px; height: 80px; object-fit: cover; border-radius: 6px;" />
+                                <div>
+                                    <h6 style="margin: 0;">{{ $business->business_name }}</h6>
+                                    <small>📍 {{ $business->city }}</small><br>
+                                    <small class="text-muted">{{ $business->categories }}</small>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 @endforeach
+
             </div>
 
             <!-- Leaflet Map Container -->
@@ -72,7 +75,7 @@
                 });
 
                 if (bounds.length) {
-                    map.fitBounds(bounds, {padding: [50, 50]});
+                    map.fitBounds(bounds, { padding: [50, 50] });
                 }
             });
 
@@ -88,5 +91,5 @@
 
 @push('scripts')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-o9N1jZ8l+cLe/5xuhRy1JZLC1fZdb1BWD+GnWiw1xR0=" crossorigin=""></script>
+        integrity="sha256-o9N1jZ8l+cLe/5xuhRy1JZLC1fZdb1BWD+GnWiw1xR0=" crossorigin=""></script>
 @endpush

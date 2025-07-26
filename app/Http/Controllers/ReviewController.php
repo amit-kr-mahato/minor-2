@@ -1,16 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Business;
 use App\Models\Review;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
     // Show the review form
-    public function review()
+    public function Businessreview($id)
     {
-        return view('writereview');
+       $business = Business::findOrFail($id); // get only one business by ID
+
+        return view('writereview', compact('business'));
     }
 
     // Handle review submission

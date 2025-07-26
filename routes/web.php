@@ -16,12 +16,12 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\BusinessControlleer;
 use App\Http\Controllers\ListingController;
-use App\Http\Controllers\MenuController;
+// use App\Http\Controllers\MenuController;
 use App\Http\Controllers\BusinessReviewController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\KhaltiController;
-
+use App\Http\Controllers\MenuItemController;
 
 
 /*
@@ -97,22 +97,32 @@ Route::get('/unauthorized', function () {
 
 
 //businesss
-Route::post('/business', [BusinessController::class, 'business_store'])->name('business.business_store');
+
+Route::post('/business/store-detail', [BusinessController::class, 'storeDetail'])
+->middleware('auth')
+->name('business_storedetail');
 
 
 // project quotes
-Route::get('/repair', [BusinessController::class, 'Repairs'])->name('repair');
+Route::get('/repair', [BusinessController::class, 'Repairs'])
+->middleware('auth')
+->name('repair');
 
 // project quotes
-Route::get('/businessdetail', [BusinessController::class, 'Businessdetail'])->name('businessdetail');
+Route::get('/businessdetail/{id}', [BusinessController::class, 'Businessdetail'])->name('businessdetail');
 Route::get('/businessdetailseemore', [BusinessController::class, 'Seemorephoto'])->name('seemorebusinessdetail');
+
 Route::get('/business/addphoto', [BusinessController::class, 'businesssphoto'])->name('addphoto');
-Route::get('/business/review', [BusinessController::class, 'review'])->name('writereview');
+// Route::get('/business/review', [BusinessController::class, 'review'])->name('writereview');
 
 //rewivew
-Route::get('/business/review', [ReviewController::class, 'review'])->name('writereview');
+// Show review form (GET)
+Route::get('/business/{id}', [ReviewController::class, 'Businessreview'])
+->middleware('auth')
+->name('writereview');
 
-Route::post('/business/review', [ReviewController::class, 'submitReview'])->name('review')->middleware('auth');
+// Handle review form submission (POST)
+Route::post('/business', [ReviewController::class, 'submitReview'])->name('business.review.submit');
 
 
 //upload photo
@@ -137,8 +147,11 @@ Route::middleware(['auth', 'checkRole:admin'])->prefix('admin')->group(function 
 Route::post('/admin/businesses/{id}/status', [BusinessController::class, 'updateStatus']);
 
 
-Route::get('/upload', fn() => view('upload'));
+
+
+Route::get('/upload', fn() => view('upload'))->name('upload.form');
 Route::post('/upload-images', [PhotoController::class, 'store'])->name('images.upload');
+
 
 // review manage
 
@@ -205,15 +218,17 @@ Route::middleware(['auth', 'checkRole:businessowner'])
 
 //menu item
 
-Route::prefix('businessdashboard')->group(function () {
-    Route::get('menu', [MenuController::class, 'index'])->name('menu.index');
-    Route::get('menu/create', [MenuController::class, 'create'])->name('menu.create');
-    Route::post('menu', [MenuController::class, 'store'])->name('menu.store');
-    Route::get('menu/{menu}/edit', [MenuController::class, 'edit'])->name('menu.edit');
-    Route::put('menu/{menu}', [MenuController::class, 'update'])->name('menu.update');
-    Route::delete('menu/{menu}', [MenuController::class, 'destroy'])->name('menu.destroy');
-    Route::delete('menu-image/{menuImage}', [MenuController::class, 'deleteImage'])->name('menu.image.delete');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('businessdashboard/menu', MenuItemController::class)->names([
+        'index'   => 'businessdashboard.menu.index',
+        'create'  => 'businessdashboard.menu.create',
+        'store'   => 'businessdashboard.menu.store',
+        'edit'    => 'businessdashboard.menu.edit',
+        'update'  => 'businessdashboard.menu.update',
+        'destroy' => 'businessdashboard.menu.destroy',
+    ]);
 });
+
 
 //business reviews
 

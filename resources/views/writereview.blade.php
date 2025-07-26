@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mountain Mike's Pizza Review</title>
+  
+  <title>  {{ $business->business_name }}|Review</title>
+  
   <style>
     * {
       box-sizing: border-box;
@@ -188,16 +190,17 @@
 <body>
 
   <div class="container">
-    <a href="{{route('businessdetail')}}">← Back</a>
+   
+    <a href="{{route('businessdetail', ['id' => $business->id]) }})}}">← Back</a>
 
-    <h1>Mountain Mike's Pizza</h1>
+    <h1> {{ $business->business_name }}</h1>
 
     <h3>How would you rate your experience?</h3>
-
+@endforeach
     @if(session('success'))
     <div class="text-green-600">{{ session('success') }}</div>
   @endif
-    <form method="POST" action="{{ route('review.submit') }}" id="review-form" onsubmit="return validateReview();">
+    <form method="POST" action="{{ route('business.review.submit') }}" id="review-form" onsubmit="return validateReview();">
       @csrf
       <input type="hidden" name="rating" id="rating-input" value="0">
       <div class="rating-stars" id="rating">

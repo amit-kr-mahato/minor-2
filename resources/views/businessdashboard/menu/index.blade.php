@@ -1,51 +1,62 @@
 @extends('BusinessLayout.app')
 
 @section('content')
-    <div class="ml-64 w-full min-h-screen p-6 bg-gray-100">
-        <div class="max-w-5xl mx-auto px-4">
-            <div class="flex items-center justify-between mb-6">
-                <h1 class="text-2xl font-bold text-gray-800">All Menus</h1>
-                <a href="{{ route('menu.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">+ Create Menu</a>
-            </div>
+    <div class="ml-64 w-full min-h-screen p-6 bg-gray-300">
+        <div class="max-w-[900px] px-4">
+            <div class="container mx-auto p-6">
+                <h1 class="text-2xl font-bold mb-4">Menu Items</h1>
 
-            @if(session('success'))
-                <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                    {{ session('success') }}
-                </div>
-            @endif
+                <a href="{{ route('businessdashboard.menu.create') }}"
+                    class="bg-blue-500 text-white px-4 py-2 rounded mb-6 inline-block">
+                    Add New Menu Item
+                </a>
 
-            <ul class="space-y-6">
-                @foreach($menus as $menu)
-                    <li class="bg-white rounded-lg shadow p-5">
-                        <div class="flex items-center justify-between">
-                            <h2 class="text-lg font-semibold text-gray-700">Menu #{{ $menu->id }}</h2>
-                            <div class="space-x-3">
-                                <a href="{{ route('menu.edit', $menu) }}" class="text-blue-600 hover:underline">Edit</a>
-                                <form action="{{ route('menu.destroy', $menu) }}" method="POST" class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:underline" onclick="return confirm('Are you sure you want to delete this menu?')">Delete</button>
-                                </form>
-                            </div>
-                        </div>
+                @if(session('success'))
+                    <div class="bg-green-200 p-3 rounded mb-4">{{ session('success') }}</div>
+                @endif
 
-                        @if($menu->images->count())
-                            <div class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                @foreach($menu->images as $image)
-                                    <div class="relative group">
-                                        <img src="{{ asset('storage/' . $image->image_path) }}" class="w-full h-32 object-cover rounded border">
-                                        <form method="POST" action="{{ route('menu.image.delete', $image) }}" class="absolute top-1 right-1">
+                @if($menuItems->isEmpty())
+                    <p>No menu items found.</p>
+                @else
+                    <table class="min-w-full bg-white border">
+                        <thead>
+                            <tr>
+                                <th class="border px-4 py-2">Name</th>
+                                <th class="border px-4 py-2">Category</th>
+                                <th class="border px-4 py-2">Price</th>
+                                <th class="border px-4 py-2">Image</th>
+                                <th class="border px-4 py-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($menuItems as $item)
+                                <tr>
+                                    <td class="border px-4 py-2">{{ $item->name }}</td>
+                                    <td class="border px-4 py-2">{{ $item->category }}</td>
+                                    <td class="border px-4 py-2">${{ number_format($item->price, 2) }}</td>
+                                    <td class="border px-4 py-2">
+                                        @if ($item->image)
+                                            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}"
+                                                class="w-20 h-20 object-cover">
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <a href="{{ route('businessdashboard.menu.edit', $item->id) }}"
+                                            class="text-blue-500 hover:underline mr-2">Edit</a>
+
+                                        <form action="{{ route('businessdashboard.menu.destroy', $item->id) }}" method="POST"
+                                            class="inline" onsubmit="return confirm('Are you sure?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="bg-red-500 text-white text-xs p-1 rounded-full hover:bg-red-600 transition" title="Delete Image">🗑</button>
+                                            <button type="submit" class="text-red-500 hover:underline">Delete</button>
                                         </form>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            </div>
 @endsection

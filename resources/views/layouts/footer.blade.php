@@ -1,29 +1,28 @@
 <footer class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <h6>About</h6>
                 <ul class="list-unstyled">
-                    <li><a href="{{route('about')}}">About Yelp</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                    <li><a href="#">Investor Relations</a></li>
-                    <li><a href="#">Trust & Safety</a></li>
-                    <li><a href="#">Content Guidelines</a></li>
-                    <li><a href="#">Accessibility Statement</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Ad Choices</a></li>
-                    <li><a href="#">Your Privacy Choices</a></li>
+                    <li><a href="{{route('about')}}">About Bizzlisto</a></li>
+               
                 </ul>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <h6>Bizzlisto for Business</h6>
                 <ul class="list-unstyled">
                     <li><a href="{{route('sigin')}}">Login</a></li>
                     <li><a href="{{route('addbusiness')}}">Claim your Business Page</a></li>
 
 
+                </ul>
+            </div>
+
+             <div class="col-md-4">
+                <h6>Social Media</h6>
+                <ul class="list-unstyled">
+                    <li><a href="#">Facebook</a></li>
+              
                 </ul>
             </div>
         </div>

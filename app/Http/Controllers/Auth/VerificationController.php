@@ -3,10 +3,35 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\VerifiesEmails;
+use App\Models\User;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
+
+    public function verify(Request $request, $id, $hash)
+    {
+        $user = User::findOrFail($id);
+
+        if (! hash_equals((string) $hash, sha1($user->email))) {
+            abort(403, 'Invalid verification link.');
+        }
+
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+            event(new Verified($user));
+        }
+
+        // ✅ Role-based redirection
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard')->with('verified', true);
+        } elseif ($user->role === 'businessowner') {
+            return redirect()->route('business.dashboard')->with('verified', true);
+        } else {
+            return redirect()->route('index')->with('verified', true);
+        }
+    }
     /*
     |--------------------------------------------------------------------------
     | Email Verification Controller
