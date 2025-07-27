@@ -123,3 +123,51 @@
 // }
 
 // }
+
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
+class KhaltiController extends Controller
+{
+    // Show the payment page
+    public function index()
+    {
+        return view('businessdashboard.khalti.page');
+    }
+
+    // Verify Khalti payment using token and amount
+    public function verifyPayment(Request $request)
+    {
+        $token = $request->input('token');
+        $amount = $request->input('amount'); // Must be in paisa (e.g., 400000 for Rs. 4000)
+
+        // Replace with your actual secret key from Khalti dashboard
+        $secretKey = 'c62283ef3f5945faad92736811547a47'; // 🔁 Replace this
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Key ' . $secretKey,
+        ])->post('https://khalti.com/api/v2/payment/verify/', [
+            'token' => $token,
+            'amount' => $amount,
+        ]);
+
+        if ($response->successful()) {
+            // You can store transaction data here if needed
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment verified successfully!',
+                'data' => $response->json()
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment verification failed.',
+                'data' => $response->json()
+            ], 400);
+        }
+    }
+}
+

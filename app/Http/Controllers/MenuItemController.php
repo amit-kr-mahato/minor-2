@@ -34,6 +34,8 @@ class MenuItemController extends Controller {
         'image'    => 'nullable|image|max:2048',
     ]);
 
+   // dd($request->all());
+
     $business = auth()->user()->business;
 
     if (!$business) {

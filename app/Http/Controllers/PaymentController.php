@@ -24,23 +24,23 @@ class PaymentController extends Controller {
                 'phone' => 9800000001
             ]
         ];
-
+        // dd(config( 'services.khalti.secret_key' ));
         $response = Http::withHeaders( [
             'Authorization' => 'key ' . config( 'services.khalti.secret_key' ),
             'Accept' => 'application/json',
-        ] )->post( config( 'services.khalti.base_url' ) . '/initiate/', $payload );
+        ] )->post( config( 'services.khalti.base_url' ) . '/initiate/', $payload)->throw();
 
         $data = $response->json();
 
-        if ( isset( $data[ 'payment_url' ] ) ) {
-            return redirect( $data[ 'payment_url' ] );
-        }
+        // if ( isset( $data[ 'payment_url' ] ) ) {
+        //     return redirect( $data[ 'payment_url' ] );
+        // }
 
-        // If payment_url missing, dump data to debug
-        dd( $data );
+        // // If payment_url missing, dump data to debug
+        // // dd( $data );
 
-        // Or redirect back with error message
-        return back()->withErrors( [ 'error' => 'Failed to initiate payment.' ] );
+        // // Or redirect back with error message
+        // return back()->withErrors( [ 'error' => 'Failed to initiate payment.' ] );
     }
 
     public function verifyPayment( Request $request ) {

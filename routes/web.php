@@ -271,13 +271,21 @@ Route::post('/review', [ReviewController::class, 'submitReview'])->name('review.
 
 //khalti integration
 
-Route::prefix('businessdashboard')->middleware('auth')->name('businessdashboard.')->group(function () {
-    Route::get('/payment', function () {
-        return view('businessdashboard.payment.index');
-    })->name('payment.index');
+// Route::prefix('businessdashboard')->middleware('auth')->name('businessdashboard.')->group(function () {
+//     Route::get('/payment', function () {
+//         return view('businessdashboard.payment.index');
+//     })->name('payment.index');
 
-    Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('payment.initiate');
-    Route::get('/verify-payment', [PaymentController::class, 'verifyPayment'])->name('payment.verify');
+//     Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('payment.initiate');
+//     Route::get('/verify-payment', [PaymentController::class, 'verifyPayment'])->name('payment.verify');
+// });
+
+
+
+
+Route::prefix('businessdashboard')->middleware(['auth'])->name('businessdashboard.')->group(function () {
+    Route::get('/payment/khalti', [KhaltiController::class, 'index'])->name('khalti.page');
+    Route::post('/payment/khalti/verify', [KhaltiController::class, 'verifyPayment'])->name('khalti.verify');
 });
 
 
