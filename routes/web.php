@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\KhaltiController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\ListingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
@@ -14,14 +14,11 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\AdminUserController;
-use App\Http\Controllers\BusinessControlleer;
 use App\Http\Controllers\AdminReviewController;
-// use App\Http\Controllers\MenuController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\BusinessReviewController;
-use App\Http\Controllers\KhaltiController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\VerificationController;
+
 
 
 /*
@@ -294,3 +291,6 @@ Route::prefix('businessdashboard')->middleware(['auth'])->name('businessdashboar
 //     Route::get('/verify-payment', 'verifyPayment');
 // });
 
+Route::get('/email/verify', function () {
+    return view('auth.verify-email'); // You should create this blade view
+})->middleware('auth')->name('verification.notice');

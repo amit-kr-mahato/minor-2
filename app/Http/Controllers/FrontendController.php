@@ -33,10 +33,10 @@ class FrontendController extends Controller {
         return view( 'business.Explore' );
     }
 
-    public function Review(  ) {
-        // // You can pass business details if needed
+    public function Review() {
+
         // $business = Business::findOrFail( $id );
-        return view( 'review');
+        return view( 'review' );
     }
 
     public function Project() {
@@ -63,6 +63,7 @@ class FrontendController extends Controller {
     }
 
     public function insert( Request $request ) {
+
         $request->validate( [
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
@@ -80,12 +81,11 @@ class FrontendController extends Controller {
             $user->role = $request->role;
             $user->save();
 
-            Notification::route( 'mail', $user->email )->notify( new VerificationEmail( [
-                'name' => $user->name,
-            ] ) );
+            $user->sendEmailVerificationNotification();
 
             DB::commit();
-            return redirect( 'sigin' )->with( 'success', 'Registration successful.' );
+            return redirect()->route( 'sigin' )->with( 'success', 'Registration successful. Please check your email to verify your account.' );
+
         } catch ( \Exception $e ) {
             DB::rollBack();
             return back()->withErrors( [ 'error' => $e->getMessage() ] );
@@ -102,6 +102,15 @@ class FrontendController extends Controller {
             $request->session()->regenerate();
 
             $user = Auth::user();
+
+            // 🔐 Check if email is verified
+            if ( ! $user->hasVerifiedEmail() ) {
+                Auth::logout();
+                // logout the session
+                return back()->withErrors( [ 'email' => 'Please verify your email before logging in.' ] )->withInput();
+            }
+
+            // 🎯 Redirect based on role
             if ( $user->role === 'admin' ) {
                 return redirect()->route( 'admin.dashboard' );
             } elseif ( $user->role === 'businessowner' ) {
@@ -120,5 +129,4 @@ class FrontendController extends Controller {
         return view( 'about' );
     }
 
-    
 }
