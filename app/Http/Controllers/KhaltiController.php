@@ -1,50 +1,125 @@
 <?php
-namespace App\Http\Controllers;
 
-use App\Models\Payment;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
+// namespace App\Http\Controllers;
 
-class KhaltiController extends Controller
-{
-    public function index()
-    {
-        return view('businessdashboard.payment.khalti');
-    }
+// use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Facades\Auth;
+// use App\Models\Payment;
 
-    public function verify(Request $request)
-    {
-        $token = $request->token;
-        $amount = $request->amount;
+// class UserPaymentController extends \App\Http\Controllers\Controller
+// {
+//     public function initiatePayment(Request $request)
+//     {
+//         //fetch booking
+//         $booking = Booking::with('package')->findOrFail($request->booking_id);
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Key ' . config('services.khalti.secret_key')
-        ])->post('https://khalti.com/api/v2/payment/verify/', [
-            'token' => $token,
-            'amount' => $amount,
-        ]);
+//         //fetch order and amount
+//         $amount =  100; // in paisa
+//         $orderId = 'ORDER_' . $booking->id; // or generate a UUID
 
-        if ($response->successful()) {
-            $data = $response->json();
+//         // Payload for Khalti
+//         $payload = [
+//             "return_url" => route('user.Payment.index'),
+//             "website_url" => config('app.url'),
+//             "amount" => $amount,
+//             "purchase_order_id" => $orderId,
+//             "purchase_order_name" => "GharSewa Booking",
+//             "customer_info" => [
+//                 "name" => auth()->user()->name,
+//                 "email" => auth()->user()->email,
+//                 "phone" => auth()->user()->phone,
+//             ],
+//             "product_details" => [
+//                 [
+//                     "identity" => "booking_" . $booking->id,
+//                     "name" => $booking->package->title ?? 'Service',
+//                     "total_price" => $amount,
+//                     "quantity" => 1,
+//                     "unit_price" => $amount,
+//                 ]
+//             ]
+//         ];
 
-            $payment = Payment::create([
-                'user_id' => Auth::id(),
-                'token' => $token,
-                'amount' => $amount,
-                'idx' => $data['idx'],
-                'status' => 'completed',
-            ]);
+//         // Khalti API URL
+//         $khaltiApiUrl = "https://dev.khalti.com/api/v2/epayment/initiate/";
 
-            return response()->json($data);
-        } else {
-            return response()->json(['error' => 'Payment verification failed'], 400);
-        }
-    }
+//         // Send request to Khalti
+//         $response = Http::withHeaders([
+//             'Authorization' => 'Key ' . config('services.khalti.secret'),
+//             'Content-Type' => 'application/json',
+//         ])->post($khaltiApiUrl, $payload);
 
-    // public function history()
-    // {
-    //     $payments = Payment::latest()->get();
-    //     return view('admin.payment.index', compact('payments'));
-    // }
-}
+//         // Handle Response
+//         if ($response->successful()) {
+//             $data = $response->json();
+
+//             // Store pidx in booking
+//             $booking->update(['khalti_pidx' => $data['pidx']]);
+
+//             return redirect($data['payment_url']); // Redirect user to Khalti checkout
+//         } else {
+//             return back()->with('error', 'Khalti payment initiation failed.');
+//         }
+
+
+
+//     }
+
+//     //verify the payment
+//     public function verifyPayment(Request $request)
+//     {
+//         // Validate the request
+//         $request->validate([
+//             'pidx' => 'required|string',
+//             'status' => 'required|string',
+//         ]);
+
+//         $pidx = $request->pidx;
+
+//         $response = Http::withHeaders([
+//             'Authorization' => 'Key ' . config('KHALTI_SECRET_KEY'),
+//             'Content-Type' => 'application/json',
+//         ])->post("https://dev.khalti.com/api/v2/epayment/verify/", [
+//             'pidx' => $pidx,
+//         ]);
+
+//         if ($response->successful()) {
+//             $data = $response->json();
+
+//             // Check if the payment was successful
+//             if ($data['status'] === 'Completed') {
+//                 // Fetch the booking using pidx or other identifiers
+//                 $booking = Booking::where('khalti_pidx', $request->pidx)->first();
+
+//                 if ($booking) {
+//                     // Update booking status to paid
+//                     $booking->update([
+//                         'status' => 'paid',
+//                         'khalti_pidx' => $pidx, // for record keeping
+//                         'paid_at' => now(), // Optional: record the payment time
+//                     ]);
+//                     return redirect()->route('user.dashboard')->with('success', 'Payment successful.');
+//                 } else {
+//                     return redirect()->route('user.dashboard')->with('error', 'Booking not found.');
+//                 }
+//             } else {
+//                 return redirect()->route('user.dashboard')->with('error', 'Payment failed.');
+//             }
+//         } else {
+//             return redirect()->route('user.dashboard')->with('error', 'Payment verification failed.');
+//         }
+//     }
+
+//     public function p_index()
+//     {
+//         return view('user.Payment.index');
+//     }
+
+//     public function khaltiPay($id)
+// {
+//     // Redirect internally to initiatePayment using booking_id
+//     return redirect()->route('user.khalti.initiate', ['booking_id' => $id]);
+// }
+
+// }

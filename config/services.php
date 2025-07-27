@@ -38,11 +38,18 @@ return [
     'redirect' => env('GOOGLE_REDIRECT'),
 ],
 
+// 'khalti' => [
+//     // 'public_key' => env('KHALTI_PUBLIC_KEY'),
+//     'secret_key' => env('KHALTI_SECRET_KEY'),
+// ],
 'khalti' => [
-    'public_key' => env('KHALTI_PUBLIC_KEY'),
+    'website_url' => env('KHALTI_WEBSITE_URL'),
+    'base_url' => env('KHALTI_BASE_URL'),
     'secret_key' => env('KHALTI_SECRET_KEY'),
+    'redirect' => env('FRONTEND_REDIRECT_URL'),
 ],
 
-
-
 ];
+
+
+

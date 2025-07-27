@@ -1,27 +1,27 @@
 <?php
 
-use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\BusinessController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ReportController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AdminUserController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PhotoController;
-use App\Http\Controllers\AdminReviewController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\AdvertisementController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\BusinessControlleer;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ListingController;
-// use App\Http\Controllers\MenuController;
-use App\Http\Controllers\BusinessReviewController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\KhaltiController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\BusinessControlleer;
+use App\Http\Controllers\AdminReviewController;
+// use App\Http\Controllers\MenuController;
+use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\BusinessReviewController;
+use App\Http\Controllers\KhaltiController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 
 /*
@@ -272,7 +272,17 @@ Route::post('/review', [ReviewController::class, 'submitReview'])->name('review.
 //khalti integration
 
 Route::prefix('businessdashboard')->middleware('auth')->name('businessdashboard.')->group(function () {
-    Route::get('/payment/khalti', [KhaltiController::class, 'index'])->name('khalti.page');
-    Route::post('/payment/khalti/verify', [KhaltiController::class, 'verify'])->name('khalti.verify');
+    Route::get('/payment', function () {
+        return view('businessdashboard.payment.index');
+    })->name('payment.index');
+
+    Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('payment.initiate');
+    Route::get('/verify-payment', [PaymentController::class, 'verifyPayment'])->name('payment.verify');
 });
+
+
+// Route::controller(PaymentController::class)->group(function () {
+//     Route::post('/initiate-payment', 'initiatePayment');
+//     Route::get('/verify-payment', 'verifyPayment');
+// });
 
