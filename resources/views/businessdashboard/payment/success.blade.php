@@ -1,11 +1,20 @@
 @extends('BusinessLayout.app')
 
 @section('content')
-<div class="ml-64 p-6 bg-green-100 min-h-screen flex items-center justify-center">
-    <div class="bg-white p-8 rounded shadow max-w-lg text-center">
-        <h1 class="text-3xl font-bold text-green-700 mb-4">Payment Successful!</h1>
-        <p class="mb-6 text-gray-700">Thank you for your payment. Your transaction was completed successfully.</p>
-        <a href="{{ route('businessdashboard.payment.index') }}" class="text-purple-600 hover:underline font-semibold">Back to Payment Page</a>
+<div class="ml-64 w-full min-h-screen p-6 bg-green-100">
+    <div class="max-w-xl mx-auto mt-10 p-6 bg-white shadow rounded-lg">
+        <h2 class="text-2xl font-bold text-green-600 mb-4 text-center">🎉 Payment Successful</h2>
+
+        <div class="text-sm text-gray-700 space-y-2">
+            <p><strong>Transaction ID:</strong> {{ $transaction->txn_id }}</p>
+            <p><strong>Amount:</strong> Rs. {{ $transaction->amount / 100 }}</p>
+            <p><strong>Status:</strong> {{ $transaction->status }}</p>
+            <p><strong>Mobile:</strong> {{ $transaction->mobile }}</p>
+            <p><strong>Order ID:</strong> {{ $transaction->purchase_order_id }}</p>
+            <p><strong>Order Name:</strong> {{ $transaction->purchase_order_name }}</p>
+        </div>
+
+        <a href="{{ route('businessdashboard.dashboard') }}" class="mt-4 inline-block text-white bg-purple-600 px-4 py-2 rounded hover:bg-purple-700">Back to Dashboard</a>
     </div>
 </div>
 @endsection

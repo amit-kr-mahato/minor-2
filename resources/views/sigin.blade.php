@@ -50,11 +50,11 @@
                                         @enderror
                                     </div>
 
-                                    <small>
+                                    {{-- <small>
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
                                             Forgot Password?
                                         </a>
-                                    </small>
+                                    </small> --}}
 
                                     <div class="input-group mb-3 mt-3">
                                         <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
@@ -75,7 +75,7 @@
     </div>
 
     {{-- ✅ FORGOT PASSWORD MODAL OUTSIDE THE LOGIN FORM --}}
-    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel"
+    {{-- <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content shadow rounded-3">
@@ -111,7 +111,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
     @if(session('success'))
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>

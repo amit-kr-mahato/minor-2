@@ -73,26 +73,41 @@
     </div>
 
     <!-- Payment gateway -->
-    <div class="mt-4">
-      <a href="{{route('businessdashboard.payment.index')}} "
-        class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
+    <div x-data="{ open: false }" class="mt-6">
+      <button @click="open = !open"
+        class="w-full flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-red-100 rounded transition">
         <span class="flex items-center gap-3">
-          <i class="fa-solid fa-credit-card"></i> Payment Gateway
+          <i class="fa-solid fa-money-check-dollar"></i> Payments
         </span>
-      </a>
+        <i :class="open ? 'fa-chevron-up' : 'fa-chevron-down'" class="fa-solid text-xs"></i>
+      </button>
+
+      <div x-show="open" class="mt-2 pl-6 space-y-1">
+        <a href="{{ route('businessdashboard.payment.index') }}"
+          class="block px-2 py-1 rounded hover:bg-red-100 hover:text-red-700 
+           {{ request()->routeIs('businessdashboard.payment.index') ? 'bg-red-100 text-red-700' : 'text-gray-700' }}">
+          Payment with khalti
+        </a>
+        <a href="{{ route('businessdashboard.payment.history') }}"
+          class="block px-2 py-1 rounded hover:bg-red-100 hover:text-red-700 
+           {{ request()->routeIs('businessdashboard.payment.history') ? 'bg-red-100 text-red-700' : 'text-gray-700' }}">
+           Payments history
+        </a>
+      </div>
     </div>
+
 
 
     <!-- Logout -->
     <form method="POST" action="{{ route('logout') }}">
-    @csrf
-    <button type="submit"
+      @csrf
+      <button type="submit"
         class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
         <span class="flex items-center gap-3">
-            <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+          <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
         </span>
-    </button>
-</form>
+      </button>
+    </form>
 
 
   </nav>

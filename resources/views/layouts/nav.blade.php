@@ -1,6 +1,6 @@
 <header>
     <nav class="navbar navbar-expand-lg  navbar-light  navv">
-        <div class="container-fluid" style="gap:10%">
+        <div class="container-fluid" style="gap:4%">
             <div class="logoo">
                 <a class="navbar-brand me-5 text-light" href="{{ route('index') }}">
                     <img src="{{ asset('frontend/images/logo.png') }}"
@@ -12,7 +12,7 @@
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button> --}}
-            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="gap:5%">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="gap:2%">
                 <!-- Inside your navbar layout -->
                 <form action="{{ route('business.search') }}" method="GET" class="d-flex me-5">
                     <input class="form-control me-2" type="search" name="name" placeholder="Things to do"
@@ -54,7 +54,7 @@
                     {{-- <li class="nav-item">
 
                         <a class="nav-link me-2 active text-light navver" aria-current="page"
-                            href="{{ route('review') }}">Write a Review</a>
+                            href="{{ route('writereview', ['id' => $business->id]) }}">Write a Review</a>
 
                     </li> --}}
                     <li class="nav-item">

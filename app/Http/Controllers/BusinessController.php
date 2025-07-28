@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use App\Models\Review;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\BusinessApproved;
+use Illuminate\Support\Facades\Notification; 
+use App\Notifications\BusinessPending;
+use App\Notifications\BusinessSuspended;
 
 class BusinessController extends Controller {
     public function index() {
@@ -56,22 +60,37 @@ class BusinessController extends Controller {
         ] );
     }
 
-    public function updateStatus(Request $request, $id)
+public function updateStatus(Request $request, $id)
 {
-    $request->validate([
-        'status' => 'required|in:pending,approved,suspended',
-    ]);
+    try {
+        $business = Business::findOrFail($id);
+        $newStatus = $request->input('status');
 
-    $business = Business::find($id);
-    if (!$business) {
-        return response()->json(['success' => false, 'message' => 'Business not found'], 404);
+        $business->status = $newStatus;
+        $business->save();
+
+        if ($business->user && $business->user->email) {
+            if ($newStatus === 'approved') {
+                $business->user->notify(new BusinessApproved($business));
+            } elseif ($newStatus === 'pending') {
+                $business->user->notify(new BusinessPending($business));
+            } elseif ($newStatus === 'suspended') {
+                $business->user->notify(new BusinessSuspended($business));
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated and email sent.'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
     }
-
-    $business->status = $request->status;
-    $business->save();
-
-    return response()->json(['success' => true, 'message' => 'Status updated']);
 }
+
 
 
     public function destroy( Business $business ) {

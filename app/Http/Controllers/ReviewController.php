@@ -12,7 +12,7 @@ class ReviewController extends Controller
     {
        $business = Business::findOrFail($id); // get only one business by ID
 
-        return view('writereview', compact('business'));
+        return view('review', compact('business'));
     }
 
     // Handle review submission
