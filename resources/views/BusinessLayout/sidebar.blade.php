@@ -74,7 +74,7 @@
 
     <!-- Payment gateway -->
     <div class="mt-4">
-      <a href="{{route('businessdashboard.khalti.page')}} "
+      <a href="{{route('businessdashboard.payment.index')}} "
         class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
         <span class="flex items-center gap-3">
           <i class="fa-solid fa-credit-card"></i> Payment Gateway

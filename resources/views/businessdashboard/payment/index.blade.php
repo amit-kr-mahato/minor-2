@@ -7,9 +7,15 @@
 
         <p class="mb-4 text-gray-700 text-center">Amount: <strong>Rs. 1</strong></p>
 
-        <button id="khalti-button" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg shadow">
+        {{-- <button id="khalti-button" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg shadow">
+            Pay with Khalti
+        </button> --}}
+        <form action="{{route('businessdashboard.payment.initiate')}}" method="POST">
+            @csrf
+            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg shadow">
             Pay with Khalti
         </button>
+        </form>
 
         <div id="payment-result" class="mt-4 text-center text-sm text-gray-800"></div>
     </div>
@@ -21,11 +27,11 @@
 <script>
     let config = {
         // replace with your actual public key from Khalti dashboard
-        publicKey: "1ea5e110426947c190412fde3ceff474",
+        publicKey: "ab7509ec1ff94b0b96d702ebab07b73a",
         productIdentity: "1234567890",
         productName: "Static Order",
         productUrl: "http://yourdomain.com/product/static-order",
-        amount: 400000, // in paisa (Rs. 4000)
+        amount: 100, // in paisa (Rs. 4000)
 
         eventHandler: {
             onSuccess(payload) {

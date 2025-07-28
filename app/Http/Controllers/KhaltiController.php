@@ -145,11 +145,11 @@ class KhaltiController extends Controller
         $amount = $request->input('amount'); // Must be in paisa (e.g., 400000 for Rs. 4000)
 
         // Replace with your actual secret key from Khalti dashboard
-        $secretKey = 'c62283ef3f5945faad92736811547a47'; // 🔁 Replace this
+        $secretKey = '604dcdff647d4829ba2251da90471dc6'; // 🔁 Replace this
 
         $response = Http::withHeaders([
             'Authorization' => 'Key ' . $secretKey,
-        ])->post('https://khalti.com/api/v2/payment/verify/', [
+        ])->post('https://khalti.com/api/v2/epayment/verify/', [
             'token' => $token,
             'amount' => $amount,
         ]);
