@@ -1,29 +1,44 @@
 @extends('layouts.app')
 
 @push('styles')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-sA+zN1b+gKldvDX7J6ZZWnWo3wY6ZP3prWwslrYxPtk=" crossorigin="" />
+<style>
+    #map {
+        height: 200%;
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .business-list {
+        overflow-y: auto;
+        padding: 1rem;
+        border-right: 1px solid #ccc;
+    }
+
+    .business-item:hover {
+        background-color: #f8f9fa;
+    }
+</style>
 @endpush
 
 @section('content')
 @if($businesses->isEmpty())
     <div class="alert alert-warning text-center mt-4">
-        No approved businesses found for your search.
+        No businesses found for your search.
     </div>
 @else
-    <div style="display: flex; height: 90vh; gap: 1rem; overflow: hidden;">
+    <div style="display: flex;  gap: 1rem; overflow: hidden;">
         <!-- Business List -->
-        <div style="flex: 1; overflow-y: auto; padding: 1rem; border-right: 1px solid #ccc;">
+        <div style="flex: 1;" class="business-list">
             <h5 class="text-muted mb-3">Search Results</h5>
             @foreach ($businesses->where('status', 'approved') as $business)
                 <a href="{{ route('businessdetail', $business->id) }}" style="text-decoration: none; color: inherit;">
-                    <div
-                        style="cursor: pointer; margin-bottom: 1rem; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
-                        onmouseover="highlightBusiness({{ $business->id }})">
+                    <div class="business-item"
+                        style="cursor: pointer; margin-bottom: 1rem; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px;"
+                        onmouseover="highlightMarker({{ $business->id }})">
                         <div style="display: flex; gap: 1rem; align-items: center;">
                             <img src="{{ $business->logo ? asset('storage/' . $business->logo) : 'https://via.placeholder.com/80x80?text=No+Logo' }}"
-                                alt="{{ $business->business_name }}"
-                                style="width: 80px; height: 80px; object-fit: cover; border-radius: 6px;" />
+                                 alt="{{ $business->business_name }}"
+                                 style="width: 80px; height: 80px; object-fit: cover; border-radius: 6px;" />
                             <div>
                                 <h6 style="margin: 0;">{{ $business->business_name }}</h6>
                                 <small>📍 {{ $business->city }}</small><br>
@@ -35,61 +50,79 @@
             @endforeach
         </div>
 
-        <!-- Leaflet Map Container -->
-        <div id="map" style="flex: 2; height: 100%; border-radius: 8px;"></div>
+        <!-- Google Map -->
+        <div style="flex: 2;  height: 100vh; gap: 1rem;">
+            <div id="map"></div>
+        </div>
     </div>
 
     @php
         $locations = [];
-        foreach ($businesses->where('status', 'approved') as $business) {
-            if ($business->latitude && $business->longitude) {
+        foreach ($businesses->where('status', 'approved') as $biz) {
+            if ($biz->latitude && $biz->longitude) {
                 $locations[] = [
-                    'id' => $business->id,
-                    'name' => $business->business_name,
-                    'lat' => $business->latitude,
-                    'lng' => $business->longitude,
-                    'city' => $business->city,
+                    'id' => $biz->id,
+                    'name' => $biz->business_name,
+                    'lat' => $biz->latitude,
+                    'lng' => $biz->longitude,
+                    'city' => $biz->city,
                 ];
             }
         }
     @endphp
 
     <script>
-        let map, markerMap = {};
+        let map;
+        let markerMap = {};
 
-        document.addEventListener("DOMContentLoaded", function () {
-            map = L.map('map').setView([28.3949, 84.1240], 6); // Nepal center
+        function initMap() {
+            const centerNepal = { lat: 28.3949, lng: 84.1240 };
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-
-            const markers = @json($locations);
-            let bounds = [];
-
-            markers.forEach(biz => {
-                const marker = L.marker([biz.lat, biz.lng]).addTo(map)
-                    .bindPopup(`<b>${biz.name}</b><br>${biz.city}`);
-                bounds.push([biz.lat, biz.lng]);
-                markerMap[biz.id] = marker;
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: centerNepal,
+                zoom: 6,
             });
 
-            if (bounds.length) {
-                map.fitBounds(bounds, { padding: [50, 50] });
-            }
-        });
+            const locations = @json($locations);
+            const bounds = new google.maps.LatLngBounds();
 
-        function highlightBusiness(id) {
+            locations.forEach(biz => {
+                const position = { lat: parseFloat(biz.lat), lng: parseFloat(biz.lng) };
+
+                const marker = new google.maps.Marker({
+                    position,
+                    map,
+                    title: biz.name
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<strong>${biz.name}</strong><br>${biz.city}`
+                });
+
+                marker.addListener('click', function () {
+                    infoWindow.open(map, marker);
+                });
+
+                markerMap[biz.id] = { marker, infoWindow };
+                bounds.extend(position);
+            });
+
+            if (locations.length) {
+                map.fitBounds(bounds);
+            }
+        }
+
+        function highlightMarker(id) {
             if (markerMap[id]) {
-                map.setView(markerMap[id].getLatLng(), 15);
-                markerMap[id].openPopup();
+                const { marker, infoWindow } = markerMap[id];
+                map.setZoom(15);
+                map.panTo(marker.getPosition());
+                infoWindow.open(map, marker);
             }
         }
     </script>
+
+    <!-- ✅ Replace with your actual Google Maps API Key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvOvXuE9F5s5Rr7tDn3ZaBqBJjg1Txa3k&callback=initMap" async defer></script>
 @endif
 @endsection
-
-@push('scripts')
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-o9N1jZ8l+cLe/5xuhRy1JZLC1fZdb1BWD+GnWiw1xR0=" crossorigin=""></script>
-@endpush

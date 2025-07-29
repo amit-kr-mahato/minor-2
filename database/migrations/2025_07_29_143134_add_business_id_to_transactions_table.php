@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-       Schema::create('reviews', function (Blueprint $table) {
-        $table->id();
-        $table->unsignedTinyInteger('rating'); // from 1 to 5
-        $table->string('review'); // limit to 85 characters
-        $table->timestamps();
-    });
+        Schema::table('transactions', function (Blueprint $table) {
+             $table->foreignId('business_id')->nullable()->constrained()->onDelete('cascade');
+        });
     }
 
     /**
@@ -28,6 +25,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reviews');
+        Schema::table('transactions', function (Blueprint $table) {
+              $table->dropForeign(['business_id']);
+        $table->dropColumn('business_id');
+        });
     }
 };

@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-       Schema::create('reviews', function (Blueprint $table) {
-        $table->id();
-        $table->unsignedTinyInteger('rating'); // from 1 to 5
-        $table->string('review'); // limit to 85 characters
-        $table->timestamps();
-    });
+        Schema::table('reviews', function (Blueprint $table) {
+           $table->text('review')->change();
+        });
     }
 
     /**
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reviews');
+        Schema::table('reviews', function (Blueprint $table) {
+             $table->string('review', 255)->change(); // or original type
+        });
     }
 };

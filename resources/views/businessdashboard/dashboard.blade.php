@@ -6,28 +6,27 @@
 
     <h2 class="text-3xl font-bold text-gray-800 mb-6">Dashboard</h2>
 
-    <div class="grid  md:grid-cols-3 gap-6 mb-8">
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded shadow p-6">
-            <h3 class="text-lg font-semibold text-gray-700 mb-2">TotalReview</h3>
-            <p class="text-4xl font-bold text-red-600">{{$totalReviews}}</p>
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Reviews</h3>
+            <p class="text-4xl font-bold text-red-600">{{ $totalReviews }}</p>
         </div>
 
         <div class="bg-white rounded shadow p-6">
-            <h3 class="text-lg font-semibold text-gray-700 mb-2">Rating</h3>
-            <p class="text-4xl font-bold text-red-600">2.4k</p>
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Rating Count</h3>
+            <p class="text-4xl font-bold text-red-600">{{ $totalRatingCount }}</p>
         </div>
     </div>
 
-   {{---------------------------- chart Content-----------------------------------}}
-   <div class="bg-white rounded-xl shadow p-4  sm:w-1/2 mb-4">
-      <h2 class="text-sm font-semibold mb-2 ">Overview</h2>
-      <div class="relative w-full h-64 ml-32 ">
-      <canvas id="pieChart"></canvas>
-      </div>
+    {{---------------------------- Chart Content -----------------------------------}}
+    <div class="bg-white rounded-xl shadow p-4 sm:w-1/2 mb-4">
+        <h2 class="text-sm font-semibold mb-2">Overview</h2>
+        <div class="relative w-full h-64 ml-32">
+            <canvas id="pieChart"></canvas>
+        </div>
     </div>
 
-    {{-- -----------------------------------Review content-------------------------- --}}
-
+    {{-- ----------------------------------- Review content -------------------------- --}}
     <section class="bg-white rounded shadow p-6">
         <h3 class="text-xl font-semibold text-gray-800 mb-4">Recent Reviews</h3>
 
@@ -42,7 +41,6 @@
                 </tr>
             </thead>
             <tbody>
-
                 @foreach ($recentReviews as $review)
                     <tr class="hover:bg-red-50">
                         <td class="px-4 py-2 border">{{ $review->user?->name ?? 'N/A' }}</td>
@@ -57,18 +55,29 @@
     </section>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
- <script src="https://cdn.jsdelivr.net/npm/chart.js" ></script>
 <script>
+    // Pass PHP variables to JS safely
+    const ratings = @json($ratings);         // e.g. [1, 2, 3, 4, 5]
+    const ratingTotals = @json($ratingTotals); // e.g. [3, 8, 15, 10, 4]
+
     const ctx = document.getElementById('pieChart').getContext('2d');
+
     const pieChart = new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: ['Total Review'],
+            labels: ratings.map(r => r + ' Star'), // ['1 Star', '2 Star', ...]
             datasets: [{
-                label: 'totalReviews',
-                data: [{{ $totalReviews }}],
-                backgroundColor: ['#36A2EB'],
+                label: 'Ratings Count',
+                data: ratingTotals,
+                backgroundColor: [
+                    '#FF6384', // 1 star - red
+                    '#FF9F40', // 2 stars - orange
+                    '#FFCD56', // 3 stars - yellow
+                    '#4BC0C0', // 4 stars - teal
+                    '#36A2EB'  // 5 stars - blue
+                ],
                 borderWidth: 1
             }]
         },
@@ -80,9 +89,11 @@
                 },
                 title: {
                     display: true,
-                    text: ' Reviews'
+                    text: 'Ratings Distribution'
                 }
             }
         }
     });
-    </script>
+</script>
+
+@endsection

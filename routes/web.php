@@ -335,10 +335,15 @@ Route::get('/search', [BusinessController::class, 'search'])->name('business.sea
 |--------------------------------------------------------------------------
 */
 
-// Anyone can see this form
-Route::get('/business/review', [ReviewController::class, 'Businessreview'])->name('writereview');
 
-// Only logged-in users can submit reviews
+
+Route::get('/write-review', [ReviewController::class, 'showReviewPage'])->name('reviews.show');
+
+
+// Show review form for business with ID (public)
+Route::get('/business/{id}/review', [ReviewController::class, 'Businessreview'])->name('writereview');
+
+// Submit review (authenticated users only)
 Route::post('/review', [ReviewController::class, 'submitReview'])->middleware('auth')->name('review.submit');
 
 

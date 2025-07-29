@@ -167,24 +167,24 @@ public function updateStatus(Request $request, $id)
     }
 
     public function dashboard() {
-        $ratingCounts = DB::table( 'reviews' )
-        ->select( 'rating', DB::raw( 'count(*) as total' ) )
-        ->groupBy( 'rating' )
-        ->orderBy( 'rating' )
+    $ratingCounts = DB::table('reviews')
+        ->select('rating', DB::raw('count(*) as total'))
+        ->groupBy('rating')
+        ->orderBy('rating')
         ->get();
 
-        $ratings = $ratingCounts->pluck( 'rating' );
-        // [ 1, 2, 3, 4, 5 ]
-        $totals = $ratingCounts->pluck( 'total' );
-        // [ 3, 8, 15, 10, 4 ]
+    $ratings = $ratingCounts->pluck('rating');   // [1, 2, 3, 4, 5]
+    $totals = $ratingCounts->pluck('total');     // [3, 8, 15, 10, 4]
 
-        return view( 'businessdashboard.dashboard', [
-            'ratings' => $ratings,
-            'ratingTotals' => $totals,
-            'recentReviews' => Review::with( [ 'user', 'business' ] )->latest()->take( 5 )->get(),
-            'totalReviews' => Review::count(),
-        ] );
-    }
+    return view('businessdashboard.dashboard', [
+        'ratings' => $ratings,
+        'ratingTotals' => $totals,
+        'totalRatingCount' => $ratingCounts->sum('total'), // 👈 Add this line
+        'recentReviews' => Review::with(['user', 'business'])->latest()->take(5)->get(),
+        'totalReviews' => Review::count(),
+    ]);
+}
+
 
     //business controller of all business CRUD Operation
     // List all businesses for logged-in user

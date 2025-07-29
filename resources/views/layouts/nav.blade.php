@@ -49,18 +49,15 @@
                             </li>
                         </ul>
                     </li>
-
-{{-- {{ route('writereview') }} --}}
-                    @auth
-                       
+    
                             <li class="nav-item">
                                 <a class="nav-link me-2 active text-light navver" aria-current="page"
-                                    href="#">   
+                                  href="{{ route('reviews.show') }}">   
                                     Write a Review
                                 </a>
                             </li>
                       
-                    @endauth
+                    
 
 
                     {{-- <li class="nav-item">

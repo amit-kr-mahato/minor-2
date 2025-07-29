@@ -80,8 +80,9 @@
   <!-- Top bar with action buttons -->
   <div class="top-bar">
     <div class="action-buttons">
-      {{-- <a href="{{route('writereview',['id' => $business->id])}}" target="_blank" class="btn"><i
-          class="fa-solid fa-star"></i> Write a review</a> --}}
+      <a href="{{ route('writereview', ['id' => $business->id]) }}" target="_blank" class="btn">
+        <i class="fa-solid fa-star"></i> Write a review
+      </a>
       {{-- <a href="{{route('addphoto')}}" target="_blank" class="btn"><i class="fa-solid fa-camera"></i> Add photo</a>
       --}}
 

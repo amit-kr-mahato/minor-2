@@ -7,7 +7,7 @@
 
         <form action="{{ route('business.search') }}" method="GET" class="d-flex me-5">
         <div class="input-group search-box ">
-            <input type="text"  name="name" class="form-control" placeholder="Try lunch, yoga studio, plumber"  value="{{ request('name') }}>
+            <input type="text"  name="name" class="form-control" placeholder="Try lunch, yoga studio, plumber"  value="{{ request('name') }}">
             <span class="input-group-text">|</span>
             <input type="text" name="location" class="form-control" placeholder="Current Location"  value="{{ request('location') }}">
             <button class="btn btn-danger w-25 text-light">
