@@ -15,17 +15,18 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
         $table->id();
-    $table->string('pidx')->nullable();
-    $table->string('transaction_id')->nullable();
-    $table->string('tidx')->nullable();
-    $table->string('txn_id')->nullable();
-    $table->integer('amount')->nullable();
-    $table->integer('total_amount')->nullable();
-    $table->string('mobile')->nullable();
-    $table->string('status')->nullable();
-    $table->string('purchase_order_id')->nullable();
-    $table->string('purchase_order_name')->nullable();
-    $table->timestamps();
+        $table->string('pidx')->nullable();
+        $table->string('transaction_id')->nullable();
+        $table->string('tidx')->nullable();
+        $table->string('txn_id')->nullable();
+        $table->integer('amount')->nullable();
+        $table->integer('total_amount')->nullable();
+        $table->string('mobile')->nullable();
+        $table->string('status')->nullable();
+        $table->foreignId('user_id'); // owner
+        $table->string('purchase_order_id')->nullable();
+        $table->string('purchase_order_name')->nullable();
+        $table->timestamps();
         });
     }
 

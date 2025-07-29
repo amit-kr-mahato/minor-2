@@ -334,11 +334,13 @@ Route::get('/search', [BusinessController::class, 'search'])->name('business.sea
 | Review Routes
 |--------------------------------------------------------------------------
 */
-// Route::middleware('auth')->group(function () {
-//     Route::get('/business/{id}', [ReviewController::class, 'Businessreview'])->name('review');
-//     Route::post('/review', [ReviewController::class, 'submitReview'])->name('review.submit');
-//     Route::get('/review', [ReviewController::class, 'review'])->name('review.form');
-// });
+
+// Anyone can see this form
+Route::get('/business/review', [ReviewController::class, 'Businessreview'])->name('writereview');
+
+// Only logged-in users can submit reviews
+Route::post('/review', [ReviewController::class, 'submitReview'])->middleware('auth')->name('review.submit');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -413,7 +415,8 @@ Route::middleware(['auth'])->prefix('businessdashboard')->name('businessdashboar
     Route::get('/payment', fn () => view('businessdashboard.payment.index'))->name('payment.index');
     Route::post('/initiate-payment', [PaymentController::class, 'initiatePayment'])->name('payment.initiate');
     Route::post('/khalti/verify', [PaymentController::class, 'verifyPayment'])->name('khalti.verify');
-    Route::get('/payment-history', [PaymentController::class, 'myPayments'])->name('payment.history');
+Route::get('/payment-history', [PaymentController::class, 'myPayments'])->name('payment.history');
+
     Route::get('/verify-payment', [PaymentController::class, 'handleRedirect'])->name('payment.handleRedirect');
 });
 
@@ -451,3 +454,8 @@ Route::post('/business/store-detail', [BusinessController::class, 'storeDetail']
 Route::get('/repair', [BusinessController::class, 'Repairs'])->middleware('auth')->name('repair');
 Route::post('/admin/businesses/{id}/status', [BusinessController::class, 'updateStatus']);
 
+
+
+
+//==========================================================menu=====================
+Route::get('/menu/{business_id}', [MenuItemController::class, 'showPublicMenu'])->name('public.menu');

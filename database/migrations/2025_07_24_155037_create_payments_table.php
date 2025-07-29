@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('token')->unique();
             $table->string('idx')->nullable();
-            $table->string('status')->default('completed')->after('idx');
+            $table->string('status')->default('completed');
             $table->integer('amount');
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->json('payload')->nullable();

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MenuItem;
 use App\Models\User;
+use App\Models\MenuItem;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class MenuItemController extends Controller {
@@ -36,7 +37,8 @@ class MenuItemController extends Controller {
 
         // dd( $request->all() );
         //    $business = User::with( 'businesses' )->find( auth()->id() );
-        $business = auth()->user()->business; // ✅ correct
+        $business = auth()->user()->business;
+        // ✅ correct
 
         //dd( $business );
 
@@ -59,13 +61,12 @@ class MenuItemController extends Controller {
     }
 
     public function edit( MenuItem $menu ) {
-  
+
         return view( 'businessdashboard.menu.edit', compact( 'menu' ) );
     }
 
     public function update( Request $request, MenuItem $menu ) {
         // Optional: authorize user if you have policies set
-   
 
         // Validate incoming data
         $request->validate( [
@@ -94,7 +95,6 @@ class MenuItemController extends Controller {
     }
 
     public function destroy( MenuItem $menu ) {
-     
 
         if ( $menu->image ) {
             Storage::disk( 'public' )->delete( $menu->image );
@@ -104,4 +104,14 @@ class MenuItemController extends Controller {
 
         return redirect()->route( 'businessdashboard.menu.index' )->with( 'success', 'Menu item deleted!' );
     }
+
+    public function showPublicMenu( $business_id ) {
+        $menuItems = MenuItem::where( 'business_id', $business_id )
+        ->orderBy( 'category' )
+        ->orderBy( 'name' )
+        ->get();
+
+        return view( 'menu-book', compact( 'menuItems' ) );
+    }
+
 }

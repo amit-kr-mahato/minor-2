@@ -18,7 +18,7 @@
                     <input class="form-control me-2" type="search" name="name" placeholder="Things to do"
                         value="{{ request('name') }}" required>
                     <input class="form-control me-2" type="search" name="location" placeholder="Location"
-                        value="{{ request('location') }}" >
+                        value="{{ request('location') }}">
                     <button class="btn btn-danger btn-outline-danger text-light" type="submit">Search</button>
                 </form>
                 <ul class="navbar-nav mb-2 mb-lg-0">
@@ -50,17 +50,23 @@
                         </ul>
                     </li>
 
+{{-- {{ route('writereview') }} --}}
+                    @auth
+                       
+                            <li class="nav-item">
+                                <a class="nav-link me-2 active text-light navver" aria-current="page"
+                                    href="#">   
+                                    Write a Review
+                                </a>
+                            </li>
+                      
+                    @endauth
+
 
                     {{-- <li class="nav-item">
-
-                        <a class="nav-link me-2 active text-light navver" aria-current="page"
-                            href="{{ route('writereview', ['id' => $business->id]) }}">Write a Review</a>
-
-                    </li> --}}
-                    <li class="nav-item">
                         <a class="nav-link me-3  text-light navver" href="{{ route('project') }}">Start a
                             Project</a>
-                    </li>
+                    </li> --}}
 
 
                     @auth

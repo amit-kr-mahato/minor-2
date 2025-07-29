@@ -9,6 +9,7 @@
   <thead>
     <tr class="bg-gray-200">
       <th class="p-2">ID</th>
+        <th class="p-2">Name</th>
       <th class="p-2">Txn ID</th>
       <th class="p-2">Amount</th>
       <th class="p-2">Status</th>
@@ -19,6 +20,7 @@
     @foreach($transactions as $txn)
     <tr class="border-b">
       <td class="p-2">{{ $txn->id }}</td>
+        <td class="p-2">{{ $txn->name }}</td>
       <td class="p-2">{{ $txn->transaction_id }}</td>
       <td class="p-2">Rs. {{ $txn->amount / 100 }}</td>
       <td class="p-2">

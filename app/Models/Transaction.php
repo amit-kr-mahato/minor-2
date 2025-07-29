@@ -19,6 +19,7 @@ class Transaction extends Model
     'status',
     'purchase_order_id',
     'purchase_order_name',
+    'user_id'
 ];
 
 }

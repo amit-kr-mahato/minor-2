@@ -81,6 +81,7 @@ class PaymentController extends Controller {
     }
 
     public function handleRedirect( Request $request ) {
+        $userId = auth()->id();
         $transaction = Transaction::create( [
             'pidx' => $request->get( 'pidx' ),
             'transaction_id' => $request->get( 'transaction_id' ),
@@ -90,6 +91,7 @@ class PaymentController extends Controller {
             'total_amount' => $request->get( 'total_amount' ),
             'mobile' => $request->get( 'mobile' ),
             'status' => $request->get( 'status' ),
+            'user_id' => $userId,
             'purchase_order_id' => $request->get( 'purchase_order_id' ),
             'purchase_order_name' => $request->get( 'purchase_order_name' ),
         ] );
@@ -99,11 +101,14 @@ class PaymentController extends Controller {
         return view( 'businessdashboard.payment.success', compact( 'transaction' ) );
     }
 
-    public function myPayments() {
-        $payments = Payment::where( 'user_id', auth()->id() )
+   public function myPayments()
+{
+    $payments = Transaction::where('user_id', auth()->id())
         ->latest()
-        ->paginate( 10 );
-        return view( 'businessdashboard.payment.history', compact( 'payments' ) );
-    }
+        ->paginate(10);
+
+    return view('businessdashboard.payment.history', compact('payments'));
+}
+
 
 }

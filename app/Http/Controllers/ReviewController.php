@@ -8,12 +8,11 @@ use Illuminate\Http\Request;
 class ReviewController extends Controller
 {
     // Show the review form
-    public function Businessreview($id)
-    {
-       $business = Business::findOrFail($id); // get only one business by ID
-
-        return view('review', compact('business'));
-    }
+   public function Businessreview($id)
+{
+    $business = Business::findOrFail($id);
+    return view('writereview', compact('business'));
+}
 
     // Handle review submission
     public function submitReview(Request $request)
