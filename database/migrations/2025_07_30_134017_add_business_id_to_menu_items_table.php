@@ -14,16 +14,20 @@ return new class extends Migration
     public function up()
     {
         Schema::table('menu_items', function (Blueprint $table) {
-        $table->foreignId('business_id')->constrained()->onDelete('cascade');
-    });
-}
+             $table->foreignId('business_id')->constrained()->onDelete('cascade');
+        });
+    }
 
-public function down()
-{
-    Schema::table('menu_items', function (Blueprint $table) {
-        $table->dropForeign(['business_id']);
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('menu_items', function (Blueprint $table) {
+            $table->dropForeign(['business_id']);
         $table->dropColumn('business_id');
-    });
-}
- 
+        });
+    }
 };

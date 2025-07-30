@@ -12,6 +12,7 @@ use App\Notifications\BusinessApproved;
 use Illuminate\Support\Facades\Notification; 
 use App\Notifications\BusinessPending;
 use App\Notifications\BusinessSuspended;
+use App\Models\MenuItem;
 
 class BusinessController extends Controller {
     public function index() {
@@ -60,6 +61,10 @@ class BusinessController extends Controller {
         ] );
     }
 
+
+
+    
+
 public function updateStatus(Request $request, $id)
 {
     try {
@@ -69,14 +74,13 @@ public function updateStatus(Request $request, $id)
         $business->status = $newStatus;
         $business->save();
 
+        // Send notification to owner
         if ($business->user && $business->user->email) {
-            if ($newStatus === 'approved') {
-                $business->user->notify(new BusinessApproved($business));
-            } elseif ($newStatus === 'pending') {
-                $business->user->notify(new BusinessPending($business));
-            } elseif ($newStatus === 'suspended') {
-                $business->user->notify(new BusinessSuspended($business));
-            }
+            match ($newStatus) {
+                'approved' => $business->user->notify(new BusinessApproved($business)),
+                'pending' => $business->user->notify(new BusinessPending($business)),
+                'suspended' => $business->user->notify(new BusinessSuspended($business)),
+            };
         }
 
         return response()->json([
@@ -86,10 +90,14 @@ public function updateStatus(Request $request, $id)
     } catch (\Exception $e) {
         return response()->json([
             'success' => false,
-            'message' => $e->getMessage()
+            'message' => $e->getMessage(),
         ], 500);
     }
 }
+
+
+
+
 
 
 
@@ -107,6 +115,7 @@ public function updateStatus(Request $request, $id)
             'business' => $business,
         ] );
     }
+    
 
     public function storeDetail( Request $request ) {
         $request->validate( [
@@ -146,11 +155,27 @@ public function updateStatus(Request $request, $id)
         return view( 'project.repair' );
     }
 
-    public function Businessdetail($id)
+
+public function Businessdetail($id)
 {
-    $business = Business::with('reviews')->findOrFail($id);
-    return view('businessdetail', compact('business'));
+    $business = Business::with(['latestReview.user', 'menuItems'])->findOrFail($id);
+
+    // Recommendations
+    $recommendations = Business::with([
+    'reviews' => function ($query) {
+        $query->latest(); // sorts reviews by newest
+    },
+    'reviews.user' // eager-load review author
+])
+->withCount('reviews')
+->withAvg('reviews', 'rating')
+->take(5) // or whatever limit you prefer
+->get();
+
+    return view('businessdetail', compact('business', 'recommendations'));
 }
+
+
 
 
     public function Seemorephoto() {

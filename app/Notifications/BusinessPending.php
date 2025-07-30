@@ -41,14 +41,15 @@ public function __construct(Business $business)
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+ public function toMail($notifiable)
 {
     return (new MailMessage)
-        ->subject('Business Status: Pending')
-        ->greeting('Hello ' . $notifiable->name . ',')
-        ->line('Your business "' . $this->business->business_name . '" is currently pending review by the admin.')
-        ->line('We will notify you once a decision has been made.');
+        ->markdown('emails.pending', [
+            'business' => $this->business,
+            'notifiable' => $notifiable,  // pass this here
+        ]);
 }
+
     /**
      * Get the array representation of the notification.
      *

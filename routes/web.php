@@ -292,6 +292,7 @@ use App\Http\Controllers\{
     SettingController
 };
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes (Frontend)
@@ -468,7 +469,23 @@ Route::get('/menu/{business_id}', [MenuItemController::class, 'showPublicMenu'])
 
 //========================================categories==========================
 
+// routes/web.php or routes/admin.php
 
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    Route::resource('categories', CategoryController::class);
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('businesses', BusinessController::class);
 });
+
+Route::get('/takeout', [BusinessController::class, 'search'])->name('resturant.Takeout');
+
+
+
+
+Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
+
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+});
+
+
+
+

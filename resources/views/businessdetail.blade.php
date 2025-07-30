@@ -99,199 +99,123 @@
 
       <div class="section-title" style="font-size: 18px; margin-bottom: 10px;">Popular Dishes</div>
       <div class="popular-dishes">
-        <div class="dish">
-          <img src="D:\yelp website\rest\KATHM-P0464-Sesame.16x9.webp" alt="Pizza">
-          <div class="dish-name">Pizza</div>
-          <div class="dish-info">2 Reviews</div>
-        </div>
-        <div class="dish">
-          <img src="D:\yelp website\rest\krishnarpan-restaurant.jpg" alt="Pineapple Pizza">
-          <div class="dish-name">Pineapple Chicken</div>
-          <div class="dish-info">3 Photos • 3 Reviews</div>
-        </div>
-        <div class="dish">
-          <img src="D:\yelp website\rest\mezze-rooftop.jpg" alt="Boneless Chicken">
-          <div class="dish-name">Boneless Wings</div>
-          <div class="dish-info">1 Photo • 2 Reviews</div>
-        </div>
-        <div class="dish">
-          <img src="D:\yelp website\rest\Nepali-Food-1.jpg" alt="BBQ Chicken">
-          <div class="dish-name">BBQ Chicken</div>
-          <div class="dish-info">1 Photo • 2 Reviews</div>
-        </div>
-        <div class="dish">
-          <img src="D:\yelp website\rest\Nepali-Food-1.jpg" alt="BBQ Chicken">
-          <div class="dish-name">BBQ Chicken</div>
-          <div class="dish-info">1 Photo • 2 Reviews</div>
-        </div>
-
+        @forelse($business->menuItems->take(5) as $menu)
+      <div class="dish">
+        <img src="{{ $menu->image ? asset('storage/' . $menu->image) : asset('frontend/images/default-dish.jpg') }}"
+        alt="{{ $menu->name }}">
+        <div class="dish-name">{{ $menu->name }}</div>
+      </div>
+    @empty
+      <p>No menu items added.</p>
+    @endforelse
       </div>
 
 
+      <div class="location-hours">
+        <h2>
+          Location & Hours
+          <span class="edit-link">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" alt="Edit Icon" />
+            Suggest an edit
+          </span>
+        </h2>
+
+        <div class="map-hours-container">
+          <div class="map">
+            {{-- Live Google Map iframe --}}
+            @if($business->latitude && $business->longitude)
+        <iframe width="100%" height="300" style="border:0; border-radius: 8px;" loading="lazy" allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCvOvXuE9F5s5Rr7tDn3ZaBqBJjg1Txa3k&q={{ $business->latitude }},{{ $business->longitude }}">
+        </iframe>
+      @else
+        <p class="text-red-500">Location coordinates not available for this business.</p>
+      @endif
+
+            {{-- Address & Directions --}}
+            <div class="address mt-2">
+              @php
+        $fullAddress = "{$business->address1}, {$business->city}, {$business->province} {$business->postal_code}";
+      @endphp
+
+              <a href="https://www.google.com/maps?q={{ urlencode($fullAddress) }}" target="_blank"
+                rel="noopener noreferrer">
+                {{ $business->address1 }}
+              </a><br />
+              {{ $business->city }}, {{ $business->province }} {{ $business->postal_code }}<br />
+
+              <button class="mt-2 bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
+                onclick="window.open('https://www.google.com/maps/dir/?api=1&destination={{ urlencode($fullAddress) }}', '_blank')">
+                Get directions
+              </button>
+            </div>
+          </div>
+
+
+
+          <div class="hours">
+            <div><span>Mon</span><span>9:30 AM - 1:00 AM <i>(Next day)</i></span></div>
+            <div><span>Tue</span><span>9:30 AM - 1:00 AM <i>(Next day)</i></span></div>
+            <div><span>Wed</span><span>9:30 AM - 1:00 AM <i>(Next day)</i></span></div>
+            <div><span>Thu</span><span>9:30 AM - 1:00 AM <i>(Next day)</i></span></div>
+            <div><span>Fri</span><span>9:30 AM - 2:00 AM <i>(Next day)</i></span></div>
+            <div><span>Sat</span><span>10:00 AM - 2:00 AM <i>(Next day)</i></span></div>
+            <div>
+              <span>Sun</span>
+              <span>
+                10:00 AM - 1:00 AM <i>(Next day)</i>
+                <strong class="open">Open now</strong>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
       <br>
-      <div class="vibe-section">
-        <h2>What's the vibe?</h2>
-
-        <div class="photo-grid">
-          <div class="photo-card">
-            <img src="D:\yelp website\rest\krishnarpan-restaurant.jpg" alt="Inside" />
-            <div class="photo-label">
-              <strong>Inside</strong>
-              <span>48 photos</span>
-            </div>
-          </div>
-
-          <div class="photo-card">
-            <img src="D:\yelp website\rest\a-green-hug-from-the.jpg" alt="Outside" />
-            <div class="photo-label">
-              <strong>Outside</strong>
-              <span>14 photos</span>
-            </div>
-          </div>
-
-          <div class="photo-card">
-            <img src="D:\yelp website\rest\Nepali-Food-1.jpg" alt="All photos" />
-            <div class="photo-label">
-              <strong>All photos</strong>
-              <span>146 photos</span>
-            </div>
-          </div>
+      <section class="recommendation-section" aria-label="Sponsored Recommendations">
+        <div class="header">
+          <div>You Might Also Consider</div>
+          <div class="sponsored" title="Sponsored content">Sponsored <i>ℹ</i></div>
         </div>
 
+        <!-- Recommendation 1 -->
+        @foreach($recommendations as $rec)
+        <article class="recommendation" role="article">
+          <img src="{{ asset('storage/' . $rec->logo) }}" class="rec-image" alt="{{ $rec->business_name }}">
 
-        <br>
+          <div class="rec-content">
+          <h3 class="rec-title">{{ $rec->business_name }}</h3>
 
-
-        <div class="location-hours">
-          <h2>
-            Location & Hours
-            <span class="edit-link">
-              <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" alt="Edit Icon" />
-              Suggest an edit
-            </span>
-          </h2>
-
-          <div class="map-hours-container">
-            <div class="map">
-              <!-- Link wrapping the map image -->
-              <a href="https://www.google.com/maps/dir/?api=1&destination=35+Skyline+Plaza,+Daly+City,+CA+94015"
-                target="_blank" rel="noopener noreferrer" title="Get directions to 35 Skyline Plaza">
-                <img src="D:\yelp website\rest\GoogleMapTA.webp" alt="Map of 35 Skyline Plaza" />
-              </a>
-              <div class="address">
-                <a href="https://www.google.com/maps?q=35+Skyline+Plaza,+Daly+City,+CA+94015" target="_blank"
-                  rel="noopener noreferrer">
-                  35 Skyline Plaza
-                </a><br />
-                Daly City, CA 94015<br />
-                <button
-                  onclick="window.open('//www.google.com/maps/dir/?api=1&destination=35+Skyline+Plaza,+Daly+City,+CA+94015', '_blank')">Get
-                  directions</button>
-              </div>
-            </div>
-
-            <div class="hours">
-              <div><span>Mon</span><span>9:30 AM - 1:00 AM <i>(Next day)</i></span></div>
-              <div><span>Tue</span><span>9:30 AM - 1:00 AM <i>(Next day)</i></span></div>
-              <div><span>Wed</span><span>9:30 AM - 1:00 AM <i>(Next day)</i></span></div>
-              <div><span>Thu</span><span>9:30 AM - 1:00 AM <i>(Next day)</i></span></div>
-              <div><span>Fri</span><span>9:30 AM - 2:00 AM <i>(Next day)</i></span></div>
-              <div><span>Sat</span><span>10:00 AM - 2:00 AM <i>(Next day)</i></span></div>
-              <div>
-                <span>Sun</span>
-                <span>
-                  10:00 AM - 1:00 AM <i>(Next day)</i>
-                  <strong class="open">Open now</strong>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br>
-        <section class="recommendation-section" aria-label="Sponsored Recommendations">
-          <div class="header">
-            <div>You Might Also Consider</div>
-            <div class="sponsored" title="Sponsored content">Sponsored <i>ℹ</i></div>
+          <div class="stars">
+            @php
+          $avg = round($rec->reviews_avg_rating ?? 0);
+          echo str_repeat('★', $avg) . str_repeat('☆', 5 - $avg);
+        @endphp
+            <span class="review-count">({{ $rec->reviews_count }} reviews)</span>
           </div>
 
-          <!-- Recommendation 1 -->
-          <article class="recommendation" role="article" aria-labelledby="rec1-title">
-            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=80&q=80"
-              alt="IHOP pancakes" class="rec-image" />
-            <div class="rec-content">
-              <h3 class="rec-title" id="rec1-title">IHOP</h3>
-              <div class="rec-distance" aria-label="Distance">
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path
-                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z" />
-                </svg>
-                1.2 miles away from Mountain Mike's Pizza
-              </div>
-              <p class="rec-review"><span class="reviewer">Jake C. said</span> <span class="quote-text">"my wife and i
-                  went here the other day for some breakfast. at first things were going fine ordered my food then my
-                  job
-                  called me in(i am an on call driver for a local auto dealership). they said it was a short local run
-                  so
-                  i figured..."</span><span class="read-more" tabindex="0">read more</span></p>
-              <div class="category" aria-label="Categories">in Burgers, American, Breakfast &amp; Brunch</div>
-            </div>
-          </article>
+          @php
+          $latestReview = $rec->reviews->first();
+        @endphp
 
-          <!-- Recommendation 2 -->
-          <article class="recommendation" role="article" aria-labelledby="rec2-title">
-            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=80&q=80"
-              alt="Dish from Lers Ros" class="rec-image" />
-            <div class="rec-content">
-              <div class="stars" aria-label="4 out of 5 stars rating">
-                <span class="star">&#9733;</span>
-                <span class="star">&#9733;</span>
-                <span class="star">&#9733;</span>
-                <span class="star">&#9733;</span>
-                <span class="star empty">&#9733;</span>
-                <span class="review-count">(2.4k reviews)</span>
-              </div>
-              <h3 class="rec-title" id="rec2-title">Lers Ros</h3>
-              <p class="rec-review"><span class="reviewer">Manny F. said</span> <span class="quote-text">"I've been a
-                  few
-                  times now and a very embarrassing thing happened to me. We just finished paying and I went up the
-                  stairs
-                  to use the bathroom. The mens room was full and I really needed to go so I used the womens room. Not
-                  only did I..."</span><span class="read-more" tabindex="0">read more</span></p>
-              <div class="category" aria-label="Category">in Thai</div>
-            </div>
-          </article>
-        </section>
-      </div>
+          @if($latestReview)
+        <p class="rec-review">
+          <span class="reviewer">{{ $latestReview->user->name }} said</span>
+          <span class="quote-text">"{{ \Illuminate\Support\Str::limit($latestReview->review, 150, '...') }}"</span>
+          {{-- <span class="read-more" tabindex="0">read more</span> --}}
+        </p>
+        @endif
+
+          <div class="category">
+            in
+            {{ is_array(json_decode($rec->categories)) ? implode(', ', json_decode($rec->categories)) : $rec->categories }}
+          </div>
+          </div>
+        </article>
+    @endforeach
+      </section>
     </div>
-
-    {{-- <div class="info-card">
-      <a href="#">🌐 mountainmikespizza.com</a><br><br>
-      📞 (415) 830-5064<br><br>
-
-
-    </div>
-
-    <div class="recommend">
-      <div class="section-title" style="font-size: 16px;">You Might Also Consider</div>
-      <div class="recommend-info">
-        <img src="D:\yelp website\rest\utse-restaurant-kathmandu-scaled-e1668068274998.webp" alt="Koi Palace">
-        <div class="recommend-text">
-          <strong>Koi Palace</strong><br>
-          <span class="rating">⭐⭐⭐✰</span> (3.9k reviews)<br>
-          1.6 miles
-        </div>
-      </div>
-      <div class="recommend-info">
-        <img src="D:\yelp website\rest\utse-restaurant-kathmandu-scaled-e1668068274998.webp" alt="Koi Palace">
-        <div class="recommend-text">
-          <strong>Koi Palace</strong><br>
-          <span class="rating">⭐⭐⭐✰</span> (3.9k reviews)<br>
-          1.6 miles
-        </div>
-      </div>
-    </div>
-  </div> --}}
-  {{-- @endforeach --}}
+  </div>
   </div>
 
 </body>

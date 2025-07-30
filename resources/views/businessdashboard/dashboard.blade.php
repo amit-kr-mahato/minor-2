@@ -6,6 +6,7 @@
 
     <h2 class="text-3xl font-bold text-gray-800 mb-6">Dashboard</h2>
 
+
     <div class="grid md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded shadow p-6">
             <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Reviews</h3>
@@ -55,7 +56,14 @@
     </section>
 </main>
 
+
+<script>
+  function toggleDiagonal() {
+    document.body.classList.toggle('dark');
+  }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 <script>
     // Pass PHP variables to JS safely

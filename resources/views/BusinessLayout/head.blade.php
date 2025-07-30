@@ -33,6 +33,54 @@
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+<style>
+    .diagonal-bg {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, white 50%, black 50%);
+        z-index: 0;
+        transition: background 0.8s ease-in-out;
+    }
+
+    body.dark .diagonal-bg {
+        background: linear-gradient(135deg, black 50%, white 50%);
+    }
+
+    .toggle-btn {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        padding: 10px 16px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 20;
+    }
+
+    .toggle-btn:hover {
+        background: #1d4ed8;
+    }
+
+    .text-left-content {
+        color: black;
+    }
+
+    body.dark .text-left-content {
+        color: white;
+    }
+
+    .text-right-content {
+        color: white;
+    }
+
+    body.dark .text-right-content {
+        color: black;
+    }
+</style>
+
 
 
 </head>

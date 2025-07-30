@@ -23,13 +23,13 @@ class BusinessApproved extends Notification implements ShouldQueue
         return ['mail'];
     }
 
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-            ->subject('Your Business Has Been Approved')
-            ->greeting('Hello ' . $notifiable->name . ',')
-            ->line('We’re happy to inform you that your business "' . $this->business->business_name . '" has been approved by the admin.')
-            ->action('View Your Dashboard', url('/businessdashboard'))
-            ->line('Thank you for being part of our platform.');
-    }
+   public function toMail($notifiable)
+{
+    return (new MailMessage)
+        ->markdown('emails.approved', [
+            'business' => $this->business,
+            'notifiable' => $notifiable,  // pass this here
+        ]);
+}
+
 }

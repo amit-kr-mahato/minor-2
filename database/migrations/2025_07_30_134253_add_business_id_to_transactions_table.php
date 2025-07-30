@@ -26,8 +26,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('transactions', function (Blueprint $table) {
-              $table->dropForeign(['business_id']);
-        $table->dropColumn('business_id');
+             $table->dropForeign(['business_id']);
+            $table->dropColumn('business_id');
         });
     }
 };

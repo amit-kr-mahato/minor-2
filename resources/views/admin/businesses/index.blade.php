@@ -38,6 +38,7 @@
       <td class="p-3">{{ $business->user->name ?? 'N/A' }}</td>
 
       <td class="p-3">
+
       <div id="status-box-{{ $business->id }}"
         class="checkbox-status flex items-center gap-3 p-2 rounded-md transition duration-200"
         data-business-id="{{ $business->id }}" data-current-status="{{ $business->status }}">
@@ -72,6 +73,7 @@
         </svg>
         </div>
       </div>
+      
       </td>
 
 
@@ -80,8 +82,10 @@
 
       <td class="p-3">{{ $business->categories }}</td>
       <td class="p-3 space-x-2">
-      <a href="{{ route('admin.businesses.edit', $business->id) }}"
-        class="bg-blue-600 text-white font-semibold rounded px-2 py-1 text-sm">view</a>
+      <a href="{{ route('admin.businesses.show', $business->id) }}"
+        class="bg-blue-600 text-white font-semibold rounded px-2 py-1 text-sm">show</a>
+        {{-- <a href="{{ route('admin.businesses.edit', $business->id) }}"
+        class="bg-blue-600 text-white font-semibold rounded px-2 py-1 text-sm">edit</a> --}}
 
       <form action="{{ route('admin.businesses.destroy', $business->id) }}" method="POST" class="inline"
         onsubmit="return confirm('Are you sure you want to delete this business?');">

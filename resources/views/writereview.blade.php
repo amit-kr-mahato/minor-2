@@ -96,7 +96,6 @@
       </div>
 
       <!-- Right Column: Review List -->
-      <!-- Right Column: Review List -->
       <div class="col-md-5">
         <div class="bg-white p-4 rounded shadow custom-scroll" style="max-height: 600px; overflow-y: auto;">
           <h3 class="mb-4 fw-bold">Customer Reviews</h3>

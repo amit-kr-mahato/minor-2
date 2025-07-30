@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('businesses', function (Blueprint $table) {
-             $table->string('banner')->nullable()->after('id');
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
         });
     }
 

@@ -4,7 +4,7 @@
             <div class="logoo">
                 <a class="navbar-brand me-5 text-light" href="{{ route('index') }}">
                     <img src="{{ asset('frontend/images/logo.png') }}"
-                        style="width: 150%;height:110px;padding-right: 4vw;" alt="">
+                        style="width: 150%;height:125px;padding-right: 4vw;" alt="">
                 </a>
             </div>
             {{-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -97,88 +97,51 @@
     </nav>
 </header>
 <!-- =============================another navbar============================= -->
-
-<nav class="navbar navbar-expand-lg" style="background-color: rgb(135, 248, 248); color:white;">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(135, 248, 248);">
     <div class="container">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
 
-                    {{-- Restaurants Dropdown --}}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Restaurants
-                        </a>
-                        <ul class="dropdown-menu second-menu">
-                            <div class="content_1 d-flex">
-                                <div class="sub-nav-col left-1 me-4">
-                                    @foreach ($categories['restaurants'] ?? [] as $category)
-                                        <a href="{{ route('category.show', $category->slug) }}"
-                                            class="sub-nav-box text-decoration-none text-dark">
-                                            <h4 class="leftt">
-                                                <span class="leftt">{!! $category->icon !!}</span> {{-- assuming icon is
-                                                HTML emoji or SVG --}}
-                                                {{ $category->name }}
-                                            </h4>
-                                        </a>
-                                    @endforeach
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+
+                @foreach ([
+                    'restaurants' => 'Restaurants',
+                    'auto_services' => 'Auto Services',
+                    'home_services' => 'Home Services',
+                    'more' => 'More'
+                ] as $groupKey => $groupLabel)
+                    @if(!empty($categories[$groupKey]) && $categories[$groupKey]->count())
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ $groupLabel }}
+                            </a>
+                            <ul class="dropdown-menu p-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        @foreach ($categories[$groupKey]->take(ceil($categories[$groupKey]->count() / 2)) as $category)
+                                            <a href="{{ route('resturant.Takeout', ['category' => $category->slug]) }}" class="dropdown-item">
+                                                {!! $category->icon !!} {{ $category->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                    <div class="col-md-6">
+                                        @foreach ($categories[$groupKey]->slice(ceil($categories[$groupKey]->count() / 2)) as $category)
+                                            <a href="{{ route('resturant.Takeout', ['category' => $category->slug]) }}" class="dropdown-item">
+                                                {!! $category->icon !!} {{ $category->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
                                 </div>
-                            </div>
-                        </ul>
-                    </li>
+                            </ul>
+                        </li>
+                    @endif
+                @endforeach
 
-
-                     {{-- Auto Services Dropdown --}}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Auto Services
-                        </a>
-                        <ul class="dropdown-menu second-menu">
-                            <div class="content_1 d-flex">
-                                <div class="sub-nav-col left-1 me-4">
-                                    @foreach ($categories['Auto Services'] ?? [] as $category)
-                                        <a href="{{ route('category.show', $category->slug) }}"
-                                            class="sub-nav-box text-decoration-none text-dark">
-                                            <h4 class="leftt">
-                                                <span class="leftt">{!! $category->icon !!}</span> {{-- assuming icon is
-                                                HTML emoji or SVG --}}
-                                                {{ $category->name }}
-                                            </h4>
-                                        </a>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </ul>
-                    </li>
-
-                    {{-- Home Services Dropdown --}}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Home Services
-                        </a>
-                        <ul class="dropdown-menu second-menu">
-                            <div class="content_1 d-flex">
-                                <div class="sub-nav-col left-1 me-4">
-                                    @foreach ($categories['home_services'] ?? [] as $category)
-                                        <a href="{{ route('category.show', $category->slug) }}"
-                                            class="sub-nav-box text-decoration-none text-dark">
-                                            <h4 class="leftt">
-                                                <span class="leftt">{!! $category->icon !!}</span>
-                                                {{ $category->name }}
-                                            </h4>
-                                        </a>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </ul>
-                    </li>
-
-                    {{-- Repeat similarly for auto_services, more --}}
-                </ul>
-            </div>
+            </ul>
         </div>
     </div>
 </nav>

@@ -14,12 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('reviews', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->after('id');
-        
-
-        // Foreign keys (optional but recommended)
-        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-      
+             $table->text('review')->nullable();
         });
     }
 
@@ -31,9 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('reviews', function (Blueprint $table) {
-              $table->dropForeign(['user_id']);
-        
-        $table->dropColumn(['user_id', 'business_id']);
+             $table->dropColumn('review');
         });
     }
 };

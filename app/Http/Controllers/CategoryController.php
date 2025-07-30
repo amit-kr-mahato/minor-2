@@ -1,42 +1,25 @@
 <?php
 
-
-
 namespace App\Http\Controllers;
-
-use App\Models\Category;
+  use App\Models\Category;
+use App\Models\Business;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
-    public function index() {
-        $categories = Category::all();
-        return view('admin.categories.index', compact('categories'));
-    }
+    /**
+     * Display the specified category by slug along with its businesses.
+     *
+     * @param string $slug
+     * @return \Illuminate\View\View
+     */
 
-    public function create() {
-        return view('admin.categories.create');
-    }
+public function show($slug)
+{
+    $category = Category::where('slug', $slug)->firstOrFail();
+    $businesses = Business::where('category_id', $category->id)->get();
 
-    public function store(Request $request) {
-        $request->validate(['name' => 'required|string|max:255']);
-        Category::create($request->only('name'));
-        return redirect()->route('admin.categories.index')->with('success', 'Category created!');
-    }
+    return view('categories.show', compact('category', 'businesses'));
+}
 
-    public function edit(Category $category) {
-        return view('admin.categories.edit', compact('category'));
-    }
-
-    public function update(Request $request, Category $category) {
-        $request->validate(['name' => 'required|string|max:255']);
-        $category->update($request->only('name'));
-        return redirect()->route('admin.categories.index')->with('success', 'Category updated!');
-    }
-
-    public function destroy(Category $category) {
-        $category->delete();
-        return redirect()->route('admin.categories.index')->with('success', 'Category deleted!');
-    }
 }

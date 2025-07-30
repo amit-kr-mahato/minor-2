@@ -63,14 +63,17 @@
       </tr>
       </thead>
       <tbody>
+              @foreach ($reviews as $review)
       <tr class="hover:bg-red-50">
-        <td class="px-4 py-2 border">John D.</td>
-        <td class="px-4 py-2 border">Joe's Pizza</td>
-        <td class="px-4 py-2 border">5</td>
-        <td class="px-4 py-2 border truncate max-w-xs">Great pizza and fast delivery!</td>
-        <td class="px-4 py-2 border">2025-06-24</td>
+        <td class="px-4 py-2 border">{{ $review->user?->name ?? 'Unknown User' }}</td>
+        <td class="px-4 py-2 border">{{ $review->business?->business_name ?? 'Unknown Business' }}</td>
+                <td class="px-4 py-2 border">{{ $review->rating }}</td>
+            <td class="px-4 py-2 border truncate max-w-xs">{{ $review->review }}</td>
+        <td class="px-4 py-2 border">{{ $review->created_at->format('Y-m-d') }}</td>
       </tr>
-      <tr class="hover:bg-red-50 bg-red-50">
+      @endforeach
+
+      {{-- <tr class="hover:bg-red-50 bg-red-50">
         <td class="px-4 py-2 border">Emily R.</td>
         <td class="px-4 py-2 border">Coffee Hub</td>
         <td class="px-4 py-2 border">4</td>
@@ -83,7 +86,8 @@
         <td class="px-4 py-2 border">3</td>
         <td class="px-4 py-2 border truncate max-w-xs">Service could be better.</td>
         <td class="px-4 py-2 border">2025-06-22</td>
-      </tr>
+      </tr> --}}
+      
       </tbody>
     </table>
     </section>

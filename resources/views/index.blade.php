@@ -101,81 +101,33 @@
 
 
     <!------------------------------category-------------------------------->
+    {{-- <div class="container mt-5">
+        <h1 class="text-center">Categories</h1>
 
-    <div class="container mt-5">
-        <h1 class="text-center">category</h1>
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="category-card">
-                    <a class="text-decoration-none" href="#">
-                        <div class="category-icon">🍽️</div>
-                        <p class="text-dark">Restaurants</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="category-card">
-                    <a class="text-decoration-none" href="#">
-                        <div class="category-icon">🎁</div>
-                        <p class="text-dark">Shopping</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="category-card">
-                    <a class="text-decoration-none" href="#">
-                        <div class="category-icon">✨</div>
-                        <p class="text-dark">Nightlife</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="category-card">
-                    <a class="text-decoration-none" href="#">
-                        <div class="category-icon">🎯</div>
-                        <p class="text-dark">Active Life</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="category-card">
-                    <a class="text-decoration-none" href="#">
-                        <div class="category-icon">💇‍♂️</div>
-                        <p class="text-dark">Beauty & Spas</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="category-card">
-                    <a class="text-decoration-none" href="#">
-                        <div class="category-icon">🚗</div>
-                        <p class="text-dark">Automotive</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="category-card">
-                    <a class="text-decoration-none" href="#">
-                        <div class="category-icon">🏠</div>
-                        <p class="text-dark">Home Services</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="category-card">
-                    <a class="text-decoration-none" href="#" onclick="toggleCategories(event)">
-                        <div class="category-icon">
-                            <i class="bi bi-three-dots text-dark"></i>
+        @foreach($categories as $groupName => $groupedCategories)
+            <h3 class="mt-4 text-capitalize">{{ str_replace('_', ' ', $groupName) }}</h3>
+
+            <div class="row g-4">
+                @foreach($groupedCategories as $category)
+                    <div class="col-md-3">
+                        <div class="category-card text-center border rounded p-3 shadow-sm">
+                            <a class="text-decoration-none" href="{{ route('category.show', $category->slug) }}">
+                                <div class="category-icon fs-3">{{ $category->icon ?? '📁' }}</div>
+                                <p class="text-dark fw-bold">{{ $category->name }}</p>
+                            </a>
                         </div>
-                        <p class="text-dark">More</p>
-                    </a>
-                </div>
+                    </div>
+                @endforeach
             </div>
-        </div>
-    </div>
+        @endforeach
+    </div> --}}
 
 
-    <div class="container cont  mt-5 mb-5" id="moreCategories" style="display: none;">
+
+
+
+
+    {{-- <div class="container cont  mt-5 mb-5" id="moreCategories" style="display: none;">
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
             <div class="col">
                 <a class="text-decoration-none" href="#">
@@ -261,7 +213,7 @@
             </div>
         </div>
 
-    </div>
+    </div> --}}
 @endsection
 <!-- Read More Toggle Script -->
 @push('scripts')

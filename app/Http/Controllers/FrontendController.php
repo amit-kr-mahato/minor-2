@@ -13,13 +13,28 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
-
+ use App\Models\Category;
+ 
 class FrontendController extends Controller {
-    public function home() {
-        $ads = Advertisement::where( 'status', 'active' )->get();
-        $reviews = Review::with( [ 'user', 'business' ] )->latest()->take( 6 )->get();
-        return view( 'index', compact( 'ads', 'reviews' ) );
-    }
+
+
+public function home() {
+    $ads = Advertisement::where('status', 'active')->get();
+    $reviews = Review::with(['user', 'business'])->latest()->take(6)->get();
+    $allCategories = Category::all();
+
+    $categories = [
+        'restaurants' => $allCategories->where('group', 'restaurants'),
+        'auto_services' => $allCategories->where('group', 'auto_services'),
+        'home_services' => $allCategories->where('group', 'home_services'),
+        'more' => $allCategories->whereNotIn('group', ['restaurants', 'auto_services', 'home_services']),
+    ];
+
+    return view('index', compact('ads', 'reviews', 'categories'));
+}
+
+
+
 
     public function addBusiness() {
         return view( 'business.addbusiness' );
