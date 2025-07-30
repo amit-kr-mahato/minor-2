@@ -175,7 +175,6 @@ public function updateStatus(Request $request, $id)
 
     $ratings = $ratingCounts->pluck('rating');   // [1, 2, 3, 4, 5]
     $totals = $ratingCounts->pluck('total');     // [3, 8, 15, 10, 4]
-
     return view('businessdashboard.dashboard', [
         'ratings' => $ratings,
         'ratingTotals' => $totals,

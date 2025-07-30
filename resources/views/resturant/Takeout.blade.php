@@ -2,11 +2,11 @@
 
 @push('styles')
 <style>
-    #map {
+    /* #map {
         height: 200%;
         width: 100%;
         border-radius: 8px;
-    }
+    } */
 
     .business-list {
         overflow-y: auto;
@@ -52,7 +52,7 @@
 
         <!-- Google Map -->
         <div style="flex: 2;  height: 100vh; gap: 1rem;">
-            <div id="map"></div>
+            <div style="height: 100vh;" id="map"></div>
         </div>
     </div>
 

@@ -291,7 +291,7 @@ use App\Http\Controllers\{
     ReviewController,
     SettingController
 };
-
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes (Frontend)
@@ -464,3 +464,11 @@ Route::post('/admin/businesses/{id}/status', [BusinessController::class, 'update
 
 //==========================================================menu=====================
 Route::get('/menu/{business_id}', [MenuItemController::class, 'showPublicMenu'])->name('public.menu');
+
+
+//========================================categories==========================
+
+
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    Route::resource('categories', CategoryController::class);
+});

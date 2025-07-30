@@ -62,6 +62,21 @@
       </div>
     </div>
 
+     <!-- categories-->
+    <div x-data="{ open: false }" class="mt-4">
+      <a href="#" @click.prevent="open = !open"
+        class="flex items-center justify-between w-full px-4 py-3 rounded hover:bg-red-100 hover:text-red-600 transition-colors font-semibold">
+        <span class="flex items-center gap-3">
+          <i class="fa-solid fa-star"></i> category
+        </span>
+        <i :class="open ? 'fa-chevron-down' : 'fa-chevron-right'" class="fas"></i>
+      </a>
+      <div x-show="open" class="mt-2 ml-6 space-y-1 text-sm" style="display:none;">
+        <a href="{{ route('admin.categories.index') }}"
+          class="block px-3 py-2 rounded hover:bg-red-50 hover:text-red-600">category</a>
+      </div>
+    </div>
+
     <!-- Reviews submenu -->
     <div x-data="{ open: false }" class="mt-4">
       <a href="#" @click.prevent="open = !open"

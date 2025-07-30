@@ -49,15 +49,15 @@
                             </li>
                         </ul>
                     </li>
-    
-                            <li class="nav-item">
-                                <a class="nav-link me-2 active text-light navver" aria-current="page"
-                                  href="{{ route('reviews.show') }}">   
-                                    Write a Review
-                                </a>
-                            </li>
-                      
-                    
+
+                    <li class="nav-item">
+                        <a class="nav-link me-2 active text-light navver" aria-current="page"
+                            href="{{ route('reviews.show') }}">
+                            Write a Review
+                        </a>
+                    </li>
+
+
 
 
                     {{-- <li class="nav-item">
@@ -98,11 +98,13 @@
 </header>
 <!-- =============================another navbar============================= -->
 
-<nav class="navbar navbar-expand-lg " style="background-color: rgb(135, 248, 248);color:white">
+<nav class="navbar navbar-expand-lg" style="background-color: rgb(135, 248, 248); color:white;">
     <div class="container">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
+
+                    {{-- Restaurants Dropdown --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -111,93 +113,23 @@
                         <ul class="dropdown-menu second-menu">
                             <div class="content_1 d-flex">
                                 <div class="sub-nav-col left-1 me-4">
-                                    <a href="{{ route('takeout') }}" class="sub-nav-box  text-decoration-none text-dark"
-                                        id="box-1">
-
-                                        <h4 class="leftt"> <span class="leftt">🗑</span>Takeout</h4>
-
-                                    </a>
-                                    <a href="" class="sub-nav-box text-decoration-none text-dark" id="box-2">
-
-                                        <h4 class="leftt"> <span class="leftt">🍔</span>burger</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-3">
-
-                                        <h4 class="leftt"> <span class="leftt">🏯</span>chinese</h4>
-
-                                    </a>
-
-                                </div>
-                                <div class="sub-nav-col right-1">
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-5">
-
-                                        <h4 class="leftt"> <span class="leftt">🗓️</span>Reservations</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-6">
-
-                                        <h4 class="leftt"> <span class="leftt">🚚</span>Delivery</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-7">
-
-                                        <h4 class="leftt"> <span class="leftt">🌮</span>Mexican</h4>
-
-                                    </a>
-
+                                    @foreach ($categories['restaurants'] ?? [] as $category)
+                                        <a href="{{ route('category.show', $category->slug) }}"
+                                            class="sub-nav-box text-decoration-none text-dark">
+                                            <h4 class="leftt">
+                                                <span class="leftt">{!! $category->icon !!}</span> {{-- assuming icon is
+                                                HTML emoji or SVG --}}
+                                                {{ $category->name }}
+                                            </h4>
+                                        </a>
+                                    @endforeach
                                 </div>
                             </div>
                         </ul>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Home Services
-                        </a>
-                        <ul class="dropdown-menu second-menu">
-                            <div class="content_1 d-flex">
-                                <div class="sub-nav-col left-1 me-4">
-                                    <a href="{{ route('contractor') }}"
-                                        class="sub-nav-box  text-decoration-none text-dark" id="box-1">
 
-                                        <h4 class="leftt"> <span class="leftt">🛠️</span>Contractors</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-2">
-
-                                        <h4 class="leftt"> <span class="leftt">🔌</span>Electricians</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-3">
-
-                                        <h4 class="leftt"> <span class="leftt">🖲</span>Home Cleaner</h4>
-
-                                    </a>
-
-                                </div>
-                                <div class="sub-nav-col right-1 me-1">
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-4">
-
-                                        <h4 class="leftt"><span class="leftt">🧑‍🌾</span>Landscaping</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-5">
-
-                                        <h4 class="leftt"> <span class="leftt">🚚</span>Movers</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-6">
-
-                                        <h4 class="leftt"> <span class="leftt">👷🏾</span>Plumbers</h4>
-
-                                    </a>
-                                </div>
-                            </div>
-                        </ul>
-                    </li>
-
+                     {{-- Auto Services Dropdown --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -206,100 +138,45 @@
                         <ul class="dropdown-menu second-menu">
                             <div class="content_1 d-flex">
                                 <div class="sub-nav-col left-1 me-4">
-                                    <a href="#" class="sub-nav-box  text-decoration-none text-dark" id="box-1">
-
-                                        <h4 class="leftt"> <span class="leftt">🦿</span>Auto Repair</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-2">
-
-                                        <h4 class="leftt"> <span class="leftt">⚗</span>Auto detailing</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-3">
-
-                                        <h4 class="leftt"> <span class="leftt">🔫</span>Car Wash</h4>
-
-                                    </a>
-                                </div>
-                                <div class="sub-nav-col right-1">
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-5">
-
-                                        <h4 class="leftt"> <span class="leftt">🏚</span>Car Dealers</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-6">
-
-                                        <h4 class="leftt"> <span class="leftt">👨🏻‍🔧</span>Oil Change</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-7">
-
-                                        <h4 class="leftt"> <span class="leftt">🅿</span>Parking</h4>
-
-                                    </a>
-
+                                    @foreach ($categories['Auto Services'] ?? [] as $category)
+                                        <a href="{{ route('category.show', $category->slug) }}"
+                                            class="sub-nav-box text-decoration-none text-dark">
+                                            <h4 class="leftt">
+                                                <span class="leftt">{!! $category->icon !!}</span> {{-- assuming icon is
+                                                HTML emoji or SVG --}}
+                                                {{ $category->name }}
+                                            </h4>
+                                        </a>
+                                    @endforeach
                                 </div>
                             </div>
                         </ul>
                     </li>
 
-
+                    {{-- Home Services Dropdown --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            More
+                            Home Services
                         </a>
                         <ul class="dropdown-menu second-menu">
                             <div class="content_1 d-flex">
                                 <div class="sub-nav-col left-1 me-4">
-                                    <a href="#" class="sub-nav-box  text-decoration-none text-dark" id="box-1">
-
-                                        <h4 class="leftt"> <span class="leftt">🖱</span>Dry Cleaning</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-2">
-
-                                        <h4 class="leftt"> <span class="leftt">📲</span>phone repair</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-3">
-
-                                        <h4 class="leftt"> <span class="leftt">🍹</span>Nightlife</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-4">
-
-                                        <h4 class="leftt"><span class="leftt">✂</span>Hair Salons</h4>
-
-                                    </a>
-                                </div>
-                                <div class="sub-nav-col right-1">
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-5">
-
-                                        <h4 class="leftt"> <span class="leftt">🏋🏿‍♂️</span>Gyms</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-6">
-
-                                        <h4 class="leftt"> <span class="leftt">💆🏻‍♀️</span>Massage</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-7">
-
-                                        <h4 class="leftt"> <span class="leftt">🛍️</span>Shopping</h4>
-
-                                    </a>
-                                    <a href="#" class="sub-nav-box text-decoration-none text-dark" id="box-8">
-
-                                        <h4 class="leftt"> <span class="leftt">🍺</span>Bars</h4>
-
-                                    </a>
+                                    @foreach ($categories['home_services'] ?? [] as $category)
+                                        <a href="{{ route('category.show', $category->slug) }}"
+                                            class="sub-nav-box text-decoration-none text-dark">
+                                            <h4 class="leftt">
+                                                <span class="leftt">{!! $category->icon !!}</span>
+                                                {{ $category->name }}
+                                            </h4>
+                                        </a>
+                                    @endforeach
                                 </div>
                             </div>
                         </ul>
-
                     </li>
+
+                    {{-- Repeat similarly for auto_services, more --}}
                 </ul>
             </div>
         </div>

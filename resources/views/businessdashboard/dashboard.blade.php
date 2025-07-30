@@ -44,7 +44,7 @@
                 @foreach ($recentReviews as $review)
                     <tr class="hover:bg-red-50">
                         <td class="px-4 py-2 border">{{ $review->user?->name ?? 'N/A' }}</td>
-                        <td class="px-4 py-2 border">{{ $review->business?->name ?? 'N/A' }}</td>
+                        <td class="px-4 py-2 border">{{ $review->business?->business_name ?? 'N/A' }}</td>
                         <td class="px-4 py-2 border">{{ $review->rating }}</td>
                         <td class="px-4 py-2 border truncate max-w-xs">{{ $review->review }}</td>
                         <td class="px-4 py-2 border">{{ $review->created_at->format('Y-m-d') }}</td>
